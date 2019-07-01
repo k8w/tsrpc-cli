@@ -35,7 +35,8 @@
     "node-json-color-stringify": "^1.1.0",
     "os-locale": "^4.0.0",
     "tsbuffer": "^0.1.7",
-    "tsbuffer-proto-generator": "^1.1.1"
+    "tsbuffer-proto-generator": "^1.1.1",
+    "tsrpc-ws": "^0.1.0"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
