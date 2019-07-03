@@ -10,6 +10,7 @@ import { TSBufferProto } from 'tsbuffer-schema';
 import { i18n } from './i18n/i18n';
 import { TSBuffer } from 'tsbuffer';
 import { TSRPCServiceProto } from 'tsrpc-ws';
+import { ServiceDef } from 'tsrpc-ws/src/proto/ServiceProto';
 require('node-json-color-stringify');
 
 let colorJson = (json: any) => {
@@ -99,7 +100,8 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
     // 去除尾部的 / 和 \
     input = input.replace(/[\\\/]+$/, '');
 
-    let fileList = glob.sync(input + '/**/*.ts');
+    const exp = /^(.*\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
+    let fileList = glob.sync(input + '/**/*.ts').filter(v => exp.test(v))
 
     // compatible 默认同output
     let oldProtoPath = compatible || output;
@@ -126,9 +128,61 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         }
     }
 
-    let proto = await new TSBufferProtoGenerator({ verbose: verbose }).generate(fileList, {
-        compatibleResult: oldProto ? oldProto.types : undefined
+    let services: ServiceDef[] = [];
+
+    let typeProto = await new TSBufferProtoGenerator({ verbose: verbose }).generate(fileList, {
+        compatibleResult: oldProto ? oldProto.types : undefined,
+        filter: info => {
+            let infoPath = info.path.replace(/\\/g, '/')
+            let match = infoPath.match(exp);
+
+            if (!match) {
+                throw new Error('Error path (not Ptl nor Msg): ' + info.path);
+            }
+
+            if (match[2] === 'Ptl') {
+                return info.name === 'Req' + match[3] || info.name === 'Res' + match[3];
+            }
+            else {
+                return info.name === 'Msg' + match[3];
+            }
+        }
     });
+
+    for (let filepath of fileList) {
+        filepath = filepath.replace(/^.\//, '');
+        let match = filepath.match(exp)!;
+        let typePath = filepath.replace(/\.ts$/, '');
+
+        // Ptl 检测 Req 和 Res 类型齐全
+        if (match[2] === 'Ptl') {
+            let req = typePath + '/Req' + match[3];
+            let res = typePath + '/Res' + match[3];
+            if (typeProto[req] && typeProto[res]) {
+                services.push({
+                    id: services.length,
+                    name: (match[1] || '') + match[3],
+                    type: 'api',
+                    req: req,
+                    res: res
+                })
+            }
+        }
+        // Msg 检测Msg类型在
+        else {
+            let msg = typePath + '/Msg' + match[3];
+            services.push({
+                id: services.length,
+                name: (match[1] || '') + match[3],
+                type: 'msg',
+                msg: msg
+            })
+        }
+    }
+
+    // TODO service EncodeID
+
+    console.log(services)
 
     if (output) {
         fs.writeFileSync(output, ugly ? JSON.stringify(proto) : JSON.stringify(proto, null, 2));
