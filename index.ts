@@ -3,14 +3,14 @@
 import * as glob from 'glob';
 import 'colors';
 import minimist from 'minimist';
-import { TSBufferProtoGenerator } from 'tsbuffer-proto-generator';
+import { TSBufferProtoGenerator, EncodeIdUtil } from 'tsbuffer-proto-generator';
 import * as fs from "fs";
 import * as path from "path";
 import { TSBufferProto } from 'tsbuffer-schema';
 import { i18n } from './i18n/i18n';
 import { TSBuffer } from 'tsbuffer';
 import { TSRPCServiceProto } from 'tsrpc-ws';
-import { ServiceDef } from 'tsrpc-ws/src/proto/ServiceProto';
+import { ServiceDef, ServiceProto } from 'tsrpc-ws/src/proto/ServiceProto';
 require('node-json-color-stringify');
 
 let colorJson = (json: any) => {
@@ -90,18 +90,23 @@ function showHelp() {
 }
 
 async function proto(input?: string, output?: string, compatible?: string, ugly?: boolean, newMode?: boolean) {
-    // 解析输入
+    // 解析输入 默认为当前文件夹
     if (!input) {
-        throw error(i18n.missingParam, { param: '--input' });;
-    }
-    if (input.includes('*') || input.endsWith('.ts')) {
-        throw error(i18n.inputMustBeFolder)
+        input = '.'
     }
     // 去除尾部的 / 和 \
     input = input.replace(/[\\\/]+$/, '');
+    // 只能填写文件夹 不支持通配符
+    if (!fs.statSync(input).isDirectory()) {
+        throw error(i18n.inputMustBeFolder)
+    }
+
+    // 临时切换working dir
+    let originalCwd = process.cwd();
+    process.chdir(input);
 
     const exp = /^(.*\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
-    let fileList = glob.sync(input + '/**/*.ts').filter(v => exp.test(v))
+    let fileList = glob.sync('**/*.ts').filter(v => exp.test(v))
 
     // compatible 默认同output
     let oldProtoPath = compatible || output;
@@ -180,12 +185,86 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         }
     }
 
-    // TODO service EncodeID
+    // EncodeID 兼容OldProto
+    let encodeIds = EncodeIdUtil.genEncodeIds(services.map(v => v.name), oldProto ? oldProto.services.map(v => ({
+        key: v.name,
+        id: v.id
+    })) : undefined);
+    for (let item of encodeIds) {
+        services.find(v => v.name === item.key)!.id = item.id;
+    }
 
-    console.log(services)
+    let proto: ServiceProto = {
+        services: services,
+        types: typeProto
+    };
 
     if (output) {
-        fs.writeFileSync(output, ugly ? JSON.stringify(proto) : JSON.stringify(proto, null, 2));
+        // TS
+        if (output.endsWith('.ts')) {
+            let asNameCache: { [name: string]: number } = {};
+            let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
+            let apis: { importPath: string, lastName: string, fullName: string }[] = [];
+            let msgs: { importPath: string, lastName: string, fullName: string }[] = [];
+
+            for (let svc of services) {
+                let importPath = path.relative(output, svc.name).replace(/\\/g, '/');
+                if (!importPath.startsWith('.')) {
+                    importPath = './' + importPath;
+                }
+                let lastName = svc.name.match(/[^\/]+$/)![0];
+                let match = lastName.match(/^(.+?)(\_(\d+))?$/);
+                let
+                // TODO 防止重名 as XXX_1 XXX_2
+
+                if (svc.type === 'api') {
+                    let reqAsName: string, resAsName: string;
+                    if (asNameCache['Req' + lastName]) {
+                        reqAsName = asNameCache['Req' + lastName]++;
+                    }
+
+                    imports[importPath] = [
+                        { srcName: 'Req' + lastName, }
+                    ]
+                }
+                else {
+
+                }
+            }
+
+            let importStr = Object.entries(imports)
+                .map(v => `import { ${v[1].map(w => w.asName ? `${w.srcName} as ${w.asName}` : w.srcName).join(', ')} } from '${v[0]}'`)
+                .join('\n');
+            let reqStr = apis.map(v => `        ${JSON.stringify(v.fullName)}: Req${v.lastName.match(/[^\/]$/)![0]}`).join(',\n');
+            let resStr = apis.map(v => `        ${JSON.stringify(v.fullName)}: Res${v.lastName.match(/[^\/]$/)![0]}`).join(',\n');
+            let msgStr = msgs.map(v => `        ${JSON.stringify(v.fullName)}: Msg${v.lastName.match(/[^\/]$/)![0]}`).join(',\n')
+
+            let fileContent = `
+import { TSRPCServiceProto } from 'tsrpc';
+${importStr}
+
+export interface ServiceType {
+    req: {
+${reqStr}
+    },
+    res: {
+${resStr}
+    },
+    msg: {
+${msgStr}        
+    }
+}
+
+export const serviceProto: TSRPCServiceProto = ${JSON.stringify(proto, null, 4)};
+`.trim();
+            process.chdir(originalCwd);
+            fs.writeFileSync(output, fileContent);
+        }
+        // JSON
+        else {
+            process.chdir(originalCwd);
+            fs.writeFileSync(output, ugly ? JSON.stringify(proto) : JSON.stringify(proto, null, 2));
+        }
         console.log(formatStr(i18n.protoSucc, { output: path.resolve(output) }).green);
     }
     else {
