@@ -6,6 +6,7 @@ export const i18n = {
     tsrpc proto <options>                生成TSRPC Proto文件
         -i, --input <folder>                用来生成Proto的协议文件夹路径
         -o, --output <file>                 输出的文件路径，不指定将直接输出到命令行
+                                            -o XXX.ts 和 -o XXX.json 将对应输出两种不同的格式
         -c, --compatible <file>             兼容模式：要兼容的旧Proto文件的路径（默认同output）
         -n, --new                           不兼容旧版，生成全新的Proto文件
         -u, --ugly                          输出为可读性较差但体积更小压缩格式
@@ -38,7 +39,7 @@ export const i18n = {
     example: `
 使用示例：
 
-    tsrpc proto -i shared/protocols -o proto.json
+    tsrpc proto -i proto -o proto.ts
 
     tsrpc encode -p proto.json -s a/b/c/TypeName -o buf.bin "{value: 1}"
     tsrpc decode -p proto.json -s a/b/c/TypeName "01 0A 01"

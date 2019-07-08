@@ -39,7 +39,7 @@ Usage：
     example: `
 Example：
 
-    tsrpc proto -i **/*.ts -o proto.json
+    tsrpc proto -i proto -o proto.ts
 
     tsrpc encode -p proto.json -s a/b/c/TypeName -o buf.bin "{value: 1}"
     tsrpc decode -p proto.json -s a/b/c/TypeName "01 0A 01"
