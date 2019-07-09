@@ -112,35 +112,14 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
     let oldProtoPath = compatible || output;
     let oldProto: TSRPCServiceProto | undefined;
     if (!newMode && oldProtoPath) {
-        // 打开OldFile
-        let oldFile: string | undefined;
         try {
-            oldFile = fs.readFileSync(oldProtoPath).toString();
-        }
-        catch{
-            if (compatible) {
-                throw error(i18n.fileOpenError, { file: path.resolve(oldProtoPath) });
+            oldProto = loadServiceProto(oldProtoPath)
+            if (!oldProto && compatible) {
+                throw new Error(formatStr(i18n.fileOpenError, { file: path.resolve(oldProtoPath) }));
             }
         }
-
-        if (oldFile) {
-            try {
-                if (oldProtoPath.endsWith('.ts')) {
-                    let match = oldFile.match(/export const serviceProto: TSRPCServiceProto = (\{[\s\S]+\});/);
-                    if (match) {
-                        oldProto = JSON.parse(match[1]);
-                    }
-                }
-                else {
-                    oldProto = {
-                        services: [],
-                        types: JSON.parse(oldFile)
-                    };
-                }
-            }
-            catch{
-                throw error(i18n.protoParsedError, { file: path.resolve(oldProtoPath) });
-            }
+        catch (e) {
+            throw error(i18n.compatibleError, { innerError: e.message })
         }
     }
 
@@ -324,6 +303,41 @@ export const serviceProto: TSRPCServiceProto = ${JSON.stringify(proto, null, 4)}
     else {
         console.log(colorJson(proto));
     }
+}
+
+function loadServiceProto(filepath: string) {
+    let proto: TSRPCServiceProto;
+    // 打开OldFile
+    let fileContent: string;
+    try {
+        fileContent = fs.readFileSync(filepath).toString();
+    }
+    catch{
+        return undefined;
+    }
+
+    try {
+        if (filepath.endsWith('.ts')) {
+            let match = fileContent.match(/export const serviceProto: TSRPCServiceProto = (\{[\s\S]+\});/);
+            if (match) {
+                proto = JSON.parse(match[1]);
+            }
+            else {
+                throw new Error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
+            }
+        }
+        else {
+            proto = {
+                services: [],
+                types: JSON.parse(fileContent)
+            };
+        }
+    }
+    catch{
+        throw new Error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
+    }
+
+    return proto;
 }
 
 function encode(input?: string, exp?: string, output?: string, proto?: string, schemaId?: string) {
@@ -526,20 +540,18 @@ function parseProtoAndSchema(proto: string | undefined, schemaId: string | undef
         error(i18n.missingParam, { param: '--schema' });
         throw new Error()
     }
-    let protoContent: string;
+    let serviceProto: ServiceProto | undefined;
     try {
-        protoContent = fs.readFileSync(proto).toString();
+        serviceProto = loadServiceProto(proto);
     }
-    catch{
+    catch (e) {
+        throw error(e.message);
+    }
+
+    if (!serviceProto) {
         throw error(i18n.fileOpenError, { file: path.resolve(proto) });
     }
-    let protoJson: TSBufferProto;
-    try {
-        protoJson = JSON.parse(protoContent);
-        return { proto: protoJson, schemaId: schemaId };
-    }
-    catch {
-        throw error(i18n.protoParsedError, { file: path.resolve(proto) })
-    }
+
+    return { proto: serviceProto.types, schemaId: schemaId };
     // #endregion
 }

@@ -41,9 +41,9 @@ export const i18n = {
 
     tsrpc proto -i proto -o proto.ts
 
-    tsrpc encode -p proto.json -s a/b/c/TypeName -o buf.bin "{value: 1}"
-    tsrpc decode -p proto.json -s a/b/c/TypeName "01 0A 01"
-    tsrpc validate -p proto.json -s a/b/c/TypeName "{value: 1}"
+    tsrpc encode -p proto.ts -s a/b/c/TypeName -o buf.bin "{value: 1}"
+    tsrpc decode -p proto.ts -s a/b/c/TypeName "01 0A 01"
+    tsrpc validate -p proto.ts -s a/b/c/TypeName "{value: 1}"
     tsrpc show buf.bin
 `.trim(),
     errCmd: '命令格式有误，键入 tsrpc -h 以查看帮助。',
@@ -61,5 +61,6 @@ export const i18n = {
     validateSucc: '√ 验证通过',
     validateFail: '× 验证不通过: ${msg}',
     error: ' 错误 ',
-    helpGuide: '键入 tsrpc -h 查看更多帮助信息'
+    helpGuide: '键入 tsrpc -h 查看更多帮助信息',
+    compatibleError: '兼容旧Proto失败: \n\t|- ${innerError}'
 }
