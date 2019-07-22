@@ -6,11 +6,9 @@ import minimist from 'minimist';
 import { TSBufferProtoGenerator, EncodeIdUtil } from 'tsbuffer-proto-generator';
 import * as fs from "fs";
 import * as path from "path";
-import { TSBufferProto } from 'tsbuffer-schema';
 import { i18n } from './i18n/i18n';
 import { TSBuffer } from 'tsbuffer';
-import { TSRPCServiceProto } from 'tsrpc-ws';
-import { ServiceDef, ServiceProto } from 'tsrpc-ws/src/proto/ServiceProto';
+import { ServiceDef, ServiceProto } from 'tsrpc-proto';
 require('node-json-color-stringify');
 
 let colorJson = (json: any) => {
@@ -110,7 +108,7 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
 
     // compatible 默认同output
     let oldProtoPath = compatible || output;
-    let oldProto: TSRPCServiceProto | undefined;
+    let oldProto: ServiceProto | undefined;
     if (!newMode && oldProtoPath) {
         try {
             oldProto = loadServiceProto(oldProtoPath)
@@ -272,7 +270,7 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
             let msgStr = msgs.map(v => `        ${JSON.stringify(v.name)}: ${v.msg}`).join(',\n')
 
             let fileContent = `
-import { TSRPCServiceProto } from 'tsrpc';
+import { ServiceProto } from 'tsrpc-proto';
 ${importStr}
 
 export interface ServiceType {
@@ -283,11 +281,11 @@ ${reqStr}
 ${resStr}
     },
     msg: {
-${msgStr}        
+${msgStr}
     }
 }
 
-export const serviceProto: TSRPCServiceProto = ${JSON.stringify(proto, null, 4)};
+export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(proto, null, 4)};
 `.trim();
 
             process.chdir(originalCwd);
@@ -306,7 +304,7 @@ export const serviceProto: TSRPCServiceProto = ${JSON.stringify(proto, null, 4)}
 }
 
 function loadServiceProto(filepath: string) {
-    let proto: TSRPCServiceProto;
+    let proto: ServiceProto;
     // 打开OldFile
     let fileContent: string;
     try {
@@ -318,7 +316,7 @@ function loadServiceProto(filepath: string) {
 
     try {
         if (filepath.endsWith('.ts')) {
-            let match = fileContent.match(/export const serviceProto: TSRPCServiceProto = (\{[\s\S]+\});/);
+            let match = fileContent.match(/export const serviceProto: ServiceProto<ServiceType> = (\{[\s\S]+\});/);
             if (match) {
                 proto = JSON.parse(match[1]);
             }
