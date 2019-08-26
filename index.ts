@@ -9,6 +9,7 @@ import * as path from "path";
 import { i18n } from './i18n/i18n';
 import { TSBuffer } from 'tsbuffer';
 import { ServiceDef, ServiceProto } from 'tsrpc-proto';
+import * as ts from "typescript";
 require('node-json-color-stringify');
 
 let colorJson = (json: any) => {
@@ -147,6 +148,15 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         let match = filepath.match(exp)!;
         let typePath = filepath.replace(/\.ts$/, '');
 
+        // 解析conf
+        let src = fs.readFileSync(filepath).toString();
+        let compileResult = ts.transpileModule(src, {
+            compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2015 }
+        });
+        let mod: any = {};
+        eval(`(function(exports){${compileResult.outputText}})`)(mod);
+        let conf: { [key: string]: any } | undefined = mod ? mod.conf : undefined;
+
         // Ptl 检测 Req 和 Res 类型齐全
         if (match[2] === 'Ptl') {
             let req = typePath + '/Req' + match[3];
@@ -157,7 +167,8 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
                     name: (match[1] || '') + match[3],
                     type: 'api',
                     req: req,
-                    res: res
+                    res: res,
+                    conf: conf
                 })
             }
             else {
@@ -173,7 +184,8 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
                     id: services.length,
                     name: (match[1] || '') + match[3],
                     type: 'msg',
-                    msg: msg
+                    msg: msg,
+                    conf: conf
                 })
             }
             else {
@@ -271,6 +283,7 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
 
             let fileContent = `
 import { ServiceProto } from 'tsrpc-proto';
+import { conf } from './test1';
 ${importStr}
 
 export interface ServiceType {
