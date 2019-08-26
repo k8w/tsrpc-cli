@@ -283,7 +283,6 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
 
             let fileContent = `
 import { ServiceProto } from 'tsrpc-proto';
-import { conf } from './test1';
 ${importStr}
 
 export interface ServiceType {
