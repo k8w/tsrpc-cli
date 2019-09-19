@@ -100,27 +100,49 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         throw error(i18n.inputMustBeFolder)
     }
 
+    // compatible 默认同output
+    let oldProtoPath = compatible || output;
+    let oldProto: ServiceProto | undefined;
+    if (!newMode && oldProtoPath) {
+        // Parse TS
+        if (oldProtoPath.endsWith('.ts')) {
+            let content = fs.existsSync(oldProtoPath) && fs.readFileSync(oldProtoPath, 'utf-8');
+            if (content) {
+            let match = content.match(/[\s\S]*:\s*ServiceProto<ServiceType>\s*=\s*(\{[\s\S]+\});?\s*/);
+                if (match) {
+                    try {
+                        oldProto = JSON.parse(match[1]);
+                    }
+                    catch (e) {
+                        throw error(i18n.compatibleError, { innerError: e.message })
+                    }
+                }
+                else {
+                    console.error(`Not invalid proto ts file: ${oldProtoPath}`);
+                    throw error(i18n.compatibleError)
+                }
+            }
+        }
+        // Parse JSON
+        else {
+            try {
+                oldProto = loadServiceProto(oldProtoPath)
+                if (!oldProto && compatible) {
+                    throw new Error(formatStr(i18n.fileOpenError, { file: path.resolve(oldProtoPath) }));
+                }
+            }
+            catch (e) {
+                throw error(i18n.compatibleError, { innerError: e.message })
+            }
+        }
+    }
+
     // 临时切换working dir
     let originalCwd = process.cwd();
     process.chdir(input);
 
     const exp = /^(.*\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
-    let fileList = glob.sync('**/*.ts').filter(v => exp.test(v))
-
-    // compatible 默认同output
-    let oldProtoPath = compatible || output;
-    let oldProto: ServiceProto | undefined;
-    if (!newMode && oldProtoPath) {
-        try {
-            oldProto = loadServiceProto(oldProtoPath)
-            if (!oldProto && compatible) {
-                throw new Error(formatStr(i18n.fileOpenError, { file: path.resolve(oldProtoPath) }));
-            }
-        }
-        catch (e) {
-            throw error(i18n.compatibleError, { innerError: e.message })
-        }
-    }
+    let fileList = glob.sync('**/*.ts').filter(v => exp.test(v));
 
     let services: ServiceDef[] = [];
 
