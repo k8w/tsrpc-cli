@@ -1,6 +1,6 @@
 {
   "name": "tsrpc-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "node-json-color-stringify": "^1.1.0",
     "os-locale": "^4.0.0",
     "tsbuffer-proto-generator": "*",
-    "tsrpc": "*"
+    "tsrpc": "^2.2.16"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
