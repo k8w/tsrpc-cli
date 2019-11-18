@@ -1,10 +1,10 @@
 {
   "name": "tsrpc-cli",
-  "version": "0.4.2",
+  "version": "1.0.0",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc -d && cp LICENSE README.md package.json dist/",
+    "build": "rm -rf dist && npx rollup -c && cp LICENSE README.md package.json dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
@@ -34,12 +34,15 @@
     "minimist": "^1.2.0",
     "node-json-color-stringify": "^1.1.0",
     "os-locale": "^4.0.0",
-    "tsbuffer-proto-generator": "^1.1.1",
-    "tsrpc": "^2.0.1"
+    "tsbuffer-proto-generator": "*",
+    "tsrpc": "*"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/minimist": "^1.2.0",
-    "@types/node": "^12.0.8"
+    "@types/node": "^12.0.8",
+    "rollup": "^1.27.1",
+    "rollup-plugin-typescript2": "^0.25.2",
+    "rollup-plugin-uglify": "^6.0.3"
   }
 }

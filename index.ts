@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import * as glob from 'glob';
 import 'colors';
 import minimist from 'minimist';
