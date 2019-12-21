@@ -11,6 +11,7 @@ export const i18n = {
         -n, --new                           不兼容旧版，生成全新的Proto文件
         -u, --ugly                          输出为可读性较差但体积更小压缩格式
         -v, --verbose                       显示调试信息
+        --ignore <glob>                     从--input范围中要忽略的文件
     
     tsrpc encode <options> [exp]         编码JS表达式
         [exp]                               要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）

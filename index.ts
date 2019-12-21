@@ -32,7 +32,7 @@ async function main() {
     }
     // Proto
     else if (args._[2] === 'proto') {
-        await proto(args.input || args.i, args.output || args.o, args.compatible || args.c, args.ugly || args.u, args.new || args.n);
+        await proto(args.input || args.i, args.output || args.o, args.compatible || args.c, args.ugly || args.u, args.new || args.n, args.ignore);
     }
     // Encode
     else if (args._[2] === 'encode') {
@@ -86,7 +86,7 @@ function showHelp() {
     console.log('\n' + i18n.example);
 }
 
-async function proto(input?: string, output?: string, compatible?: string, ugly?: boolean, newMode?: boolean) {
+async function proto(input?: string, output?: string, compatible?: string, ugly?: boolean, newMode?: boolean, ignore?: string) {
     // 解析输入 默认为当前文件夹
     if (!input) {
         input = '.'
@@ -135,15 +135,16 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         }
     }
 
+    let fileList = glob.sync(input+'/**/{Ptl,Msg}*.ts', {
+        ignore: ignore
+    }).map(v => path.relative(input!, v).replace(/\\/g, '/'));
+
     // 临时切换working dir
     let originalCwd = process.cwd();
     process.chdir(input);
 
-    const exp = /^(.*\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
-    let fileList = glob.sync('**/*.ts').filter(v => exp.test(v));
-
     let services: ServiceDef[] = [];
-
+    const exp = /^(.*\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
     let typeProto = await new TSBufferProtoGenerator({ verbose: verbose }).generate(fileList, {
         compatibleResult: oldProto ? oldProto.types : undefined,
         filter: info => {
@@ -227,7 +228,7 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         services: services,
         types: typeProto
     };
-
+    
     if (output) {
         // TS
         if (output.endsWith('.ts')) {
@@ -319,7 +320,7 @@ ${msgStr}
 
 export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(proto, null, 4)};
 `.trim();
-
+            
             process.chdir(originalCwd);
             fs.writeFileSync(output, fileContent);
         }

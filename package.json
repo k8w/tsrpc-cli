@@ -34,8 +34,9 @@
     "minimist": "^1.2.0",
     "node-json-color-stringify": "^1.1.0",
     "os-locale": "^4.0.0",
+    "tsbuffer": "*",
     "tsbuffer-proto-generator": "*",
-    "tsrpc": "^2.2.16"
+    "tsrpc": "*"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
@@ -43,6 +44,6 @@
     "@types/node": "^12.0.8",
     "rollup": "^1.27.1",
     "rollup-plugin-typescript2": "^0.25.2",
-    "rollup-plugin-uglify": "^6.0.3"
+    "rollup-plugin-uglify": "^6.0.4"
   }
 }
