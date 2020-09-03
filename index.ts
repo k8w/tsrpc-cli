@@ -106,7 +106,7 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         if (oldProtoPath.endsWith('.ts')) {
             let content = fs.existsSync(oldProtoPath) && fs.readFileSync(oldProtoPath, 'utf-8');
             if (content) {
-            let match = content.match(/[\s\S]*:\s*ServiceProto<ServiceType>\s*=\s*(\{[\s\S]+\});?\s*/);
+                let match = content.match(/[\s\S]*:\s*ServiceProto<ServiceType>\s*=\s*(\{[\s\S]+\});?\s*/);
                 if (match) {
                     try {
                         oldProto = JSON.parse(match[1]);
@@ -135,7 +135,7 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         }
     }
 
-    let fileList = glob.sync(input+'/**/{Ptl,Msg}*.ts', {
+    let fileList = glob.sync(input + '/**/{Ptl,Msg}*.ts', {
         ignore: ignore
     }).map(v => path.relative(input!, v).replace(/\\/g, '/'));
 
@@ -150,6 +150,11 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         filter: info => {
             let infoPath = info.path.replace(/\\/g, '/')
             let match = infoPath.match(exp);
+
+            // path里包含 __开头的目录名 则忽略
+            if (/(\/|^)__/.test(infoPath)) {
+                return false;
+            }
 
             if (!match) {
                 throw new Error('Error path (not Ptl nor Msg): ' + info.path);
@@ -228,7 +233,7 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         services: services,
         types: typeProto
     };
-    
+
     if (output) {
         // TS
         if (output.endsWith('.ts')) {
@@ -320,7 +325,7 @@ ${msgStr}
 
 export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(proto, null, 4)};
 `.trim();
-            
+
             process.chdir(originalCwd);
             fs.writeFileSync(output, fileContent);
         }
