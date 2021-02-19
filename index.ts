@@ -375,8 +375,7 @@ import { ApiCall } from "tsrpc";
 import { Req${apiName}, Res${apiName} } from "${path.relative(apiDir, ptlDir).replace(/\\/g, '/')}/Ptl${apiName}";
 
 export async function Api${apiName}(call: ApiCall<Req${apiName}, Res${apiName}>) {
-    // TODO
-    call.error('To be implemented');
+    
 }        
         `.trim(), { encoding: 'utf-8' })
 
