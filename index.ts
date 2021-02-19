@@ -6,7 +6,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { i18n } from './i18n/i18n';
 import { TSBuffer } from 'tsbuffer';
-import { ServiceDef, ServiceProto } from 'tsrpc-proto';
+import { ServiceDef, ServiceProto, ApiServiceDef } from 'tsrpc-proto';
 import * as ts from "typescript";
 require('node-json-color-stringify');
 
@@ -33,6 +33,10 @@ async function main() {
     // Proto
     else if (args._[2] === 'proto') {
         await proto(args.input || args.i, args.output || args.o, args.compatible || args.c, args.ugly || args.u, args.new || args.n, args.ignore);
+    }
+    // Api
+    else if (args._[2] === 'api') {
+        await api(args.input || args.i, args.output || args.o);
     }
     // Encode
     else if (args._[2] === 'encode') {
@@ -341,6 +345,45 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(proto, n
     }
 }
 
+async function api(input?: string, output?: string) {
+    if (!input) {
+        throw error(i18n.missingParam, { param: 'input' });
+    }
+    if (!output) {
+        throw error(i18n.missingParam, { param: 'output' });
+    }
+
+    let proto = loadServiceProto(input);
+    if (!proto) {
+        throw error(i18n.protoParsedError, { file: input });
+    }
+
+    let apis = proto.services.filter(v => v.type === 'api') as ApiServiceDef[];
+    for (let api of apis) {
+        let apiName = api.name.match(/\w+$/)![0];
+        let apiDir = path.join(output, api.name.substr(0, api.name.length - apiName.length));
+        let apiPath = path.join(apiDir, `Api${apiName}.ts`);
+        let ptlDir = path.join(path.dirname(input), api.req.replace(/Ptl\w+\/Req\w+$/, ''));
+        if (fs.existsSync(apiPath)) {
+            continue;
+        }
+        if (!fs.existsSync(apiDir)) {
+            fs.mkdirSync(apiDir, { recursive: true });
+        }
+        fs.writeFileSync(apiPath, `
+import { ApiCall } from "tsrpc";
+import { Req${apiName}, Res${apiName} } from "${path.relative(apiDir, ptlDir).replace(/\\/g, '/')}/Ptl${apiName}";
+
+export async function Api${apiName}(call: ApiCall<Req${apiName}, Res${apiName}>) {
+    // TODO
+    call.error('To be implemented');
+}        
+        `.trim(), { encoding: 'utf-8' })
+
+        console.log(formatStr(i18n.apiSucc, { apiPath: apiPath, apiName: apiName }).green);
+    }
+}
+
 function loadServiceProto(filepath: string) {
     let proto: ServiceProto;
     // 打开OldFile
@@ -348,7 +391,7 @@ function loadServiceProto(filepath: string) {
     try {
         fileContent = fs.readFileSync(filepath).toString();
     }
-    catch{
+    catch {
         return undefined;
     }
 
@@ -369,7 +412,7 @@ function loadServiceProto(filepath: string) {
             };
         }
     }
-    catch{
+    catch {
         throw new Error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
     }
 
@@ -386,13 +429,13 @@ function encode(input?: string, exp?: string, output?: string, proto?: string, s
         try {
             fileContent = fs.readFileSync(input).toString();
         }
-        catch{
+        catch {
             throw error(i18n.fileOpenError, { file: path.resolve(input) })
         }
         try {
             inputValue = eval(fileContent);
         }
-        catch{
+        catch {
             throw error(i18n.jsParsedError, { file: path.resolve(input) });
         }
     }
@@ -477,13 +520,13 @@ function validate(proto?: string, schemaId?: string, input?: string, expression?
         try {
             fileContent = fs.readFileSync(input).toString();
         }
-        catch{
+        catch {
             throw error(i18n.fileOpenError, { file: path.resolve(input) })
         }
         try {
             inputValue = eval(fileContent);
         }
-        catch{
+        catch {
             throw error(i18n.jsParsedError, { file: path.resolve(input) });
         }
     }

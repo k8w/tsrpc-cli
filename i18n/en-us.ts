@@ -12,6 +12,10 @@ Usage：
         -u, --ugly                          Output as ugly JSON (no indent and smaller)
         -v, --verbose                       Show debug info
         --ignore <glob>                     Files to be ignored from --input
+
+    tsrpc api <options>                  Generate TSRPC API implementations
+        -i, --input <file>                  Proto file path (proto.ts or proto.json)
+        -o, --output <folder>               Output api folder path
     
     tsrpc encode <options> [exp]         Encode a JS expression or a file (content is JS expression)
         [exp]                               Expression to encode (e.g. "123" "new Uint8Array([1,2,3])")
@@ -59,6 +63,7 @@ Example：
     and: 'and',
     encodeSucc: '√ Encoded succ to: ${output}',
     decodeSucc: '√ Decoded succ to: ${output}',
+    apiSucc: '√ Api${apiName} generated: ${apiPath}',
     validateSucc: '√ Validate succ',
     validateFail: '× Validate fail: ${msg}',
     error: ' ERROR ',

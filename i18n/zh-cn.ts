@@ -12,6 +12,10 @@ export const i18n = {
         -u, --ugly                          输出为可读性较差但体积更小压缩格式
         -v, --verbose                       显示调试信息
         --ignore <glob>                     从--input范围中要忽略的文件
+
+    tsrpc api <options>                  自动生成TSRPC API实现
+        -i, --input <file>                  Proto文件的路径
+        -o, --output <folder>               输出的API文件夹路径
     
     tsrpc encode <options> [exp]         编码JS表达式
         [exp]                               要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
@@ -59,6 +63,7 @@ export const i18n = {
     and: '和',
     encodeSucc: '√ 编码结果已生成到：${output}',
     decodeSucc: '√ 解码结果已生成到：${output}',
+    apiSucc: '√ Api${apiName} 生成成功: ${apiPath}',
     validateSucc: '√ 验证通过',
     validateFail: '× 验证不通过: ${msg}',
     error: ' 错误 ',
