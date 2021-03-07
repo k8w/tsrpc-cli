@@ -1,14 +1,14 @@
-import * as glob from 'glob';
 import 'colors';
+import fs from "fs";
+import glob from 'glob';
 import minimist from 'minimist';
-import { TSBufferProtoGenerator, EncodeIdUtil } from 'tsbuffer-proto-generator';
-import * as fs from "fs";
-import * as path from "path";
-import { i18n } from './i18n/i18n';
+import 'node-json-color-stringify';
+import path from "path";
 import { TSBuffer } from 'tsbuffer';
-import { ServiceDef, ServiceProto, ApiServiceDef } from 'tsrpc-proto';
-import * as ts from "typescript";
-require('node-json-color-stringify');
+import { EncodeIdUtil, TSBufferProtoGenerator } from 'tsbuffer-proto-generator';
+import { ApiServiceDef, ServiceDef, ServiceProto } from 'tsrpc-proto';
+import ts from "typescript";
+import { i18n } from './i18n/i18n';
 
 let colorJson = (json: any) => {
     return (JSON as any).colorStringify(json, null, 2) as string;

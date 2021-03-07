@@ -13,7 +13,7 @@ export default {
             tsconfigOverride: {
                 compilerOptions: {
                     declaration: false,
-                    module: "ESNext"
+                    module: "esnext"
                 }
             }
         }),
@@ -21,7 +21,5 @@ export default {
             module: true,
             toplevel: true
         })
-
-    ],
-    external: ['tslib']
+    ]
 }

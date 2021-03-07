@@ -1,4 +1,4 @@
-import { TSRPCServiceProto } from 'tsrpc';
+import { TSRPCServiceProto } from 'tsrpc-proto';
 import { ReqTest, ResTest } from './a/b/c/PtlTest'
 import { MsgChat } from './MsgChat'
 import { ReqTest as ReqTest_1, ResTest as ResTest_1 } from './PtlTest'
