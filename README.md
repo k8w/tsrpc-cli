@@ -1,46 +1,46 @@
-TSBuffer CLI Tools
+TSRPC CLI Tools
 ===
 
 EN / [中文](README_CN.md)
 
-CLI utilities for [TSBuffer](https://npmjs.com/tsbuffer) 
+CLI utilities for [TSRPC](https://npmjs.com/tsrpc) 
 
 # Install
 ```
-npm i -g tsbuffer-cli
+npm i -g tsrpc-cli
 ```
 
 ## Usage
 ### Generate proto
 ```
-tsbuffer proto -i **/*.ts -o proto.json
+tsrpc proto -i shared/protocols -o shared/protocols/proto.ts
 ```
 
 ### Encode Test
 ```
-tsbuffer encode -p proto.json -s a/b/c/TypeName "{value: 1}"
-tsbuffer encode -p proto.json -s a/b/c/TypeName "{value: 1}" -o buf.bin
+tsrpc encode -p proto.json -s a/b/c/TypeName "{value: 1}"
+tsrpc encode -p proto.ts -s a/b/c/TypeName "{value: 1}" -o buf.bin
 ```
 ### Decode Test
 ```
-tsbuffer decode -p proto.json -s a/b/c/TypeName "01 0A 01"
-tsbuffer decode -p proto.json -s a/b/c/TypeName -i buf.bin -o output.js
+tsrpc decode -p proto.json -s a/b/c/TypeName "01 0A 01"
+tsrpc decode -p proto.json -s a/b/c/TypeName -i buf.bin -o output.js
 ```
 
 ### Validate Test
 ```
-tsbuffer validate -p proto.json -s a/b/c/TypeName "{value: 1}"
-tsbuffer validate -p proto.json -s a/b/c/TypeName -i xxx.js
+tsrpc validate -p proto.json -s a/b/c/TypeName "{value: 1}"
+tsrpc validate -p proto.json -s a/b/c/TypeName -i xxx.js
 ```
 
 ### Show buffer
 ```
-tsbuffer show buf.bin
+tsrpc show buf.bin
 ```
 
 ## CLI Reference
 ```
-tsbuffer proto <options>                Generate proto file
+tsrpc proto <options>                Generate proto file
     -i, --input <file>                  Input TS file (support glob expression)
                                         It would generate all exported types
     -o, --output <file>                 Output file (or print to CLI)
@@ -48,8 +48,13 @@ tsbuffer proto <options>                Generate proto file
     -n, --new                           Generate fresh new proto (no compatible)
     -u, --ugly                          Output as ugly JSON (no indent and smaller)
     -v, --verbose                       Show debug info
+    --ignore <glob>                     Files to be ignored from --input
 
-tsbuffer encode <options> [exp]         Encode a JS expression or a file (content is JS expression)
+tsrpc api <options>                  Generate TSRPC API implementations
+    -i, --input <file>                  Proto file path (proto.ts or proto.json)
+    -o, --output <folder>               Output api folder path
+
+tsrpc encode <options> [exp]         Encode a JS expression or a file (content is JS expression)
     [exp]                               Expression to encode (e.g. "123" "new Uint8Array([1,2,3])")
     -p, --proto <file>                  Proto file to use
     -s, --schema <id>                   SchemaID (filePath/TypeName)
@@ -57,7 +62,7 @@ tsbuffer encode <options> [exp]         Encode a JS expression or a file (conten
     -o, --output <file>                 Output file path (or print to CLI)
     -v, --verbose                       Show debug info
                                         
-tsbuffer decode <options> [binstr]      Decode buffer
+tsrpc decode <options> [binstr]      Decode buffer
     [binstr]                            Buffer to decode, hex string, like "0F A2 E3"
     -p, --proto <file>                  Proto file
     -s, --schema <id>                   SchemaID (filePath/TypeName)
@@ -65,11 +70,11 @@ tsbuffer decode <options> [binstr]      Decode buffer
     -o, --output <file>                 Output file path (or print to CLI)
     -v, --verbose                       Show debug info
 
-tsbuffer validate <options> [exp]       Validate if a JS expression is valid to a schema
+tsrpc validate <options> [exp]       Validate if a JS expression is valid to a schema
     [exp]                               Expression to validate (e.g. "123" "new Uint8Array([1,2,3])")
     -p, --proto <file>                  Proto file to use
     -s, --schema <id>                   SchemaID (filePath/TypeName)
     -i, --input <file>                  Input file path, alternative to [exp]
 
-tsbuffer show <file>                    Show a binary file as hex string
+tsrpc show <file>                    Show a binary file as hex string
 ```
