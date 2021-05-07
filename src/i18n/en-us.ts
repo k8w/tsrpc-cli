@@ -8,7 +8,7 @@ Usage：
                                             It would generate all exported types
         -o, --output <file>                 Output file (or print to CLI)
         -c, --compatible <file>             Compatible mode, compatible to old proto (=output by default)
-        -n, --new                           Generate fresh new proto (no compatible)
+        --new                           Generate fresh new proto (no compatible)
         -u, --ugly                          Output as ugly JSON (no indent and smaller)
         -v, --verbose                       Show debug info
         --ignore <glob>                     Files to be ignored from --input

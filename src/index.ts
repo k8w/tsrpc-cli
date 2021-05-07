@@ -31,7 +31,7 @@ async function main() {
     }
     // Proto
     else if (args._[2] === 'proto') {
-        await proto(args.input || args.i, args.output || args.o, args.compatible || args.c, args.ugly || args.u, args.new || args.n, args.ignore);
+        await proto(args.input || args.i, args.output || args.o, args.compatible || args.c, args.ugly || args.u, args.new, args.ignore);
     }
     // Api
     else if (args._[2] === 'api') {
