@@ -68,5 +68,6 @@ export const i18n = {
     validateFail: '× 验证不通过: ${msg}',
     error: ' 错误 ',
     helpGuide: '键入 tsrpc -h 查看更多帮助信息',
-    compatibleError: '兼容旧Proto失败: \n\t|- ${innerError}'
+    compatibleError: '兼容旧Proto失败: \n\t|- ${innerError}',
+    canOptimizeByNew: '注意：由于兼容旧Proto增加了编码大小，可加入参数 '.yellow + '--new'.red + ' 来实现优化，但可能导致对旧Proto的不兼容。'.yellow
 }

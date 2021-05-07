@@ -146,6 +146,11 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
     let originalCwd = process.cwd();
     process.chdir(input);
 
+    let canOptimizeByNew = false;
+    EncodeIdUtil.onGenCanOptimized = () => {
+        canOptimizeByNew = true;
+    }
+
     let services: ServiceDef[] = [];
     const exp = /^(.*\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
     let typeProto = await new TSBufferProtoGenerator({ verbose: verbose }).generate(fileList, {
@@ -235,6 +240,10 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
     };
 
     if (output) {
+        if (canOptimizeByNew) {
+            console.warn(i18n.canOptimizeByNew);
+        }
+        
         // TS
         if (output.endsWith('.ts')) {
             let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
