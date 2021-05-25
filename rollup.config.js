@@ -1,9 +1,9 @@
-import typescript from 'rollup-plugin-typescript2';
-import { terser } from 'rollup-plugin-terser';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import { terser } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
 
 export default {
     input: './src/index.ts',
@@ -36,5 +36,6 @@ export default {
                 comments: /^!/
             }
         })
-    ]
+    ],
+    external: Object.keys(require('./package.json').dependencies).concat(['typescript'])
 }

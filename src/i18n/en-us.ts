@@ -68,5 +68,6 @@ Example：
     validateFail: '× Validate fail: ${msg}',
     error: ' ERROR ',
     helpGuide: 'Use "tsrpc -h" to see more help info.',
+    compatibleError: 'Failed to keep compatible with old proto: \n\t|- ${innerError}',
     canOptimizeByNew: 'WARNING：Compatible with old proto increased encoded buffer size，you can optimize this by parameter '.yellow + '--new'.red + ' , but this may leads to non-compatibility with old proto.'.yellow
 }
