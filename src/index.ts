@@ -226,12 +226,12 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
     }
 
     // EncodeID 兼容OldProto
-    let encodeIds = EncodeIdUtil.genEncodeIds(services.map(v => v.name), oldProto ? oldProto.services.map(v => ({
-        key: v.name,
+    let encodeIds = EncodeIdUtil.genEncodeIds(services.map(v => v.type + v.name), oldProto ? oldProto.services.map(v => ({
+        key: v.type + v.name,
         id: v.id
     })) : undefined);
     for (let item of encodeIds) {
-        services.find(v => v.name === item.key)!.id = item.id;
+        services.find(v => item.key.startsWith(v.type) && v.name === item.key.substr(v.type.length))!.id = item.id;
     }
 
     let proto: ServiceProto = {
@@ -243,7 +243,7 @@ async function proto(input?: string, output?: string, compatible?: string, ugly?
         if (canOptimizeByNew) {
             console.warn(i18n.canOptimizeByNew);
         }
-        
+
         // TS
         if (output.endsWith('.ts')) {
             let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
