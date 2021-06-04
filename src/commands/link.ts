@@ -27,7 +27,11 @@ export function cmdLink(options: CmdLinkOptions) {
         options.verbose && console.log('mkdir: ' + dir);
     }
     if (fs.existsSync(options.to)) {
-        throw error(i18n.targetExists, { target: path.resolve(options.to) });
+        let stat = fs.statSync(options.to);
+        if (!stat.isSymbolicLink() && stat.isDirectory()) {
+            throw error(i18n.dirAtLinkDest)
+        }
+        fs.rmSync(options.to, { force: true });
     }
 
     let target = path.relative(path.dirname(options.to), options.from);

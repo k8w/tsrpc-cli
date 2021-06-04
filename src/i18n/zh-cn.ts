@@ -84,5 +84,6 @@ export const i18nZhCn = {
     ifUpdateProto: '检测到协议变更，是否重新生成 ServiceProto？',
     ifSyncNow: '生成后执行同步（npm run sync）吗？',
     syncFailed: '执行 "npm run sync" 失败, 你可以手动完成同步。',
-    targetExists: '目标 ${target} 已存在，请删除后再重试。'
+    targetExists: '目标 ${target} 已存在，请删除后再重试。',
+    dirAtLinkDest: '目标位置已经存在文件夹：${dir}，请删除后再重试',
 }
