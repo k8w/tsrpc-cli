@@ -1,39 +1,47 @@
 import { error } from "console";
-import { TSBuffer } from "tsbuffer";
-import { args } from "..";
-import { i18n } from "../i18n/i18n";
-import { ProtoUtil } from "../models/ProtoUtil";
-import { formatStr, buf2Hex } from "../models/util";
 import fs from "fs";
 import path from "path";
+import { TSBuffer } from "tsbuffer";
+import { i18n } from "../i18n/i18n";
+import { ProtoUtil } from "../models/ProtoUtil";
+import { buf2Hex, formatStr } from "../models/util";
 
-export function encode(input?: string, exp?: string, output?: string, proto?: string, schemaId?: string) {
-    let parsedProto = ProtoUtil.parseProtoAndSchema(proto, schemaId);
+export interface CmdEncodeOptions {
+    input: string | undefined,
+    exp: string | undefined,
+    output: string | undefined,
+    proto: string | undefined,
+    schemaId: string | undefined,
+    verbose: boolean | undefined
+}
+
+export function encode(options: CmdEncodeOptions) {
+    let parsedProto = ProtoUtil.parseProtoAndSchema(options.proto, options.schemaId);
 
     // #region 解析Input Value
     let inputValue: any;
-    if (input) {
+    if (options.input) {
         let fileContent: string;
         try {
-            fileContent = fs.readFileSync(input).toString();
+            fileContent = fs.readFileSync(options.input).toString();
         }
         catch {
-            throw error(i18n.fileOpenError, { file: path.resolve(input) })
+            throw error(i18n.fileOpenError, { file: path.resolve(options.input) })
         }
         try {
             inputValue = eval(fileContent);
         }
         catch {
-            throw error(i18n.jsParsedError, { file: path.resolve(input) });
+            throw error(i18n.jsParsedError, { file: path.resolve(options.input) });
         }
     }
-    else if (exp) {
+    else if (options.exp) {
         try {
-            inputValue = eval(`()=>(${exp})`)();
+            inputValue = eval(`()=>(${options.exp})`)();
         }
         catch (e) {
-            if (args.verbose) {
-                console.log('exp', exp);
+            if (options.verbose) {
+                console.log('exp', options.exp);
                 console.error(e);
             }
             throw error(i18n.expParsedError);
@@ -44,15 +52,15 @@ export function encode(input?: string, exp?: string, output?: string, proto?: st
     }
     // #endregion
 
-    args.verbose && console.log('inputValue', inputValue);
+    options.verbose && console.log('inputValue', inputValue);
     let opEncode = new TSBuffer(parsedProto.proto).encode(inputValue, parsedProto.schemaId);
     if (!opEncode.isSucc) {
         throw error('编码失败。\n    ' + opEncode.errMsg)
     }
     console.log('编码长度：' + opEncode.buf.byteLength);
-    if (output) {
-        fs.writeFileSync(output, opEncode.buf);
-        console.log(formatStr(i18n.encodeSucc, { output: path.resolve(output) }).green);
+    if (options.output) {
+        fs.writeFileSync(options.output, opEncode.buf);
+        console.log(formatStr(i18n.encodeSucc, { output: path.resolve(options.output) }).green);
     }
     else {
         console.log(buf2Hex(opEncode.buf).yellow);

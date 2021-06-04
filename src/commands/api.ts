@@ -6,17 +6,22 @@ import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { formatStr } from "../models/util";
 
-export async function api(input?: string, output?: string) {
-    if (!input) {
+export interface CmdApiOptions {
+    input: string | undefined,
+    output: string | undefined
+}
+
+export async function api(options: CmdApiOptions) {
+    if (!options.input) {
         throw error(i18n.missingParam, { param: 'input' });
     }
-    if (!output) {
+    if (!options.output) {
         throw error(i18n.missingParam, { param: 'output' });
     }
 
-    let proto = ProtoUtil.loadServiceProto(input);
+    let proto = ProtoUtil.loadServiceProto(options.input);
     if (!proto) {
-        throw error(i18n.protoParsedError, { file: input });
+        throw error(i18n.protoParsedError, { file: options.input });
     }
 
     let apis = proto.services.filter(v => v.type === 'api') as ApiServiceDef[];
@@ -25,11 +30,11 @@ export async function api(input?: string, output?: string) {
         /** a/b/c/Test  apiName='Test' apiNamePath='a/b/c/' */
         let apiNamePath = api.name.substr(0, api.name.length - apiName.length);
         /** API src files dir */
-        let apiDir = path.join(output, apiNamePath);
+        let apiDir = path.join(options.output, apiNamePath);
         /** API src .ts file pathname */
         let apiPath = path.join(apiDir, `Api${apiName}.ts`);
         /** Ptl src files dir */
-        let ptlDir = path.join(path.dirname(input), apiNamePath);
+        let ptlDir = path.join(path.dirname(options.input), apiNamePath);
         if (fs.existsSync(apiPath)) {
             continue;
         }

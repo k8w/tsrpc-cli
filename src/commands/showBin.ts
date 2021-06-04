@@ -1,23 +1,23 @@
 import { error } from "console";
-import { args } from "..";
-import { i18n } from "../i18n/i18n";
-import path from "path";
 import fs from "fs";
+import path from "path";
+import { i18n } from "../i18n/i18n";
 import { buf2Hex } from "../models/util";
 
+export interface CmdShowBinOptions {
+    file: string,
+    verbose: boolean | undefined
+}
 
-export function showBin() {
-    if (args._.length < 2) {
-        throw error(i18n.missingParam, { param: '<file>' });
-    }
+export function showBin(options: CmdShowBinOptions) {
     let buf: Uint8Array;
     try {
-        buf = new Uint8Array(fs.readFileSync(args._[1]));
+        buf = new Uint8Array(fs.readFileSync(options.file));
         console.log('编码长度：' + buf.byteLength)
     }
     catch (e) {
-        args.verbose && console.error(e);
-        throw error(i18n.fileOpenError, { file: path.resolve(args._[1]) })
+        options.verbose && console.error(e);
+        throw error(i18n.fileOpenError, { file: path.resolve(options.file) })
     }
     console.log(buf2Hex(buf).yellow);
 }

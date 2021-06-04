@@ -8,9 +8,9 @@ Usage：
                                             It would generate all exported types
         -o, --output <file>                 Output file (or print to CLI)
         -c, --compatible <file>             Compatible mode, compatible to old proto (=output by default)
-        --new                           Generate fresh new proto (no compatible)
-        -u, --ugly                          Output as ugly JSON (no indent and smaller)
-        -v, --verbose                       Show debug info
+        --new                               Generate fresh new proto (no compatible)
+        --ugly                              Output as ugly JSON (no indent and smaller)
+        --verbose                           Show debug info
         --ignore <glob>                     Files to be ignored from --input
 
     tsrpc api <options>                  Generate TSRPC API implementations
@@ -23,7 +23,7 @@ Usage：
         -s, --schema <id>                   SchemaID (filePath/TypeName)
         -i, --input <file>                  Input file path, alternative to [exp]
         -o, --output <file>                 Output file path (or print to CLI)
-        -v, --verbose                       Show debug info
+        --verbose                           Show debug info
                                             
     tsrpc decode <options> [binstr]      Decode buffer
         [binstr]                            Buffer to decode, hex string, like "0F A2 E3"
@@ -31,7 +31,7 @@ Usage：
         -s, --schema <id>                   SchemaID (filePath/TypeName)
         -i, --input <file>                  Input file path, alternative to [binstr]
         -o, --output <file>                 Output file path (or print to CLI)
-        -v, --verbose                       Show debug info
+        --verbose                           Show debug info
 
     tsrpc validate <options> [exp]       Validate if a JS expression is valid to a schema
         [exp]                               Expression to validate (e.g. "123" "new Uint8Array([1,2,3])")

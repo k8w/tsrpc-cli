@@ -11,7 +11,7 @@ import { validate } from './commands/validate';
 import { i18n } from './i18n/i18n';
 import { error, formatStr, showLogo } from './models/util';
 
-export const args = minimist(process.argv.slice(2));
+const args = minimist(process.argv.slice(2));
 
 // 进入主流程
 main().catch((e: Error) => {
@@ -30,27 +30,64 @@ async function main() {
     }
     // Proto
     else if (args._[0] === 'proto') {
-        await proto(args.input || args.i, args.output || args.o, args.compatible || args.c, args.ugly || args.u, args.new, args.ignore);
+        await proto({
+            input: args.input ?? args.i,
+            output: args.output ?? args.o,
+            compatible: args.compatible ?? args.c,
+            ugly: args.ugly,
+            new: args.new,
+            ignore: args.ignore,
+            verbose: args.verbose
+        });
     }
     // Api
     else if (args._[0] === 'api') {
-        await api(args.input || args.i, args.output || args.o);
+        await api({
+            input: args.input ?? args.i,
+            output: args.output ?? args.o
+        });
     }
     // Encode
     else if (args._[0] === 'encode') {
-        encode(args.input || args.i, args._[1], args.output || args.o, args.proto || args.p, args.schema || args.s);
+        encode({
+            exp: args._[1],
+            input: args.input ?? args.i,
+            output: args.output ?? args.o,
+            proto: args.proto ?? args.p,
+            schemaId: args.schema ?? args.s,
+            verbose: args.verbose
+        });
     }
     // Decode
     else if (args._[0] === 'decode') {
-        decode(args.proto || args.p, args.schema || args.s, args.input || args.i, args._[1], args.output || args.o);
+        decode({
+            protoPath: args.proto ?? args.p,
+            schemaId: args.schema ?? args.s,
+            binStr: args._[1],
+            input: args.input ?? args.i,
+            output: args.output ?? args.o,
+            verbose: args.verbose
+        });
     }
     // Validate
     else if (args._[0] === 'validate') {
-        validate(args.proto || args.p, args.schema || args.s, args.input || args.i, args._[1]);
+        validate({
+            proto: args.proto ?? args.p,
+            schemaId: args.schema ?? args.s,
+            input: args.input ?? args.i,
+            expression: args._[1],
+            verbose: args.verbose
+        });
     }
     // Show
     else if (args._[0] === 'show') {
-        showBin();
+        if (!args._[1]) {
+            throw error(i18n.missingParam, { param: '<file>' });
+        }
+        showBin({
+            file: args._[1],
+            verbose: args.verbose
+        });
     }
     // Error
     // No Command

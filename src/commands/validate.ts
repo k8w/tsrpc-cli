@@ -1,38 +1,45 @@
+import fs from "fs";
+import path from "path";
+import { TSBuffer } from "tsbuffer";
 import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { error } from "../models/util";
-import fs from "fs";
-import path from "path";
-import { args } from "..";
-import { TSBuffer } from "tsbuffer";
 
-export function validate(proto?: string, schemaId?: string, input?: string, expression?: string) {
-    let parsedProto = ProtoUtil.parseProtoAndSchema(proto, schemaId);
+export interface CmdValidateOptions {
+    proto: string | undefined,
+    schemaId: string | undefined,
+    input: string | undefined,
+    expression: string | undefined,
+    verbose: string | undefined
+}
+
+export function validate(options: CmdValidateOptions) {
+    let parsedProto = ProtoUtil.parseProtoAndSchema(options.proto, options.schemaId);
 
     // #region 解析Input Value
     let inputValue: any;
-    if (input) {
+    if (options.input) {
         let fileContent: string;
         try {
-            fileContent = fs.readFileSync(input).toString();
+            fileContent = fs.readFileSync(options.input).toString();
         }
         catch {
-            throw error(i18n.fileOpenError, { file: path.resolve(input) })
+            throw error(i18n.fileOpenError, { file: path.resolve(options.input) })
         }
         try {
             inputValue = eval(fileContent);
         }
         catch {
-            throw error(i18n.jsParsedError, { file: path.resolve(input) });
+            throw error(i18n.jsParsedError, { file: path.resolve(options.input) });
         }
     }
-    else if (expression) {
+    else if (options.expression) {
         try {
-            inputValue = eval(`()=>(${expression})`)();
+            inputValue = eval(`()=>(${options.expression})`)();
         }
         catch (e) {
-            if (args.verbose) {
-                console.log('exp', expression);
+            if (options.verbose) {
+                console.log('exp', options.expression);
                 console.error(e);
             }
             throw error(i18n.expParsedError);

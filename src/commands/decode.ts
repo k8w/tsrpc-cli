@@ -1,27 +1,35 @@
 import { error } from "console";
-import { TSBuffer } from "tsbuffer";
-import { args } from "..";
-import { i18n } from "../i18n/i18n";
-import { formatStr, colorJson, hex2Bin } from "../models/util";
 import fs from "fs";
-import { ProtoUtil } from "../models/ProtoUtil";
 import path from "path";
+import { TSBuffer } from "tsbuffer";
+import { i18n } from "../i18n/i18n";
+import { ProtoUtil } from "../models/ProtoUtil";
+import { colorJson, formatStr, hex2Bin } from "../models/util";
 
-export function decode(protoPath?: string, schemaId?: string, input?: string, binStr?: string, output?: string) {
-    let parsedProto = ProtoUtil.parseProtoAndSchema(protoPath, schemaId);
+export interface CmdDecodeOptions {
+    protoPath: string | undefined,
+    schemaId: string | undefined,
+    input: string | undefined,
+    binStr: string | undefined,
+    output: string | undefined,
+    verbose: boolean | undefined
+}
+
+export function decode(options: CmdDecodeOptions) {
+    let parsedProto = ProtoUtil.parseProtoAndSchema(options.protoPath, options.schemaId);
     let inputBuf: Buffer;
 
-    if (input) {
+    if (options.input) {
         try {
-            inputBuf = fs.readFileSync(input);
+            inputBuf = fs.readFileSync(options.input);
         }
         catch (e) {
-            args.verbose && console.error(e);
-            throw error(i18n.fileOpenError, { file: path.resolve(input) })
+            options.verbose && console.error(e);
+            throw error(i18n.fileOpenError, { file: path.resolve(options.input) })
         }
     }
-    else if (binStr) {
-        inputBuf = hex2Bin(binStr);
+    else if (options.binStr) {
+        inputBuf = hex2Bin(options.binStr);
     }
     else {
         throw error(i18n.missingParam, { param: `--input ${i18n.or} [binstr]` });
@@ -35,9 +43,9 @@ export function decode(protoPath?: string, schemaId?: string, input?: string, bi
         throw error('解码失败:\n    ' + e.message)
     }
 
-    if (output) {
-        fs.writeFileSync(output, JSON.stringify(decodedValue, null, 2));
-        console.log(formatStr(i18n.decodeSucc, { output: output }).green)
+    if (options.output) {
+        fs.writeFileSync(options.output, JSON.stringify(decodedValue, null, 2));
+        console.log(formatStr(i18n.decodeSucc, { output: options.output }).green)
     }
     else {
         console.log(colorJson(decodedValue))

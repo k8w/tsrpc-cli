@@ -5,27 +5,36 @@ import path from "path";
 import { EncodeIdUtil, TSBufferProtoGenerator } from 'tsbuffer-proto-generator';
 import { ServiceDef, ServiceProto } from "tsrpc-proto";
 import ts from "typescript";
-import { args } from "..";
 import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { colorJson, formatStr } from "../models/util";
 
-export async function proto(input?: string, output?: string, compatible?: string, ugly?: boolean, newMode?: boolean, ignore?: string) {
+export interface CmdProtoOptions {
+    input: string | undefined,
+    output: string | undefined,
+    compatible: string | undefined,
+    ugly: boolean | undefined,
+    new: boolean | undefined,
+    ignore: string | undefined,
+    verbose: boolean | undefined
+}
+
+export async function proto(options: CmdProtoOptions) {
     // 解析输入 默认为当前文件夹
-    if (!input) {
-        input = '.'
+    if (!options.input) {
+        options.input = '.'
     }
     // 去除尾部的 / 和 \
-    input = input.replace(/[\\\/]+$/, '');
+    options.input = options.input.replace(/[\\\/]+$/, '');
     // 只能填写文件夹 不支持通配符
-    if (!fs.statSync(input).isDirectory()) {
+    if (!fs.statSync(options.input).isDirectory()) {
         throw error(i18n.inputMustBeFolder)
     }
 
     // compatible 默认同output
-    let oldProtoPath = compatible || output;
+    let oldProtoPath = options.compatible || options.output;
     let oldProto: ServiceProto | undefined;
-    if (!newMode && oldProtoPath) {
+    if (!options.new && oldProtoPath) {
         // Parse TS
         if (oldProtoPath.endsWith('.ts')) {
             let content = fs.existsSync(oldProtoPath) && fs.readFileSync(oldProtoPath, 'utf-8');
@@ -49,7 +58,7 @@ export async function proto(input?: string, output?: string, compatible?: string
         else {
             try {
                 oldProto = ProtoUtil.loadServiceProto(oldProtoPath)
-                if (!oldProto && compatible) {
+                if (!oldProto && options.compatible) {
                     throw new Error(formatStr(i18n.fileOpenError, { file: path.resolve(oldProtoPath) }));
                 }
             }
@@ -59,13 +68,13 @@ export async function proto(input?: string, output?: string, compatible?: string
         }
     }
 
-    let fileList = glob.sync(input + '/**/{Ptl,Msg}*.ts', {
-        ignore: ignore
-    }).map(v => path.relative(input!, v).replace(/\\/g, '/'));
+    let fileList = glob.sync(options.input + '/**/{Ptl,Msg}*.ts', {
+        ignore: options.ignore
+    }).map(v => path.relative(options.input!, v).replace(/\\/g, '/'));
 
     // 临时切换working dir
     let originalCwd = process.cwd();
-    process.chdir(input);
+    process.chdir(options.input);
 
     let canOptimizeByNew = false;
     EncodeIdUtil.onGenCanOptimized = () => {
@@ -74,7 +83,7 @@ export async function proto(input?: string, output?: string, compatible?: string
 
     let services: ServiceDef[] = [];
     const exp = /^(.*\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
-    let typeProto = await new TSBufferProtoGenerator({ verbose: args.verbose }).generate(fileList, {
+    let typeProto = await new TSBufferProtoGenerator({ verbose: options.verbose }).generate(fileList, {
         compatibleResult: oldProto ? oldProto.types : undefined,
         filter: info => {
             let infoPath = info.path.replace(/\\/g, '/')
@@ -160,13 +169,13 @@ export async function proto(input?: string, output?: string, compatible?: string
         types: typeProto
     };
 
-    if (output) {
+    if (options.output) {
         if (canOptimizeByNew) {
             console.warn(i18n.canOptimizeByNew);
         }
 
         // TS
-        if (output.endsWith('.ts')) {
+        if (options.output.endsWith('.ts')) {
             let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
             let apis: { name: string, importPath: string, req: string, res: string }[] = [];
             let msgs: { name: string, importPath: string, msg: string }[] = [];
@@ -206,7 +215,7 @@ export async function proto(input?: string, output?: string, compatible?: string
                 }
 
                 let lastName = match[2];
-                let importPath = path.relative(path.dirname(path.resolve(originalCwd, output)), (match[1] || '') + (svc.type === 'api' ? 'Ptl' : 'Msg') + lastName).replace(/\\/g, '/');
+                let importPath = path.relative(path.dirname(path.resolve(originalCwd, options.output)), (match[1] || '') + (svc.type === 'api' ? 'Ptl' : 'Msg') + lastName).replace(/\\/g, '/');
                 if (!importPath.startsWith('.')) {
                     importPath = './' + importPath;
                 }
@@ -256,14 +265,14 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(proto, n
 `.trim();
 
             process.chdir(originalCwd);
-            fs.writeFileSync(output, fileContent);
+            fs.writeFileSync(options.output, fileContent);
         }
         // JSON
         else {
             process.chdir(originalCwd);
-            fs.writeFileSync(output, ugly ? JSON.stringify(proto) : JSON.stringify(proto, null, 2));
+            fs.writeFileSync(options.output, options.ugly ? JSON.stringify(proto) : JSON.stringify(proto, null, 2));
         }
-        console.log(formatStr(i18n.protoSucc, { output: path.resolve(output) }).green);
+        console.log(formatStr(i18n.protoSucc, { output: path.resolve(options.output) }).green);
     }
     else {
         console.log(colorJson(proto));
