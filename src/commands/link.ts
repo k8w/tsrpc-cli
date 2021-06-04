@@ -28,10 +28,17 @@ export function cmdLink(options: CmdLinkOptions) {
     }
     if (fs.existsSync(options.to)) {
         let stat = fs.statSync(options.to);
-        if (!stat.isSymbolicLink() && stat.isDirectory()) {
-            throw error(i18n.dirAtLinkDest)
+        if (stat.isSymbolicLink()) {
+            fs.rmSync(options.to, { force: true });
         }
-        fs.rmSync(options.to, { force: true });
+        else if (stat.isDirectory()) {
+            try {
+                fs.rmdirSync(options.to);
+            }
+            catch {
+                throw error(i18n.dirAtLinkDest)
+            }
+        }
     }
 
     let target = path.relative(path.dirname(options.to), options.from);
