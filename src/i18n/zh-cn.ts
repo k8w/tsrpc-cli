@@ -1,4 +1,4 @@
-export const i18n = {
+export const i18nZhCn = {
     welcome: 'https://npmjs.com/tsrpc\n欢迎进入 TSRPC 实用工具 V${version}',
     help: `
 使用说明：
@@ -10,7 +10,7 @@ export const i18n = {
         -c, --compatible <file>             兼容模式：要兼容的旧Proto文件的路径（默认同output）
         --new                           不兼容旧版，生成全新的Proto文件
         -u, --ugly                          输出为可读性较差但体积更小压缩格式
-        -v, --verbose                       显示调试信息
+        --verbose                       显示调试信息
         --ignore <glob>                     从--input范围中要忽略的文件
 
     tsrpc api <options>                  自动生成TSRPC API实现
@@ -23,7 +23,7 @@ export const i18n = {
         -s, --schema <id>                   编码要使用的SchemaID
         -i, --input <file>                  输入为文件，不可与[exp]同用（文件内容为JS表达式）
         -o, --output <file>                 输出的文件路径，不指定将直接输出到命令行
-        -v, --verbose                       显示调试信息
+        --verbose                       显示调试信息
                                             
     tsrpc decode <options> [binstr]      解码二进制数据
         [binstr]                            要解码的二进制数据的字符串表示，如"0F A2 E3 F2 D9"
@@ -31,7 +31,7 @@ export const i18n = {
         -s, --schema <id>                   解码要使用的SchemaID
         -i, --input <file>                  输入为文件，不可与[binstr]同用
         -o, --output <file>                 输出的文件路径，不指定将直接输出到命令行
-        -v, --verbose                       显示调试信息
+        --verbose                       显示调试信息
 
     tsrpc validate <options> [exp]       验证JSON数据
         [exp]                               要验证的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）

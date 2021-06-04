@@ -1,7 +1,7 @@
-import { i18n as zhCN } from './zh-cn';
-import { i18n as enUS } from './en-us';
+import { i18nEnUs } from './en-us';
+import { i18nZhCn } from './zh-cn';
 
 // 根据系统语言判断中英文
-export const i18n: typeof zhCN = require('os-locale').sync() === 'zh-CN' ? zhCN : enUS;
+export const i18n = require('os-locale').sync() === 'zh-CN' ? i18nZhCn : i18nEnUs;
 // TODO en-us
 // export const i18n = zhCN;

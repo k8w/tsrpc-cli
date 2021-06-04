@@ -1,4 +1,4 @@
-export const i18n = {
+export const i18nEnUs = {
     welcome: 'https://npmjs.com/tsrpc\nWelcome to tsrpc utilities V${version}',
     help: `
 Usage：
