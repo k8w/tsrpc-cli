@@ -67,7 +67,13 @@ Example：
     validateSucc: '√ Validate succ',
     validateFail: '× Validate fail: ${msg}',
     error: ' ERROR ',
+    success: ' SUCCESS ',
     helpGuide: 'Use "tsrpc -h" to see more help info.',
     compatibleError: 'Failed to keep compatible with old proto: \n\t|- ${innerError}',
-    canOptimizeByNew: 'WARNING：Compatible with old proto increased encoded buffer size，you can optimize this by parameter '.yellow + '--new'.red + ' , but this may leads to non-compatibility with old proto.'.yellow
+    canOptimizeByNew: 'Redundancy is detected in ${filename} (may increase the transfering size slightly), delete the file and regenerate it to optimize, but it may cause incompatibility with the old protocol. ',
+    dirNotExists: 'Directory not exists: ${dir}',
+    codeError: 'Build TypeScript failed, please fix code error',
+    ifUpdateProto: 'A protocol change is detected, do you need to regenerate ServiceProto?',
+    ifSyncNow: 'Execute "npm run sync" after generated successfully?',
+    syncFailed: 'Execute "npm run sync" failed, you can manually finish syncing.',
 }

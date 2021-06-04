@@ -1,5 +1,4 @@
-import { error } from "console";
-import fs from "fs";
+import fs from "fs-extra";
 import glob from "glob";
 import path from "path";
 import { EncodeIdUtil, TSBufferProtoGenerator } from 'tsbuffer-proto-generator';
@@ -7,11 +6,13 @@ import { ServiceDef, ServiceProto } from "tsrpc-proto";
 import ts from "typescript";
 import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
-import { colorJson, formatStr } from "../models/util";
+import { colorJson, error, formatStr } from "../models/util";
 
 export interface CmdProtoOptions {
+    /** 默认当前文件夹 */
     input: string | undefined,
     output: string | undefined,
+    /** 默认同 output */
     compatible: string | undefined,
     ugly: boolean | undefined,
     new: boolean | undefined,
@@ -19,7 +20,23 @@ export interface CmdProtoOptions {
     verbose: boolean | undefined
 }
 
-export async function proto(options: CmdProtoOptions) {
+export async function cmdProto(options: CmdProtoOptions) {
+    let resGenProto = await genProto(options);
+
+    if (options.output) {
+        await outputProto({
+            input: options.input!,
+            output: options.output,
+            ugly: options.ugly,
+            proto: resGenProto.newProto
+        })
+    }
+    else if (options.verbose) {
+        console.log(colorJson(resGenProto.newProto));
+    }
+}
+
+export async function genProto(options: CmdProtoOptions) {
     // 解析输入 默认为当前文件夹
     if (!options.input) {
         options.input = '.'
@@ -27,7 +44,7 @@ export async function proto(options: CmdProtoOptions) {
     // 去除尾部的 / 和 \
     options.input = options.input.replace(/[\\\/]+$/, '');
     // 只能填写文件夹 不支持通配符
-    if (!fs.statSync(options.input).isDirectory()) {
+    if (!(await fs.stat(options.input)).isDirectory()) {
         throw error(i18n.inputMustBeFolder)
     }
 
@@ -37,7 +54,7 @@ export async function proto(options: CmdProtoOptions) {
     if (!options.new && oldProtoPath) {
         // Parse TS
         if (oldProtoPath.endsWith('.ts')) {
-            let content = fs.existsSync(oldProtoPath) && fs.readFileSync(oldProtoPath, 'utf-8');
+            let content = fs.existsSync(oldProtoPath) && await fs.readFile(oldProtoPath, 'utf-8');
             if (content) {
                 let match = content.match(/[\s\S]*:\s*ServiceProto<ServiceType>\s*=\s*(\{[\s\S]+\});?\s*/);
                 if (match) {
@@ -50,7 +67,7 @@ export async function proto(options: CmdProtoOptions) {
                 }
                 else {
                     console.error(`Not invalid proto ts file: ${oldProtoPath}`);
-                    throw error(i18n.compatibleError)
+                    throw error(i18n.compatibleError, { innerError: `Not invalid proto ts file: ${oldProtoPath}` })
                 }
             }
         }
@@ -113,7 +130,7 @@ export async function proto(options: CmdProtoOptions) {
         let typePath = filepath.replace(/\.ts$/, '');
 
         // 解析conf
-        let src = fs.readFileSync(filepath).toString();
+        let src = (await fs.readFile(filepath)).toString();
         let compileResult = ts.transpileModule(src, {
             compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2015 }
         });
@@ -156,6 +173,9 @@ export async function proto(options: CmdProtoOptions) {
     }
 
     // EncodeID 兼容OldProto
+    EncodeIdUtil.onGenCanOptimized = () => {
+        canOptimizeByNew = true;
+    }
     let encodeIds = EncodeIdUtil.genEncodeIds(services.map(v => v.type + v.name), oldProto ? oldProto.services.map(v => ({
         key: v.type + v.name,
         id: v.id
@@ -164,91 +184,114 @@ export async function proto(options: CmdProtoOptions) {
         services.find(v => item.key.startsWith(v.type) && v.name === item.key.substr(v.type.length))!.id = item.id;
     }
 
+    let version: number | undefined = oldProto?.version;
+    // 只有在旧 Proto 存在，同时协议内容变化的情况下，才更新版本号
+    if (oldProto && JSON.stringify({ types: oldProto.types, services: oldProto.services }) !== JSON.stringify({ types: typeProto, services: services })) {
+        version = (oldProto.version || 0) + 1;
+    }
+
     let proto: ServiceProto = {
+        version: version,
         services: services,
         types: typeProto
     };
+    process.chdir(originalCwd);
 
-    if (options.output) {
-        if (canOptimizeByNew) {
-            console.warn(i18n.canOptimizeByNew);
-        }
+    if (canOptimizeByNew) {
+        console.warn(formatStr(i18n.canOptimizeByNew, { filename: path.basename(oldProtoPath ?? options.output!) }) + '\n');
+    }
 
-        // TS
-        if (options.output.endsWith('.ts')) {
-            let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
-            let apis: { name: string, importPath: string, req: string, res: string }[] = [];
-            let msgs: { name: string, importPath: string, msg: string }[] = [];
+    return {
+        newProto: proto,
+        oldProto: oldProto,
+        isChanged: proto.version !== oldProto?.version
+    };
+}
 
-            // 防止重名
-            let usedNames: { [name: string]: 1 } = {};
-            let getAsName = (name: string) => {
-                while (usedNames[name]) {
-                    let match = name.match(/(^.*)\_(\d+)$/);
-                    if (match) {
-                        let seq = parseInt(match[2]) + 1;
-                        name = match[1] + '_' + seq;
-                    }
-                    else {
-                        name = name + '_1';
-                    }
-                }
+export async function outputProto(options: {
+    input: string,
+    output: string,
+    ugly: boolean | undefined,
+    proto: ServiceProto<any>
+}) {
+    let originalCwd = process.cwd();
+    process.chdir(options.input);
 
-                usedNames[name] = 1;
-                return name;
-            }
+    // TS
+    if (options.output.endsWith('.ts')) {
+        let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
+        let apis: { name: string, importPath: string, req: string, res: string }[] = [];
+        let msgs: { name: string, importPath: string, msg: string }[] = [];
 
-            let addImport = (path: string, srcNames: string[]): string[] => {
-                let asNames = srcNames.map(v => getAsName(v));
-                imports[path] = srcNames.map((v, i) => ({
-                    srcName: v,
-                    asName: asNames[i] && asNames[i] !== v ? asNames[i] : undefined
-                }))
-
-                return asNames;
-            }
-
-            for (let svc of services) {
-                let match = svc.name.replace(/\\/g, '/').match(/^(.*\/)*([^\/]+)$/);
-                if (!match) {
-                    throw new Error(`Invalid svc name: ${svc.name}`);
-                }
-
-                let lastName = match[2];
-                let importPath = path.relative(path.dirname(path.resolve(originalCwd, options.output)), (match[1] || '') + (svc.type === 'api' ? 'Ptl' : 'Msg') + lastName).replace(/\\/g, '/');
-                if (!importPath.startsWith('.')) {
-                    importPath = './' + importPath;
-                }
-
-                if (svc.type === 'api') {
-                    let op = addImport(importPath, ['Req' + lastName, 'Res' + lastName]);
-                    apis.push({
-                        name: svc.name,
-                        importPath: importPath,
-                        req: op[0],
-                        res: op[1]
-                    })
+        // 防止重名
+        let usedNames: { [name: string]: 1 } = {};
+        let getAsName = (name: string) => {
+            while (usedNames[name]) {
+                let match = name.match(/(^.*)\_(\d+)$/);
+                if (match) {
+                    let seq = parseInt(match[2]) + 1;
+                    name = match[1] + '_' + seq;
                 }
                 else {
-                    let op = addImport(importPath, ['Msg' + lastName]);
-                    msgs.push({
-                        name: svc.name,
-                        importPath: importPath,
-                        msg: op[0]
-                    })
+                    name = name + '_1';
                 }
             }
 
-            let importStr = Object.entries(imports)
-                .map(v => `import { ${v[1].map(w => w.asName ? `${w.srcName} as ${w.asName}` : w.srcName).join(', ')} } from '${v[0]}'`)
-                .join('\n');
-            let apiStr = apis.map(v => `        ${JSON.stringify(v.name)}: {
+            usedNames[name] = 1;
+            return name;
+        }
+
+        let addImport = (path: string, srcNames: string[]): string[] => {
+            let asNames = srcNames.map(v => getAsName(v));
+            imports[path] = srcNames.map((v, i) => ({
+                srcName: v,
+                asName: asNames[i] && asNames[i] !== v ? asNames[i] : undefined
+            }))
+
+            return asNames;
+        }
+
+        for (let svc of options.proto.services) {
+            let match = svc.name.replace(/\\/g, '/').match(/^(.*\/)*([^\/]+)$/);
+            if (!match) {
+                throw new Error(`Invalid svc name: ${svc.name}`);
+            }
+
+            let lastName = match[2];
+            let importPath = path.relative(path.dirname(path.resolve(originalCwd, options.output)), (match[1] || '') + (svc.type === 'api' ? 'Ptl' : 'Msg') + lastName).replace(/\\/g, '/');
+            if (!importPath.startsWith('.')) {
+                importPath = './' + importPath;
+            }
+
+            if (svc.type === 'api') {
+                let op = addImport(importPath, ['Req' + lastName, 'Res' + lastName]);
+                apis.push({
+                    name: svc.name,
+                    importPath: importPath,
+                    req: op[0],
+                    res: op[1]
+                })
+            }
+            else {
+                let op = addImport(importPath, ['Msg' + lastName]);
+                msgs.push({
+                    name: svc.name,
+                    importPath: importPath,
+                    msg: op[0]
+                })
+            }
+        }
+
+        let importStr = Object.entries(imports)
+            .map(v => `import { ${v[1].map(w => w.asName ? `${w.srcName} as ${w.asName}` : w.srcName).join(', ')} } from '${v[0]}'`)
+            .join('\n');
+        let apiStr = apis.map(v => `        ${JSON.stringify(v.name)}: {
             req: ${v.req},
             res: ${v.res}
         }`).join(',\n');
-            let msgStr = msgs.map(v => `        ${JSON.stringify(v.name)}: ${v.msg}`).join(',\n');
+        let msgStr = msgs.map(v => `        ${JSON.stringify(v.name)}: ${v.msg}`).join(',\n');
 
-            let fileContent = `
+        let fileContent = `
 import { ServiceProto } from 'tsrpc-proto';
 ${importStr}
 
@@ -261,20 +304,16 @@ ${msgStr}
     }
 }
 
-export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(proto, null, 4)};
+export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.proto, null, 4)};
 `.trim();
 
-            process.chdir(originalCwd);
-            fs.writeFileSync(options.output, fileContent);
-        }
-        // JSON
-        else {
-            process.chdir(originalCwd);
-            fs.writeFileSync(options.output, options.ugly ? JSON.stringify(proto) : JSON.stringify(proto, null, 2));
-        }
-        console.log(formatStr(i18n.protoSucc, { output: path.resolve(options.output) }).green);
+        process.chdir(originalCwd);
+        await fs.writeFile(options.output, fileContent);
     }
+    // JSON
     else {
-        console.log(colorJson(proto));
+        process.chdir(originalCwd);
+        await fs.writeFile(options.output, options.ugly ? JSON.stringify(options.proto) : JSON.stringify(options.proto, null, 2));
     }
+    console.log(formatStr(i18n.protoSucc, { output: path.resolve(options.output) }).green);
 }

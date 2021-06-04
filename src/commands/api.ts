@@ -11,7 +11,7 @@ export interface CmdApiOptions {
     output: string | undefined
 }
 
-export async function api(options: CmdApiOptions) {
+export async function cmdApi(options: CmdApiOptions) {
     if (!options.input) {
         throw error(i18n.missingParam, { param: 'input' });
     }

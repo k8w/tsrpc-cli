@@ -13,7 +13,7 @@ export interface CmdValidateOptions {
     verbose: string | undefined
 }
 
-export function validate(options: CmdValidateOptions) {
+export function cmdValidate(options: CmdValidateOptions) {
     let parsedProto = ProtoUtil.parseProtoAndSchema(options.proto, options.schemaId);
 
     // #region 解析Input Value

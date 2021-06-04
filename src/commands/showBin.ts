@@ -9,7 +9,7 @@ export interface CmdShowBinOptions {
     verbose: boolean | undefined
 }
 
-export function showBin(options: CmdShowBinOptions) {
+export function cmdShowBin(options: CmdShowBinOptions) {
     let buf: Uint8Array;
     try {
         buf = new Uint8Array(fs.readFileSync(options.file));

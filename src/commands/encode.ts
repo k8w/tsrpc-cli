@@ -15,7 +15,7 @@ export interface CmdEncodeOptions {
     verbose: boolean | undefined
 }
 
-export function encode(options: CmdEncodeOptions) {
+export function cmdEncode(options: CmdEncodeOptions) {
     let parsedProto = ProtoUtil.parseProtoAndSchema(options.proto, options.schemaId);
 
     // #region 解析Input Value

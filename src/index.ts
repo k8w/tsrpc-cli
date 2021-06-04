@@ -1,21 +1,30 @@
 import 'colors';
 import minimist from 'minimist';
 import 'node-json-color-stringify';
-import { api } from './commands/api';
-import { decode } from './commands/decode';
-import { encode } from './commands/encode';
-import { proto } from './commands/proto';
-import { showBin } from './commands/showBin';
-import { showHelp } from './commands/showHelp';
-import { validate } from './commands/validate';
+import { cmdApi } from './commands/api';
+import { cmdBuild } from './commands/build';
+import { cmdDecode } from './commands/decode';
+import { cmdEncode } from './commands/encode';
+import { cmdProto } from './commands/proto';
+import { cmdShowBin } from './commands/showBin';
+import { cmdShowHelp } from './commands/showHelp';
+import { cmdSync } from './commands/sync';
+import { cmdValidate } from './commands/validate';
 import { i18n } from './i18n/i18n';
+import { CliUtil } from './models/CliUtil';
 import { error, formatStr, showLogo } from './models/util';
 
 const args = minimist(process.argv.slice(2));
 
 // 进入主流程
 main().catch((e: Error) => {
-    console.error(i18n.error.bgRed.white, e.message.red);
+    CliUtil.done(false);
+    if (args.verbose) {
+        console.error('\n' + i18n.error.bgRed.white, e);
+    }
+    else {
+        e?.message && console.error('\n' + i18n.error.bgRed.white, e.message.red);
+    }
     process.exit(-1);
 });
 
@@ -26,11 +35,11 @@ async function main() {
     }
     // Help
     else if (args.h || args.help) {
-        showHelp();
+        cmdShowHelp();
     }
     // Proto
     else if (args._[0] === 'proto') {
-        await proto({
+        await cmdProto({
             input: args.input ?? args.i,
             output: args.output ?? args.o,
             compatible: args.compatible ?? args.c,
@@ -42,14 +51,14 @@ async function main() {
     }
     // Api
     else if (args._[0] === 'api') {
-        await api({
+        await cmdApi({
             input: args.input ?? args.i,
             output: args.output ?? args.o
         });
     }
     // Encode
     else if (args._[0] === 'encode') {
-        encode({
+        cmdEncode({
             exp: args._[1],
             input: args.input ?? args.i,
             output: args.output ?? args.o,
@@ -60,7 +69,7 @@ async function main() {
     }
     // Decode
     else if (args._[0] === 'decode') {
-        decode({
+        cmdDecode({
             protoPath: args.proto ?? args.p,
             schemaId: args.schema ?? args.s,
             binStr: args._[1],
@@ -71,7 +80,7 @@ async function main() {
     }
     // Validate
     else if (args._[0] === 'validate') {
-        validate({
+        cmdValidate({
             proto: args.proto ?? args.p,
             schemaId: args.schema ?? args.s,
             input: args.input ?? args.i,
@@ -84,10 +93,25 @@ async function main() {
         if (!args._[1]) {
             throw error(i18n.missingParam, { param: '<file>' });
         }
-        showBin({
+        cmdShowBin({
             file: args._[1],
             verbose: args.verbose
         });
+    }
+    // Sync
+    else if (args._[0] === 'sync') {
+        cmdSync({
+            from: args.from,
+            to: args.to,
+            verbose: args.verbose
+        })
+    }
+    // Build
+    else if (args._[0] === 'build') {
+        await cmdBuild({
+            protoDir: args['proto-dir'],
+            protoFile: args.proto
+        })
     }
     // Error
     // No Command
@@ -101,5 +125,6 @@ async function main() {
         throw error(i18n.errCmd);
     }
 
+    CliUtil.done(true);
     process.exit(0);
 }
