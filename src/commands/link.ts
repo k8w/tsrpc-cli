@@ -1,7 +1,8 @@
 import fs from "fs";
+import inquirer from "inquirer";
 import path from "path";
 import { i18n } from "../i18n/i18n";
-import { error } from "../models/util";
+import { error, formatStr } from "../models/util";
 
 export interface CmdLinkOptions {
     from: string | undefined,
@@ -9,7 +10,7 @@ export interface CmdLinkOptions {
     verbose: boolean | undefined
 }
 
-export function cmdLink(options: CmdLinkOptions) {
+export async function cmdLink(options: CmdLinkOptions) {
     // Validate options
     if (!options.from) {
         throw error(i18n.missingParam, { param: 'from' });
@@ -27,17 +28,15 @@ export function cmdLink(options: CmdLinkOptions) {
         options.verbose && console.log('mkdir: ' + dir);
     }
     if (fs.existsSync(options.to)) {
-        let stat = fs.statSync(options.to);
-        if (stat.isSymbolicLink()) {
-            fs.rmSync(options.to, { force: true });
+        if ((await inquirer.prompt({
+            type: 'confirm',
+            message: formatStr(i18n.deleteConfirm, { target: path.resolve(options.to) }),
+            name: 'res'
+        })).res) {
+            fs.rmSync(options.to, { force: true, recursive: true });
         }
-        else if (stat.isDirectory()) {
-            try {
-                fs.rmdirSync(options.to);
-            }
-            catch {
-                throw error(i18n.dirAtLinkDest)
-            }
+        else {
+            throw error(i18n.canceled)
         }
     }
 

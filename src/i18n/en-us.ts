@@ -86,5 +86,6 @@ Example：
     ifSyncNow: 'Execute "npm run sync" after generated successfully?',
     syncFailed: 'Execute "npm run sync" failed, you can manually finish syncing.',
     targetExists: 'Target ${target} is exists，please delete it and retry again.',
-    dirAtLinkDest: 'Destination is a directory ${dir}，please delete it and try again.',
+    deleteConfirm: '${target} is existed already，delete it and continue?',
+    canceled: 'CANCELED'
 }
