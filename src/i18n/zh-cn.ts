@@ -16,6 +16,16 @@ export const i18nZhCn = {
     tsrpc api <options>                  自动生成TSRPC API实现
         -i, --input <file>                  Proto文件的路径
         -o, --output <folder>               输出的API文件夹路径
+
+    tsrpc sync <options>
+        --from <folder>
+        --to <folder>
+
+    tsrpc link <options>
+        --from <folder>
+        --to <folder>
+
+    
     
     tsrpc encode <options> [exp]         编码JS表达式
         [exp]                               要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
@@ -75,5 +85,6 @@ export const i18nZhCn = {
     codeError: 'TypeScript 构建失败，请检查代码报错',
     ifUpdateProto: '检测到协议变更，是否重新生成 ServiceProto？',
     ifSyncNow: '生成后执行同步（npm run sync）吗？',
-    syncFailed: '执行 "npm run sync" 失败, 你可以手动完成同步.',
+    syncFailed: '执行 "npm run sync" 失败, 你可以手动完成同步。',
+    targetExists: '目标 ${target} 已存在，请删除后再重试。'
 }

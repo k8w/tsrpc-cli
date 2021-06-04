@@ -5,6 +5,7 @@ import { cmdApi } from './commands/api';
 import { cmdBuild } from './commands/build';
 import { cmdDecode } from './commands/decode';
 import { cmdEncode } from './commands/encode';
+import { cmdLink } from './commands/link';
 import { cmdProto } from './commands/proto';
 import { cmdShowBin } from './commands/showBin';
 import { cmdShowHelp } from './commands/showHelp';
@@ -111,6 +112,14 @@ async function main() {
         await cmdBuild({
             protoDir: args['proto-dir'],
             protoFile: args.proto
+        })
+    }
+    // Link
+    else if (args._[0] === 'link') {
+        await cmdLink({
+            from: args.from,
+            to: args.to,
+            verbose: args.verbose
         })
     }
     // Error
