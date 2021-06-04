@@ -30,7 +30,7 @@ export async function cmdLink(options: CmdLinkOptions) {
     if (fs.existsSync(options.to)) {
         if ((await inquirer.prompt({
             type: 'confirm',
-            message: formatStr(i18n.deleteConfirm, { target: path.resolve(options.to) }),
+            message: formatStr(i18n.deleteConfirm, { target: path.resolve(options.to).yellow }),
             name: 'res'
         })).res) {
             fs.rmSync(options.to, { force: true, recursive: true });

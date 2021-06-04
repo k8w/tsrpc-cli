@@ -85,7 +85,6 @@ Example：
     ifUpdateProto: 'A protocol change is detected, do you need to regenerate ServiceProto?',
     ifSyncNow: 'Execute "npm run sync" after generated successfully?',
     syncFailed: 'Execute "npm run sync" failed, you can manually finish syncing.',
-    targetExists: 'Target ${target} is exists，please delete it and retry again.',
-    deleteConfirm: '${target} is existed already，delete it and continue?',
+    deleteConfirm: '${target}\nis existed already，delete it and continue?',
     canceled: 'CANCELED'
 }
