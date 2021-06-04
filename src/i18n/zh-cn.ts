@@ -17,15 +17,13 @@ export const i18nZhCn = {
         -i, --input <file>                  Proto文件的路径
         -o, --output <folder>               输出的API文件夹路径
 
-    tsrpc sync <options>
-        --from <folder>
-        --to <folder>
+    tsrpc sync --from <dir> --to <dir>   同步文件夹内容，以只读方式同步到目标位置
 
-    tsrpc link <options>
-        --from <folder>
-        --to <folder>
+    tsrpc link --from <dir> --to <dir>   在目标位置创建到源的 Symlink，以实现自动同步
 
-    
+    tsrpc build <options>                构建 TSRPC 后端项目
+        --proto <protoPath>                 proto 文件地址，默认为 src/shared/protocols/serviceProto.ts
+        --proto-dir <folder>                protocols 目录，默认为 serviceProto.ts 所在目录
     
     tsrpc encode <options> [exp]         编码JS表达式
         [exp]                               要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）

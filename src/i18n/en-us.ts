@@ -17,6 +17,15 @@ Usage：
         -i, --input <file>                  Proto file path (proto.ts or proto.json)
         -o, --output <folder>               Output api folder path
     
+    tsrpc sync --from <dir> --to <dir>   Sync directory content as readonly
+
+    tsrpc link --from <dir> --to <dir>   Create symlink
+
+    tsrpc build <options>                构建 TSRPC 后端项目
+        --proto <protoPath>                 proto 文件地址，默认为 src/shared/protocols/serviceProto.ts
+        --proto-dir <folder>                protocols 目录，默认为 serviceProto.ts 所在目录
+
+
     tsrpc encode <options> [exp]         Encode a JS expression or a file (content is JS expression)
         [exp]                               Expression to encode (e.g. "123" "new Uint8Array([1,2,3])")
         -p, --proto <file>                  Proto file to use
