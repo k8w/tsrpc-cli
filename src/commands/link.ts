@@ -36,7 +36,8 @@ export async function cmdLink(options: CmdLinkOptions) {
             fs.rmSync(options.to, { force: true, recursive: true });
         }
         else {
-            throw error(i18n.canceled)
+            console.log(i18n.canceled.gray);
+            process.exit(0);
         }
     }
 
