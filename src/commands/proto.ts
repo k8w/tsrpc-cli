@@ -283,7 +283,7 @@ export async function outputProto(options: {
         }
 
         let importStr = Object.entries(imports)
-            .map(v => `import { ${v[1].map(w => w.asName ? `${w.srcName} as ${w.asName}` : w.srcName).join(', ')} } from '${v[0]}'`)
+            .map(v => `import { ${v[1].map(w => w.asName ? `${w.srcName} as ${w.asName}` : w.srcName).join(', ')} } from '${v[0]}';`)
             .join('\n');
         let apiStr = apis.map(v => `        ${JSON.stringify(v.name)}: {
             req: ${v.req},
