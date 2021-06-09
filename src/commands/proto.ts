@@ -214,9 +214,6 @@ export async function outputProto(options: {
     ugly: boolean | undefined,
     proto: ServiceProto<any>
 }) {
-    let originalCwd = process.cwd();
-    process.chdir(options.input);
-
     // TS
     if (options.output.endsWith('.ts')) {
         let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
@@ -258,7 +255,10 @@ export async function outputProto(options: {
             }
 
             let lastName = match[2];
-            let importPath = path.relative(path.dirname(path.resolve(originalCwd, options.output)), (match[1] || '') + (svc.type === 'api' ? 'Ptl' : 'Msg') + lastName).replace(/\\/g, '/');
+            let importPath = path.relative(
+                path.dirname(options.output),
+                path.join(options.input, (match[1] || '') + (svc.type === 'api' ? 'Ptl' : 'Msg') + lastName)
+            ).replace(/\\/g, '/');
             if (!importPath.startsWith('.')) {
                 importPath = './' + importPath;
             }
@@ -307,12 +307,10 @@ ${msgStr}
 export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.proto, null, 4)};
 `.trim();
 
-        process.chdir(originalCwd);
         await fs.writeFile(options.output, fileContent);
     }
     // JSON
     else {
-        process.chdir(originalCwd);
         await fs.writeFile(options.output, options.ugly ? JSON.stringify(options.proto) : JSON.stringify(options.proto, null, 2));
     }
     console.log(formatStr(i18n.protoSucc, { output: path.resolve(options.output) }).green);
