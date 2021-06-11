@@ -151,8 +151,8 @@ export async function genProto(options: CmdProtoOptions) {
                 })
             }
             else {
-                !typeProto[req] && console.warn(`Missing Req: ` + typePath);
-                !typeProto[res] && console.warn(`Missing Res: ` + typePath);
+                !typeProto[res] && console.warn(`[WARN] Missing Res${match[3]} at: "${filepath}"`.yellow);
+                !typeProto[req] && console.warn(`[WARN] Missing Req${match[3]} at: "${filepath}"`.yellow);
             }
         }
         // Msg 检测Msg类型在
