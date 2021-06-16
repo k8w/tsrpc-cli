@@ -1,8 +1,4 @@
-import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 export default {
@@ -23,19 +19,8 @@ export default {
             objectHashIgnoreUnknownHack: true,
             rollupCommonJSResolveHack: true
         }),
-        nodeResolve(),
-        commonjs(),
-        json(),
         replace({
             '__TSRPC_CLI_VERSION__': require('./package.json').version
-        }),
-        terser({
-            toplevel: true,
-            mangle: {},
-            format: {
-                comments: /^!/
-            }
         })
-    ],
-    external: Object.keys(require('./package.json').dependencies).concat(['typescript'])
+    ]
 }
