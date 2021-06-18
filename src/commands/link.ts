@@ -33,7 +33,7 @@ export async function cmdLink(options: CmdLinkOptions) {
             message: formatStr(i18n.deleteConfirm, { target: path.resolve(options.to).yellow }),
             name: 'res'
         })).res) {
-            fs.removeSync(options.to, { force: true, recursive: true });
+            fs.removeSync(options.to);
         }
         else {
             console.log(i18n.canceled.gray);

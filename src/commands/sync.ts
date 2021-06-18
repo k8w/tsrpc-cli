@@ -24,7 +24,7 @@ export function cmdSync(options: CmdSyncOptions) {
 
     CliUtil.doing(`Syncing from "${path.resolve(options.from)}" to "${path.resolve(options.to)}"`);
     // Clear
-    fs.removeSync(options.to, { force: true, recursive: true });
+    fs.removeSync(options.to);
     // Copy
     copyDirReadonly(options.from, options.to);
     CliUtil.done(true, 'Synced successfully')
