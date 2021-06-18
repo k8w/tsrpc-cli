@@ -1,5 +1,5 @@
 import childProcess from "child_process";
-import fs from "fs";
+import fs from "fs-extra";
 import { i18n } from "../i18n/i18n";
 import { CliUtil } from "../models/CliUtil";
 import { error } from "../models/util";
@@ -75,7 +75,7 @@ export async function cmdBuild(options: CmdBuildOptions) {
 
     // clean
     CliUtil.doing('Clean "dist"');
-    fs.rmSync('dist', { force: true, recursive: true });
+    fs.removeSync('dist');
     CliUtil.done();
 
     // tsc

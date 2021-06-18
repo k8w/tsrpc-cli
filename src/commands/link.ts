@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs-extra";
 import inquirer from "inquirer";
 import path from "path";
 import { i18n } from "../i18n/i18n";
@@ -33,7 +33,7 @@ export async function cmdLink(options: CmdLinkOptions) {
             message: formatStr(i18n.deleteConfirm, { target: path.resolve(options.to).yellow }),
             name: 'res'
         })).res) {
-            fs.rmSync(options.to, { force: true, recursive: true });
+            fs.removeSync(options.to, { force: true, recursive: true });
         }
         else {
             console.log(i18n.canceled.gray);

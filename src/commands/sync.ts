@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs-extra";
 import path from "path";
 import { i18n } from "../i18n/i18n";
 import { CliUtil } from "../models/CliUtil";
@@ -24,7 +24,7 @@ export function cmdSync(options: CmdSyncOptions) {
 
     CliUtil.doing(`Syncing from "${path.resolve(options.from)}" to "${path.resolve(options.to)}"`);
     // Clear
-    fs.rmSync(options.to, { force: true, recursive: true });
+    fs.removeSync(options.to, { force: true, recursive: true });
     // Copy
     copyDirReadonly(options.from, options.to);
     CliUtil.done(true, 'Synced successfully')
