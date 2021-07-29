@@ -105,6 +105,7 @@ export async function cmdBuild(options: CmdBuildOptions) {
     // package.json
     let packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
     packageJSON.scripts = {
+        ...packageJSON.scripts,
         start: packageJSON.scripts.start ?? 'node index.js'
     };
     fs.writeFileSync('dist/package.json', JSON.stringify(packageJSON, null, 2), 'utf-8');
