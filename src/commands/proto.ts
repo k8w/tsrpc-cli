@@ -16,7 +16,7 @@ export interface CmdProtoOptions {
     compatible: string | undefined,
     ugly: boolean | undefined,
     new: boolean | undefined,
-    ignore: string | undefined,
+    ignore: string[] | string | undefined,
     verbose: boolean | undefined
 }
 

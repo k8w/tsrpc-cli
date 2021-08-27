@@ -11,19 +11,39 @@ export const i18nZhCn = {
         --new                               不兼容旧版，生成全新的Proto文件
         --ugly                              输出为可读性较差但体积更小压缩格式
         --verbose                           显示调试信息
-        --ignore <glob>                     从--input范围中要忽略的文件
+        --ignore <glob>                     从--input范围中要忽略的文件，Glob 表达式
+                                            支持传入多个，例如 --ignore "AAA" --ignore "BBB"
+        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
+                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
 
     tsrpc api <options>                  自动生成TSRPC API实现
         -i, --input <file>                  Proto文件的路径
         -o, --output <folder>               输出的API文件夹路径
+        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
+                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
 
-    tsrpc sync --from <dir> --to <dir>   同步文件夹内容，以只读方式同步到目标位置
+    tsrpc sync <options>                 同步文件夹内容，以只读方式同步到目标位置
+        --from <dir>
+        --to <dir>   
+        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
+                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
 
-    tsrpc link --from <dir> --to <dir>   在目标位置创建到源的 Symlink，以实现自动同步
+    tsrpc link <options>                 在目标位置创建到源的 Symlink，以实现自动同步
+        --from <dir>
+        --to <dir>   
+        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
+                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
+
+    tsrpc dev <options>                  启动本地开发服务器，当源代码变更时自动重启
+        --proto
+        --sync
+        --api
+        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
+                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
 
     tsrpc build <options>                构建 TSRPC 后端项目
-        --proto <protoPath>                 proto 文件地址，默认为 src/shared/protocols/serviceProto.ts
-        --proto-dir <folder>                protocols 目录，默认为 serviceProto.ts 所在目录
+        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
+                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
     
     tsrpc encode <options> [exp]         编码JS表达式
         [exp]                               要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
@@ -52,7 +72,7 @@ export const i18nZhCn = {
     example: `
 使用示例：
 
-    tsrpc proto -i proto -o proto.ts
+    tsrpc proto -i protocols -o serviceProto.ts
 
     tsrpc encode -p proto.ts -s a/b/c/TypeName -o buf.bin "{value: 1}"
     tsrpc decode -p proto.ts -s a/b/c/TypeName "01 0A 01"

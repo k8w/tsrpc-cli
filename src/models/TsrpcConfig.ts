@@ -3,7 +3,7 @@ export interface TsrpcConfig {
      * `tsrpc proto` 命令的创建的 ServiceProto
      * 一条记录对应一份 ServiceProto
      */
-    proto: {
+    proto?: {
         /**
          * protocols 协议目录
          */
@@ -32,7 +32,7 @@ export interface TsrpcConfig {
     /**
      * `tsrpc sync` 命令的相关配置
      */
-    sync: {
+    sync?: {
         /** 共享代码目录的源，例如 `src/shared` */
         from: string,
         /** 共享代码目录要同步至的位置，例如 `../frontend/src/shared` */
@@ -48,7 +48,7 @@ export interface TsrpcConfig {
     /**
      * `tsrpc dev` 命令的相关配置
      */
-    dev: {
+    dev?: {
         /**
          * 当协议文件发生变动时，是否自动重新生成 ServiceProto
          * @defaultValue true
@@ -60,7 +60,7 @@ export interface TsrpcConfig {
          */
         sync?: boolean,
         /**
-         * 当 `proto: true`，自动重新生成 ServiceProto 后，是否自动生成新的 API 文件
+         * 自动重新生成 ServiceProto 后，是否自动生成新的 API 文件
          * @defaultValue true
          */
         api?: boolean,
@@ -74,10 +74,21 @@ export interface TsrpcConfig {
     /**
      * `tsrpc build` 命令的相关配置
      */
-    build: {
+    build?: {
         /** 构建前是否重新生成 ServiceProto */
         proto?: boolean,
         /** 构建时重新生成 ServiceProto 后，是否立即同步到目标位置（仅对 `type: 'copy'` 的项生效） */
-        sync?: boolean
-    }
+        sync?: boolean,
+        /**
+         * 自动重新生成 ServiceProto 后，是否自动生成新的 API 文件
+         * @defaultValue true
+         */
+        api?: boolean,
+    },
+
+    /**
+     * 在控制台显示详细的调试信息
+     * @defaultValue false
+     */
+    verbose?: boolean,
 }
