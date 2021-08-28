@@ -62,7 +62,7 @@ export async function genProto(options: CmdProtoOptions) {
                         oldProto = JSON.parse(match[1]);
                     }
                     catch (e) {
-                        throw error(i18n.compatibleError, { innerError: e.message })
+                        throw error(i18n.compatibleError, { innerError: (e as Error).message })
                     }
                 }
                 else {
@@ -80,7 +80,7 @@ export async function genProto(options: CmdProtoOptions) {
                 }
             }
             catch (e) {
-                throw error(i18n.compatibleError, { innerError: e.message })
+                throw error(i18n.compatibleError, { innerError: (e as Error).message })
             }
         }
     }

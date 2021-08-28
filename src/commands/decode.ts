@@ -40,7 +40,7 @@ export function cmdDecode(options: CmdDecodeOptions) {
         decodedValue = new TSBuffer(parsedProto.proto).decode(new Uint8Array(inputBuf), parsedProto.schemaId);
     }
     catch (e) {
-        throw error('解码失败:\n    ' + e.message)
+        throw error('解码失败:\n    ' + (e as Error).message)
     }
 
     if (options.output) {

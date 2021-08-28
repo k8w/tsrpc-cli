@@ -1,11 +1,8 @@
-import { ServiceDef, ServiceProto } from "tsrpc-proto";
-import { i18n } from "../i18n/i18n";
-import { error, formatStr } from "./util";
 import fs from "fs";
 import path from "path";
-import { EncodeIdUtil, TSBufferProtoGenerator } from "tsbuffer-proto-generator";
-import glob from "glob";
-import ts from "typescript";
+import { ServiceProto } from "tsrpc-proto";
+import { i18n } from "../i18n/i18n";
+import { error, formatStr } from "./util";
 
 export class ProtoUtil {
     static loadServiceProto(filepath: string): ServiceProto<any> | undefined {
@@ -56,7 +53,7 @@ export class ProtoUtil {
             serviceProto = ProtoUtil.loadServiceProto(proto);
         }
         catch (e) {
-            throw error(e.message);
+            throw error((e as Error).message);
         }
 
         if (!serviceProto) {

@@ -13,37 +13,31 @@ export const i18nZhCn = {
         --verbose                           显示调试信息
         --ignore <glob>                     从--input范围中要忽略的文件，Glob 表达式
                                             支持传入多个，例如 --ignore "AAA" --ignore "BBB"
-        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
-                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
+        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
 
     tsrpc api <options>                  自动生成TSRPC API实现
         -i, --input <file>                  Proto文件的路径
         -o, --output <folder>               输出的API文件夹路径
-        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
-                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
+        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
 
     tsrpc sync <options>                 同步文件夹内容，以只读方式同步到目标位置
         --from <dir>
         --to <dir>   
-        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
-                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
+        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
 
     tsrpc link <options>                 在目标位置创建到源的 Symlink，以实现自动同步
         --from <dir>
         --to <dir>   
-        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
-                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
+        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
 
     tsrpc dev <options>                  启动本地开发服务器，当源代码变更时自动重启
         --proto
         --sync
         --api
-        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
-                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
+        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
 
     tsrpc build <options>                构建 TSRPC 后端项目
-        --config <file>                     从指定的配置文件读取参数，当存在此参数时，其它参数不生效
-                                            当 tsrpc proto 未指定任何参数时，此参数默认为 tsrpc.config.ts
+        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
     
     tsrpc encode <options> [exp]         编码JS表达式
         [exp]                               要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
