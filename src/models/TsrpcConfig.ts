@@ -65,6 +65,10 @@ export interface TsrpcConfig {
          */
         api?: boolean,
         /**
+         * 当这些文件（Glob 表达式）变化时，重启本地服务
+         */
+        watchFiles?: string | string[],
+        /**
          * 重启本地服务时使用的命令
          * @defaultValue `ts-node "src/index.ts"`
          */
