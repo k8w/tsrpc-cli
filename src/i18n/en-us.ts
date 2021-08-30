@@ -86,5 +86,7 @@ Example：
     ifSyncNow: 'Execute "npm run sync" after generated successfully?',
     syncFailed: 'Execute "npm run sync" failed, you can manually finish syncing.',
     deleteConfirm: '${target}\nis existed already，delete it and continue?',
-    canceled: 'CANCELED'
+    canceled: 'CANCELED',
+    confNotExists: 'Config file not exists: ${path}',
+    confInvalid: 'Invalid TSRPC config file: ${path}'
 }

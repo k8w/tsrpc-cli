@@ -1,6 +1,9 @@
 import 'colors';
+import fs from "fs";
 import minimist from 'minimist';
 import 'node-json-color-stringify';
+import path from "path";
+import 'ts-node/register';
 import { cmdApi } from './commands/api';
 import { cmdBuild } from './commands/build';
 import { cmdDecode } from './commands/decode';
@@ -13,6 +16,7 @@ import { cmdSync } from './commands/sync';
 import { cmdValidate } from './commands/validate';
 import { i18n } from './i18n/i18n';
 import { CliUtil } from './models/CliUtil';
+import { TsrpcConfig } from './models/TsrpcConfig';
 import { error, formatStr, showLogo } from './models/util';
 
 const args = minimist(process.argv.slice(2));
@@ -30,6 +34,18 @@ main().catch((e: Error) => {
 });
 
 async function main() {
+    let conf: TsrpcConfig | undefined;
+    if (args.config) {
+        let confPath = path.resolve(args.config);
+        if (!await fs.existsSync(confPath)) {
+            throw error(i18n.confNotExists, { path: confPath })
+        }
+        conf = await import(confPath).then(v => v.default as TsrpcConfig).catch(e => undefined);
+        if (!conf) {
+            throw error(i18n.confInvalid, { path: confPath })
+        }
+    }
+
     // Version
     if (args._.length === 0 && (args.version || args.v)) {
         console.log('__TSRPC_CLI_VERSION__');

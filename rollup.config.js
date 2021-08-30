@@ -22,5 +22,6 @@ export default {
         replace({
             '__TSRPC_CLI_VERSION__': require('./package.json').version
         })
-    ]
+    ],
+    external: ['ts-node/register']
 }

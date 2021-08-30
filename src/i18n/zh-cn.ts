@@ -99,5 +99,7 @@ export const i18nZhCn = {
     ifSyncNow: '生成后执行同步（npm run sync）吗？',
     syncFailed: '执行 "npm run sync" 失败, 你可以手动完成同步。',
     deleteConfirm: '${target}\n目标已经存在，是否删除再继续？',
-    canceled: '已取消'
+    canceled: '已取消',
+    confNotExists: '配置文件不存在: ${path}',
+    confInvalid: '配置文件解析失败: ${path}'
 }
