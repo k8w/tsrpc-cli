@@ -330,6 +330,11 @@ export interface GenerateServiceProtoOptions {
     ignore?: string[] | string,
     verbose?: boolean,
 }
+/**
+ * 生成 ServiceProto，本方法没有日志输出
+ * @param options 
+ * @returns 
+ */
 export async function generateServiceProto(options: GenerateServiceProtoOptions) {
     const oldProto = options.oldProto;
 
