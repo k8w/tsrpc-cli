@@ -1,6 +1,7 @@
 import fs from "fs-extra";
 import glob from "glob";
 import path from "path";
+import 'ts-node/register';
 import { EncodeIdUtil, TSBufferProtoGenerator } from 'tsbuffer-proto-generator';
 import { ServiceDef, ServiceProto } from "tsrpc-proto";
 import ts from "typescript";
@@ -17,7 +18,7 @@ export interface CmdProtoOptions {
     ugly: boolean | undefined,
     new: boolean | undefined,
     ignore: string[] | string | undefined,
-    verbose: boolean | undefined
+    verbose: boolean | undefined,
 }
 
 export async function cmdProto(options: CmdProtoOptions) {
@@ -314,4 +315,144 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
         await fs.writeFile(options.output, options.ugly ? JSON.stringify(options.proto) : JSON.stringify(options.proto, null, 2));
     }
     console.log(formatStr(i18n.protoSucc, { output: path.resolve(options.output) }).green);
+}
+
+
+
+
+// 新
+export interface GenerateServiceProtoOptions {
+    protocolDir: string,
+    newProtoPath: string,
+    oldProto?: ServiceProto,
+    oldProtoPath?: string,
+    ugly?: boolean,
+    ignore?: string[] | string,
+    verbose?: boolean,
+}
+export async function generateServiceProto(options: GenerateServiceProtoOptions) {
+    const oldProto = options.oldProto;
+
+    // TODO 移到外边
+    // 标准化路径（抹平系统差异）
+    const protocolDir = options.protocolDir.replace(/\\/g, '/').replace(/\/+$/, '');
+    // 只能填写文件夹 不支持通配符
+    if (!(await fs.stat(options.protocolDir)).isDirectory()) {
+        throw error(i18n.inputMustBeFolder)
+    }
+
+    // 查找所有目标 Ptl 和 Msg 文件，输出标准化的相对路径
+    let fileList = glob.sync(protocolDir + '/**/{Ptl,Msg}*.ts', {
+        ignore: options.ignore
+    }).map(v => path.relative(protocolDir, v).replace(/\\/g, '/'));
+
+    // 临时切换working dir
+    // let originalCwd = process.cwd();
+    // process.chdir(protocolDir);
+
+    // 生成 types （TSBufferSchema）
+    const EXP_DIR_TYPE_NAME = /^(.+\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
+    let typeProto = await new TSBufferProtoGenerator({
+        verbose: options.verbose,
+        baseDir: protocolDir
+    }).generate(fileList, {
+        compatibleResult: oldProto?.types,
+        filter: info => {
+            let infoPath = info.path.replace(/\\/g, '/')
+            let match = infoPath.match(EXP_DIR_TYPE_NAME);
+
+            if (!match) {
+                return false;
+            }
+
+            if (match[2] === 'Ptl') {
+                return info.name === 'Req' + match[3] || info.name === 'Res' + match[3];
+            }
+            else {
+                return info.name === 'Msg' + match[3];
+            }
+        }
+    });
+
+    // 生成 services
+    let services: ServiceDef[] = [];
+    for (let filepath of fileList) {
+        let match = filepath.match(EXP_DIR_TYPE_NAME)!;
+        let typePath = filepath.replace(/^\.\//, '').replace(/\.ts$/, '');
+
+        // 解析conf
+        let tsModule = await import(path.resolve(protocolDir, filepath));
+        let conf: { [key: string]: any } | undefined = tsModule.conf;
+
+        // Ptl 检测 Req 和 Res 类型齐全
+        if (match[2] === 'Ptl') {
+            let req = typePath + '/Req' + match[3];
+            let res = typePath + '/Res' + match[3];
+            if (typeProto[req] && typeProto[res]) {
+                services.push({
+                    id: services.length,
+                    name: (match[1] || '') + match[3],
+                    type: 'api',
+                    conf: conf
+                })
+            }
+            else {
+                !typeProto[res] && console.warn(`[WARN] Missing type 'Res${match[3]}' at: "${filepath}"`.yellow);
+                !typeProto[req] && console.warn(`[WARN] Missing type 'Req${match[3]}' at: "${filepath}"`.yellow);
+            }
+        }
+        // Msg 检测Msg类型在
+        else {
+            let msg = typePath + '/Msg' + match[3];
+            if (typeProto[msg]) {
+                services.push({
+                    id: services.length,
+                    name: (match[1] || '') + match[3],
+                    type: 'msg',
+                    conf: conf
+                })
+            }
+            else {
+                console.warn(`Missing type 'Msg${match[3]}' at: ${filepath}`.yellow);
+            }
+        }
+    }
+
+    // 检测可优化的 ID 冗余
+    let canOptimizeByNew = false;
+    EncodeIdUtil.onGenCanOptimized = () => {
+        canOptimizeByNew = true;
+    }
+    // EncodeID 兼容 OldProto
+    let encodeIds = EncodeIdUtil.genEncodeIds(services.map(v => v.type + v.name), oldProto?.services.map(v => ({
+        key: v.type + v.name,
+        id: v.id
+    })));
+    for (let item of encodeIds) {
+        services.find(v => item.key.startsWith(v.type) && v.name === item.key.substr(v.type.length))!.id = item.id;
+    }
+
+    let version: number | undefined = oldProto?.version;
+    // 只有在旧 Proto 存在，同时协议内容变化的情况下，才更新版本号
+    if (oldProto && JSON.stringify({ types: oldProto.types, services: oldProto.services }) !== JSON.stringify({ types: typeProto, services: services })) {
+        version = (oldProto.version || 0) + 1;
+    }
+
+    // 创建新 Proto
+    let newProto: ServiceProto = {
+        version: version,
+        services: services,
+        types: typeProto
+    };
+    // process.chdir(originalCwd);
+
+    if (canOptimizeByNew) {
+        console.warn(formatStr(i18n.canOptimizeByNew, { filename: path.basename(options.oldProtoPath ?? options.newProtoPath) }) + '\n');
+    }
+
+    return {
+        newProto: newProto,
+        oldProto: oldProto,
+        isChanged: newProto.version !== oldProto?.version
+    };
 }
