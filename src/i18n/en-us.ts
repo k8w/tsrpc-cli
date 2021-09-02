@@ -62,10 +62,12 @@ Example：
 `.trim(),
     errCmd: 'Error command, use "tsrpc -h" to see more help info.',
     missingParam: 'Missing parameter ${param}, use "tsrpc -h" to see more help info.',
-    inputMustBeFolder: '--input only accept a folder',
+    shouldBeDir: '${path} should be a directory',
     protoSucc: '√ Proto generated to: ${output}',
+    fileNotExists: 'File not exists: ${file}',
     fileOpenError: 'Failed to open file: ${file}',
     jsParsedError: 'Failed to parse JS expression from: ${file}',
+    invalidProtoExt: '旧 ServiceProto 格式非法，仅支持 .ts 和 .json 文件: ${file}',
     protoParsedError: 'Failed to parse old proto: ${file}',
     expParsedError: 'Invalid JS expression',
     or: 'or',
@@ -88,5 +90,6 @@ Example：
     deleteConfirm: '${target}\nis existed already，delete it and continue?',
     canceled: 'CANCELED',
     confNotExists: 'Config file not exists: ${path}',
-    confInvalid: 'Invalid TSRPC config file: ${path}'
+    confInvalid: 'Invalid TSRPC config file: ${path}',
+    missingConfigItem: (itemName: string) => `Missing '${itemName}' in config file`,
 }

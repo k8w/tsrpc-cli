@@ -19,7 +19,7 @@ export async function cmdApi(options: CmdApiOptions) {
         throw error(i18n.missingParam, { param: 'output' });
     }
 
-    let proto = ProtoUtil.loadServiceProto(options.input);
+    let proto = await ProtoUtil.loadServiceProto(options.input);
     if (!proto) {
         throw error(i18n.protoParsedError, { file: options.input });
     }

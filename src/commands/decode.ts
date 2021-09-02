@@ -15,8 +15,8 @@ export interface CmdDecodeOptions {
     verbose: boolean | undefined
 }
 
-export function cmdDecode(options: CmdDecodeOptions) {
-    let parsedProto = ProtoUtil.parseProtoAndSchema(options.protoPath, options.schemaId);
+export async function cmdDecode(options: CmdDecodeOptions) {
+    let parsedProto = await ProtoUtil.parseProtoAndSchema(options.protoPath, options.schemaId);
     let inputBuf: Buffer;
 
     if (options.input) {

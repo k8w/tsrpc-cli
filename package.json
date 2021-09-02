@@ -36,8 +36,10 @@
     "@types/glob": "^7.1.4",
     "@types/inquirer": "^7.3.3",
     "@types/minimist": "^1.2.2",
+    "@types/mocha": "^9.0.0",
     "@types/node": "^15.14.9",
     "@types/typescript": "^2.0.0",
+    "mocha": "^9.1.1",
     "rollup": "^2.56.3",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0"

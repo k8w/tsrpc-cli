@@ -11,7 +11,7 @@ export interface TsrpcConfig {
         /**
          * 生成协议时忽略的文件（Glob表达式）
          */
-        ignores?: string[],
+        ignore?: string | string[],
         /**
          * 输出的 ServiceProto文件名，例如 `src/shared/protocols/serviceProto.ts`
          * 扩展名可为 `.ts` 或 `.json`
@@ -25,6 +25,7 @@ export interface TsrpcConfig {
         /**
          * 生成 ServiceProto 时，要兼容的上一版 ServiceProto 的路径。
          * @defaultValue 同 `output`，即原地兼容旧版同名文件。
+         * false 代表关闭兼容模式，总是生成全新的 ServiceProto
          */
         compatible?: string,
     }[],

@@ -63,7 +63,8 @@ async function main() {
             ugly: args.ugly,
             new: args.new,
             ignore: args.ignore,
-            verbose: args.verbose
+            verbose: args.verbose,
+            config: conf
         });
     }
     // Api
@@ -153,3 +154,11 @@ async function main() {
     CliUtil.done(true);
     process.exit(0);
 }
+
+// process.on('uncaughtException', e => {
+//     console.error('uncaughtException', e)
+// })
+
+// process.on('unhandledRejection', e => {
+//     console.error('unhandledRejection', e)
+// })

@@ -14,9 +14,7 @@ export function showLogo() {
 
 export function formatStr(str: string, data: { [key: string]: string }) {
     for (let key in data) {
-        while (str.indexOf(key) > -1) {
-            str = str.replace(`\${${key}}`, data[key]);
-        }
+        str = str.replace(`\${${key}}`, data[key]);
     }
     return str;
 }
