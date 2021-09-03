@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { error } from "console";
 import fs from "fs";
 import path from "path";
@@ -19,5 +20,5 @@ export function cmdShowBin(options: CmdShowBinOptions) {
         options.verbose && console.error(e);
         throw error(i18n.fileOpenError, { file: path.resolve(options.file) })
     }
-    console.log(buf2Hex(buf).yellow);
+    console.log(chalk.yellow(buf2Hex(buf)));
 }

@@ -1,4 +1,4 @@
-import { TsrpcConfig } from '../src/models/TsrpcConfig';
+import { TsrpcConfig } from '../../src/models/TsrpcConfig';
 
 const tsrpcConf: TsrpcConfig = {
     proto: [

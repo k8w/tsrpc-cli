@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { error } from "console";
 import fs from "fs";
 import path from "path";
@@ -50,6 +51,6 @@ export async function Api${apiName}(call: ApiCall<Req${apiName}, Res${apiName}>)
 }        
         `.trim(), { encoding: 'utf-8' })
 
-        console.log(formatStr(i18n.apiSucc, { apiPath: apiPath, apiName: apiName }).green);
+        console.log(chalk.green(formatStr(i18n.apiSucc, { apiPath: apiPath, apiName: apiName })));
     }
 }

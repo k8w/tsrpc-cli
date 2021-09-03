@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import fs from "fs-extra";
 import inquirer from "inquirer";
 import path from "path";
@@ -30,13 +31,13 @@ export async function cmdLink(options: CmdLinkOptions) {
     if (fs.existsSync(options.to)) {
         if ((await inquirer.prompt({
             type: 'confirm',
-            message: formatStr(i18n.deleteConfirm, { target: path.resolve(options.to).yellow }),
+            message: chalk.yellow(formatStr(i18n.deleteConfirm, { target: path.resolve(options.to) })),
             name: 'res'
         })).res) {
             fs.removeSync(options.to);
         }
         else {
-            console.log(i18n.canceled.gray);
+            console.log(chalk.gray(i18n.canceled));
             process.exit(0);
         }
     }
@@ -44,5 +45,5 @@ export async function cmdLink(options: CmdLinkOptions) {
     let target = path.relative(path.dirname(options.to), options.from);
     options.verbose && console.log(`path: ${path.resolve(options.to)}, target: ${target}`)
     fs.symlinkSync(target, options.to, 'junction');
-    console.log(i18n.success.bgGreen.white);
+    console.log(chalk.bgGreen.white(i18n.success));
 }

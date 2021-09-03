@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import ora from "ora";
 
 export class CliUtil {
@@ -9,13 +10,13 @@ export class CliUtil {
             this.spinner.stop();
         }
         this.currentDoingText = text;
-        this.spinner.text = `${text}${doingPostFix}\n`.yellow;
+        this.spinner.text = chalk.yellow(`${text}${doingPostFix}\n`);
         this.spinner.start();
     }
     static done(succ: boolean = true, text?: string) {
         if (this.currentDoingText !== undefined) {
             text = `${text ?? this.currentDoingText}`
-            succ ? this.spinner.succeed(text.green) : this.spinner.fail(text.red);
+            succ ? this.spinner.succeed(chalk.green(text)) : this.spinner.fail(chalk.red(text));
             this.currentDoingText = undefined;
         }
     }

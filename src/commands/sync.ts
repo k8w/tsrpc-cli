@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
 import { i18n } from "../i18n/i18n";
@@ -44,15 +45,15 @@ function copyDirReadonly(src: string, dest: string, verbose?: boolean) {
         if (stat.isFile()) {
             fs.copyFileSync(srcPath, destPath);
             fs.chmodSync(destPath, 0o444);
-            verbose && console.log(path.resolve(destPath).green);
+            verbose && console.log(chalk.green(path.resolve(destPath)));
         }
         else if (stat.isDirectory()) {
             fs.mkdirSync(destPath, { recursive: true });
-            verbose && console.log(path.resolve(destPath).green);
+            verbose && console.log(chalk.green(path.resolve(destPath)));
             copyDirReadonly(srcPath, destPath, verbose);
         }
         else {
-            verbose && console.log(`Ignored: "${srcPath}"`.yellow);
+            verbose && console.log(chalk.yellow(`Ignored: "${srcPath}"`));
         }
     })
 }

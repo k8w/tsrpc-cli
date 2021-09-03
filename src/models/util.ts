@@ -1,5 +1,7 @@
+import chalk from "chalk";
+
 export function showLogo() {
-    console.log(`                                                   
+    console.log(chalk.green(`                                                   
 88888888888 .d8888b.  8888888b.  8888888b.   .d8888b.  
     888    d88P  Y88b 888   Y88b 888   Y88b d88P  Y88b 
     888    Y88b.      888    888 888    888 888    888 
@@ -9,7 +11,7 @@ export function showLogo() {
     888    Y88b  d88P 888  T88b  888        Y88b  d88P 
     888     "Y8888P"  888   T88b 888         "Y8888P"  
 ------------------------------------------------------------------------
-`.green);
+`));
 };
 
 export function formatStr(str: string, data: { [key: string]: string }) {

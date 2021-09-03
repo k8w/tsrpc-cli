@@ -94,7 +94,7 @@ export const i18nZhCn = {
     success: ' 成功 ',
     helpGuide: '键入 tsrpc -h 查看更多帮助信息',
     compatibleError: '兼容旧Proto失败: ${innerError}',
-    canOptimizeByNew: '检测到 ${filename} 中存在冗余（可能轻微增加传输体积），删除该文件然后重新生成即可优化，但可能导致对旧协议的不兼容。'.yellow,
+    canOptimizeByNew: '检测到 ${filename} 中存在冗余（可能轻微增加传输体积），删除该文件然后重新生成即可优化，但可能导致对旧协议的不兼容。',
     dirNotExists: '文件夹不存在: ${dir}',
     codeError: 'TypeScript 构建失败，请检查代码报错',
     ifUpdateProto: '检测到协议变更，是否重新生成 ServiceProto？',

@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import childProcess from "child_process";
 import fs from "fs-extra";
 import { i18n } from "../i18n/i18n";
@@ -111,5 +112,5 @@ export async function cmdBuild(options: CmdBuildOptions) {
     fs.writeFileSync('dist/package.json', JSON.stringify(packageJSON, null, 2), 'utf-8');
     CliUtil.done();
 
-    console.log('\n' + i18n.success.bgGreen.white);
+    console.log('\n' + chalk.bgGreen.white(i18n.success));
 }

@@ -1,9 +1,8 @@
-import 'colors';
+import chalk from "chalk";
 import fs from "fs";
 import minimist from 'minimist';
 import 'node-json-color-stringify';
 import path from "path";
-import 'ts-node/register';
 import { cmdApi } from './commands/api';
 import { cmdBuild } from './commands/build';
 import { cmdDecode } from './commands/decode';
@@ -16,6 +15,7 @@ import { cmdSync } from './commands/sync';
 import { cmdValidate } from './commands/validate';
 import { i18n } from './i18n/i18n';
 import { CliUtil } from './models/CliUtil';
+import { importTS } from "./models/importTS";
 import { TsrpcConfig } from './models/TsrpcConfig';
 import { error, formatStr, showLogo } from './models/util';
 
@@ -25,10 +25,10 @@ const args = minimist(process.argv.slice(2));
 main().catch((e: Error) => {
     CliUtil.done(false);
     if (args.verbose) {
-        console.error('\n' + i18n.error.bgRed.white, e);
+        console.error('\n' + chalk.bgRed.white(i18n.error), e);
     }
     else {
-        e?.message && console.error('\n' + i18n.error.bgRed.white, e.message.red);
+        e?.message && console.error('\n' + chalk.bgRed.white(i18n.error), chalk.red(e.message));
     }
     process.exit(-1);
 });
@@ -37,10 +37,7 @@ async function main() {
     let conf: TsrpcConfig | undefined;
     if (args.config) {
         let confPath = path.resolve(args.config);
-        if (!await fs.existsSync(confPath)) {
-            throw error(i18n.confNotExists, { path: confPath })
-        }
-        conf = await import(confPath).then(v => v.default as TsrpcConfig).catch(e => undefined);
+        conf = importTS(confPath).default;
         if (!conf) {
             throw error(i18n.confInvalid, { path: confPath })
         }
@@ -143,9 +140,9 @@ async function main() {
     // No Command
     else if (args._.length === 0) {
         showLogo();
-        console.log(formatStr(i18n.welcome, { version: '__TSRPC_CLI_VERSION__' }).green);
+        console.log(chalk.green(formatStr(i18n.welcome, { version: '__TSRPC_CLI_VERSION__' })));
         console.log('\n' + i18n.example);
-        console.log('\n' + i18n.helpGuide.yellow);
+        console.log('\n' + chalk.yellow(i18n.helpGuide));
     }
     else {
         throw error(i18n.errCmd);

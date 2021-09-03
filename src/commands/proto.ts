@@ -1,4 +1,3 @@
-import 'ts-node/register';
 import { ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
@@ -51,7 +50,7 @@ export async function cmdProto(options: CmdProtoOptions) {
                 protocolDir: conf.input,
                 newProtoPath: conf.output,
                 proto: resGenProto.newProto
-            })
+            }, console)
 
             options.config.verbose && console.log(`Finish: ${conf.output}...`);
         }
@@ -89,6 +88,6 @@ export async function cmdProto(options: CmdProtoOptions) {
             newProtoPath: options.output,
             ugly: options.ugly,
             proto: resGenProto.newProto
-        })
+        }, console)
     }
 }

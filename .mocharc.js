@@ -5,5 +5,6 @@ module.exports = {
     spec: [
         './test/**/*.test.ts',
     ],
-    // fgrep: 'abort'
+    exit: true,
+    // fgrep: 'AAA'
 }

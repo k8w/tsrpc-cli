@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import fs from "fs";
 import path from "path";
 import { TSBuffer } from "tsbuffer";
@@ -52,7 +53,7 @@ export async function cmdValidate(options: CmdValidateOptions) {
 
     let vRes = new TSBuffer(parsedProto.proto).validate(inputValue, parsedProto.schemaId);
     if (vRes.isSucc) {
-        console.log(i18n.validateSucc.green)
+        console.log(chalk.green(i18n.validateSucc))
     }
     else {
         throw error(i18n.validateFail, { msg: vRes.errMsg })

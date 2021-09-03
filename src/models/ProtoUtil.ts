@@ -1,20 +1,23 @@
+import chalk from "chalk";
 import fs from "fs-extra";
 import glob from "glob";
 import path from "path";
-import 'ts-node/register';
 import { EncodeIdUtil, TSBufferProtoGenerator } from "tsbuffer-proto-generator";
 import { Logger, ServiceDef, ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
+import { importTS } from './importTS';
 import { error, formatStr } from "./util";
 
 export class ProtoUtil {
+
     static async loadServiceProto(filepath: string, logger?: Logger): Promise<ServiceProto<any> | undefined> {
+        if (await fs.access(filepath).catch(e => true)) {
+            return undefined;
+        }
+
         if (filepath.endsWith('.ts')) {
-            let module = await import(path.resolve(filepath)).catch(e => {
-                logger?.error(e);
-                return undefined;
-            })
-            if (!module?.serviceProto) {
+            let module = importTS(path.resolve(filepath));
+            if (!module.serviceProto) {
                 throw error(i18n.protoParsedError, { file: path.resolve(filepath) })
             }
             return module.serviceProto;
@@ -129,7 +132,7 @@ export class ProtoUtil {
             let typePath = filepath.replace(/^\.\//, '').replace(/\.ts$/, '');
 
             // 解析conf
-            let tsModule = await import(path.resolve(protocolDir, filepath));
+            let tsModule = importTS(path.resolve(protocolDir, filepath));
             let conf: { [key: string]: any } | undefined = tsModule.conf;
 
             // Ptl 检测 Req 和 Res 类型齐全
@@ -145,8 +148,8 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    !typeProto[res] && console.warn(`[WARN] Missing type 'Res${match[3]}' at: "${filepath}"`.yellow);
-                    !typeProto[req] && console.warn(`[WARN] Missing type 'Req${match[3]}' at: "${filepath}"`.yellow);
+                    !typeProto[res] && console.warn(chalk.yellow(`[WARN] Missing type 'Res${match[3]}' at: "${filepath}"`));
+                    !typeProto[req] && console.warn(chalk.yellow(`[WARN] Missing type 'Req${match[3]}' at: "${filepath}"`));
                 }
             }
             // Msg 检测Msg类型在
@@ -161,7 +164,7 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    console.warn(`Missing type 'Msg${match[3]}' at: ${filepath}`.yellow);
+                    console.warn(chalk.yellow(`Missing type 'Msg${match[3]}' at: ${filepath}`));
                 }
             }
         }
@@ -195,7 +198,7 @@ export class ProtoUtil {
         // process.chdir(originalCwd);
 
         if (canOptimizeByNew && options.oldProto?.path) {
-            console.warn(formatStr(i18n.canOptimizeByNew, { filename: path.basename(options.oldProto?.path) }) + '\n');
+            console.warn(chalk.yellow(formatStr(i18n.canOptimizeByNew, { filename: path.basename(options.oldProto?.path) }) + '\n'));
         }
 
         return {
@@ -209,7 +212,7 @@ export class ProtoUtil {
         newProtoPath: string,
         ugly?: boolean,
         proto: ServiceProto<any>
-    }) {
+    }, logger?: Logger) {
         // TS
         if (options.newProtoPath.endsWith('.ts')) {
             let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
@@ -311,6 +314,6 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
             await fs.ensureDir(path.dirname(options.newProtoPath));
             await fs.writeFile(options.newProtoPath, options.ugly ? JSON.stringify(options.proto) : JSON.stringify(options.proto, null, 2));
         }
-        console.log(formatStr(i18n.protoSucc, { output: path.resolve(options.newProtoPath) }).green);
+        logger?.log(chalk.green(formatStr(i18n.protoSucc, { output: path.resolve(options.newProtoPath) })));
     }
 }

@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { error } from "console";
 import fs from "fs";
 import path from "path";
@@ -45,7 +46,7 @@ export async function cmdDecode(options: CmdDecodeOptions) {
 
     if (options.output) {
         fs.writeFileSync(options.output, JSON.stringify(decodedValue, null, 2));
-        console.log(formatStr(i18n.decodeSucc, { output: options.output }).green)
+        console.log(chalk.green(formatStr(i18n.decodeSucc, { output: options.output })))
     }
     else {
         console.log(colorJson(decodedValue))

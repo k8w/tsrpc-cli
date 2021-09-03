@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { error } from "console";
 import fs from "fs";
 import path from "path";
@@ -60,9 +61,9 @@ export async function cmdEncode(options: CmdEncodeOptions) {
     console.log('编码长度：' + opEncode.buf.byteLength);
     if (options.output) {
         fs.writeFileSync(options.output, opEncode.buf);
-        console.log(formatStr(i18n.encodeSucc, { output: path.resolve(options.output) }).green);
+        console.log(chalk.green(formatStr(i18n.encodeSucc, { output: path.resolve(options.output) })));
     }
     else {
-        console.log(buf2Hex(opEncode.buf).yellow);
+        console.log(chalk.yellow(buf2Hex(opEncode.buf)));
     }
 }
