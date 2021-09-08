@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import fs from "fs";
 import minimist from 'minimist';
 import 'node-json-color-stringify';
 import path from "path";
@@ -115,10 +114,11 @@ async function main() {
     }
     // Sync
     else if (args._[0] === 'sync') {
-        cmdSync({
+        await cmdSync({
             from: args.from,
             to: args.to,
-            verbose: args.verbose
+            verbose: args.verbose,
+            config: conf
         })
     }
     // Build
@@ -133,7 +133,8 @@ async function main() {
         await cmdLink({
             from: args.from,
             to: args.to,
-            verbose: args.verbose
+            verbose: args.verbose,
+            config: conf
         })
     }
     // Error

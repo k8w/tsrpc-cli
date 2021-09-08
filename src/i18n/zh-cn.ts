@@ -24,11 +24,13 @@ export const i18nZhCn = {
         --from <dir>
         --to <dir>   
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
+                                            根据配置文件，初始化 Symlink 或只读复制文件
 
     tsrpc link <options>                 在目标位置创建到源的 Symlink，以实现自动同步
         --from <dir>
         --to <dir>   
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
+                                            根据配置文件，初始化 Symlink
 
     tsrpc dev <options>                  启动本地开发服务器，当源代码变更时自动重启
         --proto
@@ -105,4 +107,5 @@ export const i18nZhCn = {
     confNotExists: '配置文件不存在: ${path}',
     confInvalid: '配置文件解析失败: ${path}',
     missingConfigItem: (itemName: string) => `配置文件中缺少配置项 '${itemName}'`,
+    nothingSyncConf: '配置文件中没有配置 sync 项目'
 }

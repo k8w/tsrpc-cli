@@ -92,4 +92,5 @@ Example：
     confNotExists: 'Config file not exists: ${path}',
     confInvalid: 'Invalid TSRPC config file: ${path}',
     missingConfigItem: (itemName: string) => `Missing '${itemName}' in config file`,
+    nothingSyncConf: `'sync' is not configurated in the config file`
 }

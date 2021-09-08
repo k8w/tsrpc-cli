@@ -2,52 +2,79 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import inquirer from "inquirer";
 import path from "path";
+import { Logger } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
+import { CliUtil } from "../models/CliUtil";
+import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error, formatStr } from "../models/util";
 
-export interface CmdLinkOptions {
+export type CmdLinkOptions = {
     from: string | undefined,
     to: string | undefined,
-    verbose: boolean | undefined
+    verbose: boolean | undefined,
+    config: undefined
+} | {
+    config: TsrpcConfig
 }
 
 export async function cmdLink(options: CmdLinkOptions) {
-    // Validate options
-    if (!options.from) {
-        throw error(i18n.missingParam, { param: 'from' });
-    }
-    if (!options.to) {
-        throw error(i18n.missingParam, { param: 'to' });
-    }
-    if (!fs.existsSync(options.from)) {
-        throw error(i18n.dirNotExists, { dir: path.resolve(options.from) })
-    }
-
-    if (!fs.existsSync(path.join(options.to, '../'))) {
-        let dir = path.resolve(options.to, '../');
-        fs.mkdirSync(dir, { recursive: true });
-        options.verbose && console.log('mkdir: ' + dir);
-    }
-    if (fs.existsSync(options.to)) {
-        if ((await inquirer.prompt({
-            type: 'confirm',
-            message: chalk.yellow(formatStr(i18n.deleteConfirm, { target: path.resolve(options.to) })),
-            name: 'res'
-        })).res) {
-            fs.removeSync(options.to);
+    if (options.config) {
+        if (!options.config.sync?.length) {
+            console.log(chalk.yellow(i18n.nothingSyncConf));
+            return;
         }
-        else {
-            console.log(chalk.gray(i18n.canceled));
-            process.exit(0);
-        }
-    }
 
-    let target = path.relative(path.dirname(options.to), options.from);
-    options.verbose && console.log(`path: ${path.resolve(options.to)}, target: ${target}`)
-    fs.symlinkSync(target, options.to, 'junction');
-    console.log(chalk.bgGreen.white(i18n.success));
+        let linkConfs = options.config.sync.filter(v => v.type === 'symlink');
+        for (let item of linkConfs) {
+            CliUtil.doing(`Linking: ${item.from} -> ${item.to} ...`);
+            await ensureSymlink(item.from, item.to, options.config.verbose ? console : undefined);
+            CliUtil.done(true);
+        }
+
+        CliUtil.done(true, `All linked successfully`)
+    }
+    else {
+        // Validate options
+        if (!options.from) {
+            throw error(i18n.missingParam, { param: 'from' });
+        }
+        if (!options.to) {
+            throw error(i18n.missingParam, { param: 'to' });
+        }
+
+        CliUtil.doing(`Linking: '${path.resolve(options.from)}' -> '${path.resolve(options.to)}' ...`);
+        ensureSymlink(options.from, options.to, options.verbose ? console : undefined);
+        CliUtil.done(true, 'Linked successfully')
+    }
 }
 
-export function ensureSymlink(src: string, dest: string, verbose?: boolean) {
-    
+export async function ensureSymlink(src: string, dst: string, logger?: Logger) {
+    await fs.ensureDir(src);
+
+    let err = await fs.ensureSymlink(src, dst, 'junction').catch(e => e);
+
+    // 创建失败（文件已存在），提示删除 然后重试
+    if (err?.code === 'EEXIST') {
+        if ((await inquirer.prompt({
+            type: 'confirm',
+            message: chalk.yellow(formatStr(i18n.deleteConfirm, { target: path.resolve(dst) })),
+            name: 'res'
+        })).res) {
+            await fs.remove(dst);
+        }
+        else {
+            throw new Error(i18n.canceled);
+        }
+
+        // 重试
+        err = await fs.ensureSymlink(src, dst, 'junction').catch(e => e);
+    }
+
+    // Fail
+    if (err) {
+        throw err;
+    }
+
+    // Success
+    return;
 }
