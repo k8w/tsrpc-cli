@@ -3,13 +3,15 @@ import fs from "fs-extra";
 import path from "path";
 import { i18n } from "../i18n/i18n";
 import { CliUtil } from "../models/CliUtil";
+import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
 
-export interface CmdSyncOptions {
+export type CmdSyncOptions = {
     from: string | undefined,
     to: string | undefined,
-    verbose: boolean | undefined
-}
+    verbose: boolean | undefined,
+    config: undefined
+} | { config: TsrpcConfig }
 
 export function cmdSync(options: CmdSyncOptions) {
     // Validate options
@@ -31,7 +33,7 @@ export function cmdSync(options: CmdSyncOptions) {
     CliUtil.done(true, 'Synced successfully')
 }
 
-function copyDirReadonly(src: string, dest: string, verbose?: boolean) {
+export function copyDirReadonly(src: string, dest: string, verbose?: boolean) {
     if (!fs.existsSync(dest)) {
         fs.mkdirSync(dest, { recursive: true })
     }

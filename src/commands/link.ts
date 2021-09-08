@@ -47,3 +47,7 @@ export async function cmdLink(options: CmdLinkOptions) {
     fs.symlinkSync(target, options.to, 'junction');
     console.log(chalk.bgGreen.white(i18n.success));
 }
+
+export function ensureSymlink(src: string, dest: string, verbose?: boolean) {
+    
+}
