@@ -4,13 +4,13 @@ const tsrpcConf: TsrpcConfig = {
     proto: [
         {
             input: 'protocols',
-            output: 'output/serviceProto.ts',
+            output: 'output/proto/serviceProto.ts',
             api: 'api'
         },
         {
             input: 'protocols',
             ignore: 'protocols/a/**',
-            output: 'output/serviceProto1.ts',
+            output: 'output/proto/serviceProto1.ts',
             api: 'api'
         }
     ],

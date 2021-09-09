@@ -19,8 +19,8 @@ describe('proto', function () {
 
         let res = execSync(`node -r ts-node/register src/index.ts proto --config test/configs/absolutePath.ts`);
         assert.strictEqual(res.toString(), [
-            path.resolve(__dirname, '../output/serviceProto.ts'),
-            path.resolve(__dirname, '../output/serviceProto1.ts'),
+            path.resolve(__dirname, '../output/proto/serviceProto.ts'),
+            path.resolve(__dirname, '../output/proto/serviceProto1.ts'),
         ].map(v => formatStr(i18n.protoSucc, { output: v })).join('\n') + '\n')
     })
 
@@ -30,8 +30,8 @@ describe('proto', function () {
 
         let res = execSync(`node -r ts-node/register ../src/index.ts proto --config configs/relativePath.config.ts`);
         assert.strictEqual(res.toString(), [
-            path.resolve(__dirname, '../output/serviceProto.ts'),
-            path.resolve(__dirname, '../output/serviceProto1.ts'),
+            path.resolve(__dirname, '../output/proto/serviceProto.ts'),
+            path.resolve(__dirname, '../output/proto/serviceProto1.ts'),
         ].map(v => formatStr(i18n.protoSucc, { output: v })).join('\n') + '\n')
     })
 
@@ -39,15 +39,15 @@ describe('proto', function () {
         fs.rmSync(path.resolve(__dirname, '../output'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../'));
 
-        let res = spawnSync('node', ['-r', 'ts-node/register', '../src/index.ts', 'proto', '--input', 'protocols', '--output', 'output/serviceProto.ts']);
-        assert.strictEqual(res.stdout.toString(), formatStr(i18n.protoSucc, { output: path.resolve(__dirname, '../output/serviceProto.ts') }) + '\n');
+        let res = spawnSync('node', ['-r', 'ts-node/register', '../src/index.ts', 'proto', '--input', 'protocols', '--output', 'output/proto/serviceProto.ts']);
+        assert.strictEqual(res.stdout.toString(), formatStr(i18n.protoSucc, { output: path.resolve(__dirname, '../output/proto/serviceProto.ts') }) + '\n');
         // assert.strictEqual(res.stderr.toString(), formatStr(i18n.canOptimizeByNew, { filename: 'serviceProto.ts' }) + '\n');
     })
 
     it('compatible (without config)', async function () {
         process.chdir(path.resolve(__dirname, '../'));
 
-        let proto = await ProtoUtil.loadServiceProto('output/serviceProto.ts');
+        let proto = await ProtoUtil.loadServiceProto('output/proto/serviceProto.ts');
         assert.deepStrictEqual(proto, {
             "services": [
                 {
@@ -169,18 +169,18 @@ describe('proto', function () {
         ];
         await ProtoUtil.outputProto({
             protocolDir: path.resolve(__dirname, '../protocols'),
-            newProtoPath: path.resolve(__dirname, '../output/serviceProto.ts'),
+            newProtoPath: path.resolve(__dirname, '../output/proto/serviceProto.ts'),
             proto: proto
         });
 
-        let res = spawnSync('node', ['-r', 'ts-node/register', '../src/index.ts', 'proto', '--input', 'protocols', '--output', 'output/serviceProto.ts']);
+        let res = spawnSync('node', ['-r', 'ts-node/register', '../src/index.ts', 'proto', '--input', 'protocols', '--output', 'output/proto/serviceProto.ts']);
         assert.strictEqual(res.stdout.toString(),
-            formatStr(i18n.protoSucc, { output: path.resolve(__dirname, '../output/serviceProto.ts') })
+            formatStr(i18n.protoSucc, { output: path.resolve(__dirname, '../output/proto/serviceProto.ts') })
             + '\n'
         );
         assert.strictEqual(res.stderr.toString(), formatStr(i18n.canOptimizeByNew, { filename: 'serviceProto.ts' }) + '\n\n');
 
-        let proto1 = await ProtoUtil.loadServiceProto(path.resolve(__dirname, '../output/serviceProto.ts'));
+        let proto1 = await ProtoUtil.loadServiceProto(path.resolve(__dirname, '../output/proto/serviceProto.ts'));
         assert.deepStrictEqual(proto1?.services, [
             {
                 "id": 141,
