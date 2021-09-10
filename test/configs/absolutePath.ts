@@ -17,13 +17,13 @@ const tsrpcConf: TsrpcConfig = {
     ],
     sync: [
         {
-            from: path.resolve(__dirname, '../output'),
-            to: path.resolve(__dirname, '../output'),
+            from: path.resolve(__dirname, '../output/proto'),
+            to: path.resolve(__dirname, '../output/sync/symlink'),
             type: 'symlink'
         },
         {
-            from: path.resolve(__dirname, '../output'),
-            to: path.resolve(__dirname, '../output'),
+            from: path.resolve(__dirname, '../output/proto'),
+            to: path.resolve(__dirname, '../output/sync/copy'),
             type: 'copy'
         }
     ],

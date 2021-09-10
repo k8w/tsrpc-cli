@@ -9,7 +9,7 @@ import { ProtoUtil } from '../../src/models/ProtoUtil';
 import { formatStr } from '../../src/models/util';
 
 describe('proto', function () {
-    this.beforeAll(function () {
+    before(function () {
         const ctx = new chalk.Instance({ level: 0 });
     })
 

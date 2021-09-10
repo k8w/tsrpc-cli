@@ -26,12 +26,12 @@ export async function cmdLink(options: CmdLinkOptions) {
 
         let linkConfs = options.config.sync.filter(v => v.type === 'symlink');
         for (let item of linkConfs) {
-            CliUtil.doing(`Linking: ${item.from} -> ${item.to} ...`);
+            CliUtil.doing(`${i18n.link} ${item.from} -> ${item.to}`);
             await ensureSymlink(item.from, item.to, options.config.verbose ? console : undefined);
             CliUtil.done(true);
         }
 
-        CliUtil.done(true, `All linked successfully`)
+        CliUtil.done(true, i18n.allLinkedSucc)
     }
     else {
         // Validate options
@@ -42,9 +42,9 @@ export async function cmdLink(options: CmdLinkOptions) {
             throw error(i18n.missingParam, { param: 'to' });
         }
 
-        CliUtil.doing(`Linking: '${path.resolve(options.from)}' -> '${path.resolve(options.to)}' ...`);
+        CliUtil.doing(`${i18n.link} '${path.resolve(options.from)}' -> '${path.resolve(options.to)}'`);
         ensureSymlink(options.from, options.to, options.verbose ? console : undefined);
-        CliUtil.done(true, 'Linked successfully')
+        CliUtil.done(true, i18n.linkedSucc)
     }
 }
 
@@ -55,6 +55,8 @@ export async function ensureSymlink(src: string, dst: string, logger?: Logger) {
 
     // 创建失败（文件已存在），提示删除 然后重试
     if (err?.code === 'EEXIST') {
+        let isSpining = CliUtil.spinner.isSpinning;
+        isSpining && CliUtil.spinner.stop();
         if ((await inquirer.prompt({
             type: 'confirm',
             message: chalk.yellow(formatStr(i18n.deleteConfirm, { target: path.resolve(dst) })),
@@ -67,6 +69,7 @@ export async function ensureSymlink(src: string, dst: string, logger?: Logger) {
         }
 
         // 重试
+        isSpining && CliUtil.spinner.start();
         err = await fs.ensureSymlink(src, dst, 'junction').catch(e => e);
     }
 

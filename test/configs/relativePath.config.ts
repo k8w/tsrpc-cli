@@ -16,13 +16,13 @@ const tsrpcConf: TsrpcConfig = {
     ],
     sync: [
         {
-            from: 'protocols',
-            to: 'protocols_link',
+            from: 'output/proto',
+            to: 'output/sync/symlink',
             type: 'symlink'
         },
         {
-            from: 'protocols',
-            to: 'protocols_copy',
+            from: 'output/proto',
+            to: 'output/sync/copy',
             type: 'copy'
         }
     ],

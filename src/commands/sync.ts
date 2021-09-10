@@ -27,17 +27,17 @@ export async function cmdSync(options: CmdSyncOptions) {
 
         for (let item of options.config.sync) {
             if (item.type === 'copy') {
-                CliUtil.doing(`Copying: ${item.from} -> ${item.to} ...`);
+                CliUtil.doing(`${i18n.copy} "${item.from}" -> "${item.to}"`);
                 await copyDirReadonly(item.from, item.to, logger);
             }
             else if (item.type === 'symlink') {
-                CliUtil.doing(`Linking: ${item.from} -> ${item.to} ...`);
+                CliUtil.doing(`${i18n.link} "${item.from}" -> "${item.to}"`);
                 await ensureSymlink(item.from, item.to, logger);
             }
             CliUtil.done(true);
         }
 
-        CliUtil.done(true, `All Synced successfully`)
+        console.log(chalk.green(i18n.allSyncedSucc))
     }
     else {
         // Validate options
@@ -51,21 +51,22 @@ export async function cmdSync(options: CmdSyncOptions) {
             throw error(i18n.dirNotExists, { dir: path.resolve(options.from) })
         }
 
-        CliUtil.doing(`Syncing: '${path.resolve(options.from)}' -> '${path.resolve(options.to)}' ...`);
+        CliUtil.doing(`${i18n.copy} '${path.resolve(options.from)}' -> '${path.resolve(options.to)}'`);
         copyDirReadonly(options.from, options.to, options.verbose ? console : undefined);
-        CliUtil.done(true, 'Synced successfully')
+        CliUtil.done(true);
+        console.log(chalk.green(i18n.syncedSucc))
     }
 }
 
 export async function copyDirReadonly(src: string, dst: string, logger?: Logger) {
     // Clean
-    logger?.debug(`Start to clean '${dst}'...`)
+    logger?.debug(`Start to clean '${dst}'`)
     await fs.remove(dst);
     await fs.ensureDir(dst);
     logger?.debug(`Cleaned succ`)
 
     // Copy
-    logger?.debug(`Start to copy '${src}' to '${dst}' ...`)
+    logger?.debug(`Start to copy '${src}' to '${dst}'`)
     await fs.copy(src, dst);
     logger?.debug('Copyed succ');
 
@@ -74,7 +75,7 @@ export async function copyDirReadonly(src: string, dst: string, logger?: Logger)
 }
 
 export async function setReadonlyRecursive(dst: string, logger?: Logger) {
-    logger?.debug(`Start to setReadonlyRecursive to '${dst}' ...`)
+    logger?.debug(`Start to setReadonlyRecursive to '${dst}'`)
     let items = await new Promise<string[]>((rs, rj) => {
         glob(path.resolve(dst, '**'), (err, matches) => {
             err ? rj() : rs(matches);

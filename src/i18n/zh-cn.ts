@@ -107,5 +107,11 @@ export const i18nZhCn = {
     confNotExists: '配置文件不存在: ${path}',
     confInvalid: '配置文件解析失败: ${path}',
     missingConfigItem: (itemName: string) => `配置文件中缺少配置项 '${itemName}'`,
-    nothingSyncConf: '配置文件中没有配置 sync 项目'
+    nothingSyncConf: '配置文件中没有配置 sync 项目',
+    syncedSucc: '✔ 同步完成',
+    allSyncedSucc: '✔ 已完成所有同步',
+    copy: '复制文件: ',
+    link: '创建 Symlink: ',
+    linkedSucc: '✔ Symlink 创建成功',
+    allLinkedSucc: '✔ 已完成所有 Symlink 创建',
 }

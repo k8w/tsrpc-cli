@@ -3,8 +3,9 @@ module.exports = {
         'ts-node/register',
     ],
     spec: [
-        './test/**/*.test.ts',
+        // './test/cases/proto.test.ts',
+        './test/cases/sync.test.ts',
     ],
     exit: true,
-    // fgrep: 'AAA'
+    fgrep: 'without config'
 }
