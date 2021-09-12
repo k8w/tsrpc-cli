@@ -6,9 +6,9 @@ import 'k8w-extend-native';
 import path from "path";
 import process from "process";
 import { i18n } from '../../src/i18n/i18n';
-import { TestUtil } from './TestUtil';
+import { TestUtil } from "./TestUtil";
 
-describe('sync', function () {
+describe('link', function () {
     before(function () {
         const ctx = new chalk.Instance({ level: 0 });
     })
@@ -17,19 +17,17 @@ describe('sync', function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../../'));
 
-        let res = execSync(`node -r ts-node/register src/index.ts sync --config test/configs/absolutePath.ts`);
-        assert.strictEqual(res.toString().split('\n').filter(v => v).last(), i18n.allSyncedSucc)
-        TestUtil.assertDirSame(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/copy'));
+        let res = execSync(`node -r ts-node/register src/index.ts link --config test/configs/absolutePath.ts`);
+        assert.strictEqual(res.toString().split('\n').filter(v => v).last(), i18n.allLinkedSucc)
         TestUtil.assertSymlink(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/symlink'));
-    });
+    })
 
     it('with config (relative path)', function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../'));
 
-        let res = execSync(`node -r ts-node/register ../src/index.ts sync --config configs/relativePath.config.ts`);
-        assert.strictEqual(res.toString().split('\n').filter(v => v).last(), i18n.allSyncedSucc);
-        TestUtil.assertDirSame(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/copy'));
+        let res = execSync(`node -r ts-node/register ../src/index.ts link --config configs/relativePath.config.ts`);
+        assert.strictEqual(res.toString().split('\n').filter(v => v).last(), i18n.allLinkedSucc);
         TestUtil.assertSymlink(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/symlink'));
     })
 
@@ -37,8 +35,8 @@ describe('sync', function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../'));
 
-        let res = spawnSync('node', ['-r', 'ts-node/register', '../src/index.ts', 'sync', '--from', 'output/proto', '--to', 'output/sync/copy']);
-        assert.strictEqual(res.stdout.toString().split('\n').filter(v => v).last(), i18n.syncedSucc);
-        TestUtil.assertDirSame(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/copy'));
+        let res = spawnSync('node', ['-r', 'ts-node/register', '../src/index.ts', 'link', '--from', 'output/proto', '--to', 'output/sync/symlink']);
+        assert.strictEqual(res.stdout.toString().split('\n').filter(v => v).last(), i18n.linkedSucc);
+        TestUtil.assertSymlink(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/symlink'));
     })
 })

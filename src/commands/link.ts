@@ -31,7 +31,7 @@ export async function cmdLink(options: CmdLinkOptions) {
             CliUtil.done(true);
         }
 
-        CliUtil.done(true, i18n.allLinkedSucc)
+        console.log(chalk.green(i18n.allLinkedSucc))
     }
     else {
         // Validate options
@@ -43,8 +43,9 @@ export async function cmdLink(options: CmdLinkOptions) {
         }
 
         CliUtil.doing(`${i18n.link} '${path.resolve(options.from)}' -> '${path.resolve(options.to)}'`);
-        ensureSymlink(options.from, options.to, options.verbose ? console : undefined);
-        CliUtil.done(true, i18n.linkedSucc)
+        await ensureSymlink(options.from, options.to, options.verbose ? console : undefined);
+        CliUtil.done(true);
+        console.log(chalk.green(i18n.linkedSucc));
     }
 }
 

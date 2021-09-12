@@ -52,7 +52,7 @@ export async function cmdSync(options: CmdSyncOptions) {
         }
 
         CliUtil.doing(`${i18n.copy} '${path.resolve(options.from)}' -> '${path.resolve(options.to)}'`);
-        copyDirReadonly(options.from, options.to, options.verbose ? console : undefined);
+        await copyDirReadonly(options.from, options.to, options.verbose ? console : undefined);
         CliUtil.done(true);
         console.log(chalk.green(i18n.syncedSucc))
     }
