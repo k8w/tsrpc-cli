@@ -75,6 +75,7 @@ Example：
     encodeSucc: '√ Encoded succ to: ${output}',
     decodeSucc: '√ Decoded succ to: ${output}',
     apiSucc: '√ Api${apiName} generated: ${apiPath}',
+    allApiSucc: '√ Success，${newCount} new API generated',
     validateSucc: '√ Validate succ',
     validateFail: '× Validate fail: ${msg}',
     error: ' ERROR ',

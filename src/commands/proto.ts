@@ -35,7 +35,7 @@ export async function cmdProto(options: CmdProtoOptions) {
 
             // new
             let resGenProto = await ProtoUtil.generateServiceProto({
-                protocolDir: conf.input,
+                protocolDir: conf.ptlDir,
                 oldProto: oldProto ? {
                     proto: oldProto,
                     path: oldProtoPath!
@@ -47,7 +47,7 @@ export async function cmdProto(options: CmdProtoOptions) {
 
             // output
             await ProtoUtil.outputProto({
-                protocolDir: conf.input,
+                protocolDir: conf.ptlDir,
                 newProtoPath: conf.output,
                 proto: resGenProto.newProto
             }, console)

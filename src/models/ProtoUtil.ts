@@ -12,33 +12,32 @@ export class ProtoUtil {
 
     static async loadServiceProto(filepath: string, logger?: Logger): Promise<ServiceProto<any> | undefined> {
         if (await fs.access(filepath).catch(e => true)) {
+            logger?.error(formatStr(i18n.fileNotExists, { file: path.resolve(filepath) }))
             return undefined;
         }
 
         if (filepath.endsWith('.ts')) {
             let module = importTS(path.resolve(filepath));
             if (!module.serviceProto) {
-                throw error(i18n.protoParsedError, { file: path.resolve(filepath) })
+                logger?.error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
+                return undefined;
             }
             return module.serviceProto;
         }
         else if (filepath.endsWith('.json')) {
-            if (await fs.access(filepath).catch(e => true)) {
-                throw error(i18n.fileNotExists, { file: path.resolve(filepath) })
-            }
-
             // 打开OldFile
             let fileContent = (await fs.readFile(filepath)).toString()
             try {
                 return JSON.parse(fileContent);
             }
             catch (e) {
-                logger?.error(e);
-                throw new Error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
+                logger?.error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
+                return undefined;
             }
         }
         else {
-            throw error(i18n.invalidProtoExt, { file: path.resolve(filepath) });
+            logger?.warn(formatStr(i18n.invalidProtoExt, { file: path.resolve(filepath) }));
+            return undefined;
         }
     }
 

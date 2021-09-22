@@ -3,15 +3,15 @@ import { TsrpcConfig } from '../../src/models/TsrpcConfig';
 const tsrpcConf: TsrpcConfig = {
     proto: [
         {
-            input: 'protocols',
+            ptlDir: 'protocols',
             output: 'output/proto/serviceProto.ts',
-            api: 'api'
+            apiDir: 'output/api'
         },
         {
-            input: 'protocols',
+            ptlDir: 'protocols',
             ignore: 'protocols/a/**',
             output: 'output/proto/serviceProto1.ts',
-            api: 'api'
+            apiDir: 'output/api'
         }
     ],
     sync: [

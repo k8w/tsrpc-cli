@@ -4,15 +4,15 @@ import { TsrpcConfig } from '../../src/models/TsrpcConfig';
 const tsrpcConf: TsrpcConfig = {
     proto: [
         {
-            input: path.resolve(__dirname, '../protocols'),
+            ptlDir: path.resolve(__dirname, '../protocols'),
             output: path.resolve(__dirname, '../output/proto/serviceProto.ts'),
-            api: path.resolve(__dirname, '../api')
+            apiDir: path.resolve(__dirname, '../output/api')
         },
         {
-            input: path.resolve(__dirname, '../protocols'),
+            ptlDir: path.resolve(__dirname, '../protocols'),
             ignore: path.resolve(__dirname, '../protocols/a/**'),
             output: path.resolve(__dirname, '../output/proto/serviceProto1.ts'),
-            api: path.resolve(__dirname, '../api')
+            apiDir: path.resolve(__dirname, '../output/api')
         }
     ],
     sync: [

@@ -67,7 +67,8 @@ async function main() {
     else if (args._[0] === 'api') {
         await cmdApi({
             input: args.input ?? args.i,
-            output: args.output ?? args.o
+            output: args.output ?? args.o,
+            config: conf
         });
     }
     // Encode

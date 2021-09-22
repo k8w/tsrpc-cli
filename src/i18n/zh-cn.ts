@@ -90,6 +90,7 @@ export const i18nZhCn = {
     encodeSucc: '√ 编码结果已生成到：${output}',
     decodeSucc: '√ 解码结果已生成到：${output}',
     apiSucc: '√ Api${apiName} 生成成功: ${apiPath}',
+    allApiSucc: '√ 完成，共生成 ${newCount} 个新的 API 文件。',
     validateSucc: '√ 验证通过',
     validateFail: '× 验证不通过: ${msg}',
     error: ' 错误 ',

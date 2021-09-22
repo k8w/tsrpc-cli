@@ -7,7 +7,7 @@ export interface TsrpcConfig {
         /**
          * protocols 协议目录
          */
-        input: string,
+        ptlDir: string,
         /**
          * 生成协议时忽略的文件（Glob表达式）
          */
@@ -21,7 +21,7 @@ export interface TsrpcConfig {
          * 该 ServiceProto 对应的 API 目录，则可通过 `npx tsrpc api` 自动生成对应的 API 文件。
          * 例如 `src/api`
          */
-        api?: string,
+        apiDir?: string,
         /**
          * 生成 ServiceProto 时，要兼容的上一版 ServiceProto 的路径。
          * @defaultValue 同 `output`，即原地兼容旧版同名文件。
