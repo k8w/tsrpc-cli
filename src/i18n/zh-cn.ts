@@ -4,6 +4,7 @@ export const i18nZhCn = {
 使用说明：
 
     tsrpc proto <options>                生成TSRPC Proto文件
+        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
         -i, --input <folder>                用来生成Proto的协议文件夹路径
         -o, --output <file>                 输出的文件路径，不指定将直接输出到命令行
                                             -o XXX.ts 和 -o XXX.json 将对应输出两种不同的格式
@@ -13,29 +14,25 @@ export const i18nZhCn = {
         --verbose                           显示调试信息
         --ignore <glob>                     从--input范围中要忽略的文件，Glob 表达式
                                             支持传入多个，例如 --ignore "AAA" --ignore "BBB"
-        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
 
     tsrpc api <options>                  自动生成TSRPC API实现
+        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
         -i, --input <file>                  Proto文件的路径
         -o, --output <folder>               输出的API文件夹路径
-        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
 
     tsrpc sync <options>                 同步文件夹内容，以只读方式同步到目标位置
-        --from <dir>
-        --to <dir>   
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
                                             根据配置文件，初始化 Symlink 或只读复制文件
-
-    tsrpc link <options>                 在目标位置创建到源的 Symlink，以实现自动同步
         --from <dir>
         --to <dir>   
+
+    tsrpc link <options>                 在目标位置创建到源的 Symlink，以实现自动同步
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
                                             根据配置文件，初始化 Symlink
+        --from <dir>
+        --to <dir>   
 
     tsrpc dev <options>                  启动本地开发服务器，当源代码变更时自动重启
-        --proto
-        --sync
-        --api
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
 
     tsrpc build <options>                构建 TSRPC 后端项目
