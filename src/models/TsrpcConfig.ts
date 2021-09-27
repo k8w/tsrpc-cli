@@ -92,17 +92,17 @@ export interface TsrpcConfig {
     build?: {
         /** 
          * 构建前是否重新生成 ServiceProto
-         * @defaultValue 同 dev 或为 true
+         * @defaultValue true
          */
         autoProto?: boolean,
         /** 
          * 构建时重新生成 ServiceProto 后，是否立即同步到目标位置（仅对 `type: 'copy'` 的项生效）
-         * @defaultValue 同 dev 或为 true
+         * @defaultValue true
          */
         autoSync?: boolean,
         /**
          * 自动重新生成 ServiceProto 后，是否自动生成新的 API 文件
-         * @defaultValue 同 dev 或为 true
+         * @defaultValue true
          */
         autoApi?: boolean,
     },
