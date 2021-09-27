@@ -6,6 +6,7 @@ import { EncodeIdUtil, TSBufferProtoGenerator } from "tsbuffer-proto-generator";
 import { Logger, ServiceDef, ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
 import { importTS } from './importTS';
+import { TsrpcConfig } from "./TsrpcConfig";
 import { error, formatStr } from "./util";
 
 export class ProtoUtil {
@@ -77,6 +78,7 @@ export class ProtoUtil {
             path: string
         },
         ignore?: string[] | string,
+        checkOptimize?: boolean,
         verbose?: boolean,
     }): Promise<{
         newProto: ServiceProto<any>,
@@ -196,8 +198,8 @@ export class ProtoUtil {
         };
         // process.chdir(originalCwd);
 
-        if (canOptimizeByNew && options.oldProto?.path) {
-            console.warn(chalk.yellow(formatStr(i18n.canOptimizeByNew, { filename: path.basename(options.oldProto?.path) }) + '\n'));
+        if (options.checkOptimize && canOptimizeByNew && options.oldProto?.path) {
+            console.warn(chalk.yellow(i18n.canOptimizeByNew(path.resolve(options.oldProto.path)) + '\n'));
         }
 
         return {
@@ -314,5 +316,49 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
             await fs.writeFile(options.newProtoPath, options.ugly ? JSON.stringify(options.proto) : JSON.stringify(options.proto, null, 2));
         }
         logger?.log(chalk.green(formatStr(i18n.protoSucc, { output: path.resolve(options.newProtoPath) })));
+    }
+
+    static async loadOldProtoByConfigItem(confItem: Pick<NonNullable<TsrpcConfig['proto']>[0], 'compatible' | 'output'>, verbose: boolean | undefined): Promise<{
+        proto: ServiceProto<any>,
+        path: string
+    } | undefined> {
+        // old
+        let oldProtoPath = confItem.compatible ?? confItem.output;
+        let oldProto: ServiceProto<any> | undefined;
+        if (oldProtoPath) {
+            oldProto = await ProtoUtil.loadServiceProto(oldProtoPath, verbose ? console : undefined);
+        }
+        verbose && console.log(`oldProtoPath: ${oldProtoPath}, hasOldProto=${!!oldProto}`);
+
+        return oldProto ? {
+            proto: oldProto,
+            path: oldProtoPath as string
+        } : undefined;
+    }
+
+    static async genProtoByConfigItem(confItem: Pick<NonNullable<TsrpcConfig['proto']>[0], 'ptlDir' | 'ignore' | 'output'>, old: {
+        proto: ServiceProto<any>,
+        path: string
+    } | undefined, verbose: boolean | undefined, checkOptimize: boolean|undefined) {
+        // new
+        let resGenProto = await ProtoUtil.generateServiceProto({
+            protocolDir: confItem.ptlDir,
+            oldProto: old,
+            ignore: confItem.ignore,
+            verbose: verbose,
+            checkOptimize: checkOptimize
+        })
+        verbose && console.log(`Proto generated succ, start to write output file...`);
+
+        // output
+        await ProtoUtil.outputProto({
+            protocolDir: confItem.ptlDir,
+            newProtoPath: confItem.output,
+            proto: resGenProto.newProto
+        }, console)
+
+        verbose && console.log(`Finish: ${confItem.output}...`);
+
+        return resGenProto.newProto;
     }
 }

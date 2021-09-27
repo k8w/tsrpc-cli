@@ -27,7 +27,7 @@ export interface TsrpcConfig {
          * @defaultValue 同 `output`，即原地兼容旧版同名文件。
          * false 代表关闭兼容模式，总是生成全新的 ServiceProto
          */
-        compatible?: string,
+        compatible?: string | false,
     }[],
 
     /**
@@ -43,7 +43,11 @@ export interface TsrpcConfig {
          * - symlink: 通过 Symlink 自动同步，推荐使用此方式。
          * - copy：通过 `npx tsrpc sync` 命令手动将源目录复制粘贴到目标位置，并将目标位置设为只读。
          */
-        type: 'symlink' | 'copy'
+        type: 'symlink' | 'copy',
+        /**
+         * 复制文件前是否先清空目标目录
+         */
+        clean?: boolean
     }[],
 
     /**
@@ -54,42 +58,62 @@ export interface TsrpcConfig {
          * 当协议文件发生变动时，是否自动重新生成 ServiceProto
          * @defaultValue true
          */
-        proto?: boolean,
+        autoProto?: boolean,
         /**
          * 当共享目录内文件变动时，是否自动同步到目标位置（仅对 `type: 'copy'` 的项生效）
          * @defaultValue true
          */
-        sync?: boolean,
+        autoSync?: boolean,
         /**
          * 自动重新生成 ServiceProto 后，是否自动生成新的 API 文件
          * @defaultValue true
          */
-        api?: boolean,
+        autoApi?: boolean,
         /**
-         * 当这些文件（Glob 表达式）变化时，重启本地服务
+         * 当这些目录下内容变化时，重启本地服务
+         * @defaultValue src
          */
-        watchFiles?: string | string[],
+        watch?: string | string[],
         /**
          * 重启本地服务时使用的命令
-         * @defaultValue `ts-node "src/index.ts"`
+         * @defaultValue `node -r ts-node/register "src/index.ts"`
          */
-        cmd?: string,
+        command?: string,
+        /**
+         * Watch 文件变动后，延迟多久触发命令（期间如果有新变动，则顺延延迟时间）
+         * @defaultValue 2000
+         */
+        delay?: number,
     },
 
     /**
      * `tsrpc build` 命令的相关配置
      */
     build?: {
-        /** 构建前是否重新生成 ServiceProto */
-        proto?: boolean,
-        /** 构建时重新生成 ServiceProto 后，是否立即同步到目标位置（仅对 `type: 'copy'` 的项生效） */
-        sync?: boolean,
+        /** 
+         * 构建前是否重新生成 ServiceProto
+         * @defaultValue 同 dev 或为 true
+         */
+        autoProto?: boolean,
+        /** 
+         * 构建时重新生成 ServiceProto 后，是否立即同步到目标位置（仅对 `type: 'copy'` 的项生效）
+         * @defaultValue 同 dev 或为 true
+         */
+        autoSync?: boolean,
         /**
          * 自动重新生成 ServiceProto 后，是否自动生成新的 API 文件
-         * @defaultValue true
+         * @defaultValue 同 dev 或为 true
          */
-        api?: boolean,
+        autoApi?: boolean,
     },
+
+    /** 工作目录 */
+    cwd?: string,
+
+    /**
+     * 生成 ServiceProto 时，是否自动检测协议中的冗余信息并在控制台报警
+     */
+    checkOptimizableProto?: boolean,
 
     /**
      * 在控制台显示详细的调试信息

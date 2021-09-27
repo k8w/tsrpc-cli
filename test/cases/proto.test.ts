@@ -178,7 +178,7 @@ describe('proto', function () {
             formatStr(i18n.protoSucc, { output: path.resolve(__dirname, '../output/proto/serviceProto.ts') })
             + '\n'
         );
-        assert.strictEqual(res.stderr.toString(), formatStr(i18n.canOptimizeByNew, { filename: 'serviceProto.ts' }) + '\n\n');
+        assert.strictEqual(res.stderr.toString(), i18n.canOptimizeByNew(path.resolve(__dirname, '../output/proto/serviceProto.ts')) + '\n\n');
 
         let proto1 = await ProtoUtil.loadServiceProto(path.resolve(__dirname, '../output/proto/serviceProto.ts'));
         assert.deepStrictEqual(proto1?.services, [

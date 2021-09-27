@@ -1,6 +1,6 @@
 import { TsrpcConfig } from '../../src/models/TsrpcConfig';
 
-const tsrpcConf: TsrpcConfig = {
+export const conf: TsrpcConfig = {
     proto: [
         {
             ptlDir: 'protocols',
@@ -28,4 +28,3 @@ const tsrpcConf: TsrpcConfig = {
     ],
     // verbose: true
 }
-export default tsrpcConf;

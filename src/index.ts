@@ -1,10 +1,11 @@
 import chalk from "chalk";
 import minimist from 'minimist';
 import 'node-json-color-stringify';
-import path from "path";
+import 'k8w-extend-native';
 import { cmdApi } from './commands/api';
 import { cmdBuild } from './commands/build';
 import { cmdDecode } from './commands/decode';
+import { cmdDev } from "./commands/dev";
 import { cmdEncode } from './commands/encode';
 import { cmdLink } from './commands/link';
 import { cmdProto } from './commands/proto';
@@ -14,7 +15,7 @@ import { cmdSync } from './commands/sync';
 import { cmdValidate } from './commands/validate';
 import { i18n } from './i18n/i18n';
 import { CliUtil } from './models/CliUtil';
-import { importTS } from "./models/importTS";
+import { importTsrpcConfig } from "./models/importTS";
 import { TsrpcConfig } from './models/TsrpcConfig';
 import { error, formatStr, showLogo } from './models/util';
 
@@ -35,11 +36,11 @@ main().catch((e: Error) => {
 async function main() {
     let conf: TsrpcConfig | undefined;
     if (args.config) {
-        let confPath = path.resolve(args.config);
-        conf = importTS(confPath).default;
-        if (!conf) {
-            throw error(i18n.confInvalid, { path: confPath })
-        }
+        conf = importTsrpcConfig(args.config);
+    }
+
+    if (conf?.cwd) {
+        process.chdir(conf.cwd);
     }
 
     // Version
@@ -121,6 +122,17 @@ async function main() {
             verbose: args.verbose,
             config: conf
         })
+    }
+    // Dev
+    else if (args._[0] === 'dev') {
+        if (!conf) {
+            throw error(i18n.missingParam, { param: 'config' })
+        }
+        if (!conf.dev) {
+            throw new Error(i18n.missingConfigItem('dev'))
+        }
+        cmdDev({ config: conf });
+        return;
     }
     // Build
     else if (args._[0] === 'build') {

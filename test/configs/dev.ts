@@ -7,12 +7,6 @@ const tsrpcConf: TsrpcConfig = {
             ptlDir: path.resolve(__dirname, '../protocols'),
             output: path.resolve(__dirname, '../output/proto/serviceProto.ts'),
             apiDir: path.resolve(__dirname, '../output/api')
-        },
-        {
-            ptlDir: path.resolve(__dirname, '../protocols'),
-            ignore: path.resolve(__dirname, '../protocols/a/**'),
-            output: path.resolve(__dirname, '../output/proto/serviceProto1.ts'),
-            apiDir: path.resolve(__dirname, '../output/api')
         }
     ],
     sync: [
@@ -28,7 +22,11 @@ const tsrpcConf: TsrpcConfig = {
         }
     ],
     dev: {
-        watch: path.resolve(__dirname, '../src')
+        watch: [
+            path.resolve(__dirname, '../output'),
+            path.resolve(__dirname, '../protocols')
+        ],
+        command: `node -r ts-node/register "server.ts"`
     },
     // verbose: true
 }

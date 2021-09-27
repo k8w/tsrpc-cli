@@ -1,4 +1,3 @@
-import { ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
@@ -26,33 +25,10 @@ export async function cmdProto(options: CmdProtoOptions) {
             options.config.verbose && console.log(`Start to generate ${conf.output}...`);
 
             // old
-            let oldProtoPath = conf.compatible ?? conf.output;
-            let oldProto: ServiceProto<any> | undefined;
-            if (oldProtoPath && !conf) {
-                oldProto = await ProtoUtil.loadServiceProto(oldProtoPath, options.config.verbose ? console : undefined);
-            }
-            options.config.verbose && console.log(`oldProtoPath: ${oldProtoPath}, hasOldProto=${!!oldProto}`);
+            let old = await ProtoUtil.loadOldProtoByConfigItem(conf, options.config.verbose);
 
             // new
-            let resGenProto = await ProtoUtil.generateServiceProto({
-                protocolDir: conf.ptlDir,
-                oldProto: oldProto ? {
-                    proto: oldProto,
-                    path: oldProtoPath!
-                } : undefined,
-                ignore: conf.ignore,
-                verbose: options.config.verbose,
-            })
-            options.config.verbose && console.log(`Proto generated succ, start to write output file...`);
-
-            // output
-            await ProtoUtil.outputProto({
-                protocolDir: conf.ptlDir,
-                newProtoPath: conf.output,
-                proto: resGenProto.newProto
-            }, console)
-
-            options.config.verbose && console.log(`Finish: ${conf.output}...`);
+            await ProtoUtil.genProtoByConfigItem(conf, old, options.config.verbose, options.config.checkOptimizableProto)
         }
     }
     else {
@@ -65,29 +41,16 @@ export async function cmdProto(options: CmdProtoOptions) {
         }
 
         // oldProto
-        let oldProtoPath = options.compatible ?? options.output;
-        let oldProto: ServiceProto<any> | undefined;
-        if (oldProtoPath && !options.new) {
-            oldProto = await ProtoUtil.loadServiceProto(oldProtoPath, options.verbose ? console : undefined);
-        }
+        let old = await ProtoUtil.loadOldProtoByConfigItem({
+            compatible: options.compatible,
+            output: options.output
+        }, options.verbose);
 
         // newProto
-        let resGenProto = await ProtoUtil.generateServiceProto({
-            protocolDir: options.input,
-            oldProto: oldProto ? {
-                proto: oldProto,
-                path: oldProtoPath!
-            } : undefined,
+        await ProtoUtil.genProtoByConfigItem({
+            ptlDir: options.input,
             ignore: options.ignore,
-            verbose: options.verbose,
-        });
-
-        // output
-        await ProtoUtil.outputProto({
-            protocolDir: options.input,
-            newProtoPath: options.output,
-            ugly: options.ugly,
-            proto: resGenProto.newProto
-        }, console)
+            output: options.output
+        }, old, options.verbose, true)
     }
 }
