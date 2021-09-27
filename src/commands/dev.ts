@@ -10,7 +10,7 @@ import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { genApiFiles } from "./api";
 import { ensureSymlink } from "./link";
-import { syncByConfigItem } from "./sync";
+import { copyDirReadonly } from "./sync";
 
 const DEFAULT_DELAY = 1000;
 
@@ -45,7 +45,7 @@ export async function cmdDev(options: CmdDevOptions) {
 
             delayWatch({
                 matches: confItem.ptlDir,
-                ignore: confItem.output,
+                ignore: [confItem.output, ...(confItem.compatible ? [confItem.compatible] : []), ...(confItem.ignore ?? [])],
                 onTrigger: async () => {
                     let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto).catch(e => {
                         console.error(e.message);
@@ -81,7 +81,8 @@ export async function cmdDev(options: CmdDevOptions) {
                 onTrigger: async (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', filepath: string, stats?: Stats) => {
                     // 仅第一次全量
                     if (!isInited) {
-                        await syncByConfigItem(confItem, conf.verbose ? console : undefined);
+                        await copyDirReadonly(confItem.from, confItem.to, options.config.verbose ? console : undefined);
+                        console.log(chalk.green(`✔ ${i18n.copy} "${confItem.from}" -> "${confItem.to}"`));
                         isInited = true;
                     }
                     // 后续改为增量

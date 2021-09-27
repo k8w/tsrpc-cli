@@ -25,7 +25,15 @@ export async function cmdSync(options: CmdSyncOptions) {
 
         const logger = options.config.verbose ? console : undefined;
         for (let item of options.config.sync) {
-            await syncByConfigItem(item, logger);
+            if (item.type === 'copy') {
+                CliUtil.doing(`${i18n.copy} "${item.from}" -> "${item.to}"`);
+                await copyDirReadonly(item.from, item.to, logger);
+            }
+            else if (item.type === 'symlink') {
+                CliUtil.doing(`${i18n.link} "${item.from}" -> "${item.to}"`);
+                await ensureSymlink(item.from, item.to, logger);
+            }
+            CliUtil.done(true);
         }
 
         console.log(chalk.green(i18n.allSyncedSucc))
@@ -83,16 +91,4 @@ export async function setReadonlyRecursive(dst: string, logger?: Logger) {
     }
 
     logger?.debug('setReadonlyRecursive succ');
-}
-
-export async function syncByConfigItem(confItem: NonNullable<TsrpcConfig['sync']>[0], logger: Logger | undefined) {
-    if (confItem.type === 'copy') {
-        CliUtil.doing(`${i18n.copy} "${confItem.from}" -> "${confItem.to}"`);
-        await copyDirReadonly(confItem.from, confItem.to, logger);
-    }
-    else if (confItem.type === 'symlink') {
-        CliUtil.doing(`${i18n.link} "${confItem.from}" -> "${confItem.to}"`);
-        await ensureSymlink(confItem.from, confItem.to, logger);
-    }
-    CliUtil.done(true);
 }
