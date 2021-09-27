@@ -99,4 +99,8 @@ Example：
     link: 'Create Symlink:',
     linkedSucc: '✔ Linked successfully',
     allLinkedSucc: '✔ All linked successfully',
+
+    devServerRestarting: '\n------ Recompiling & Restarting ------\n',
+    executeCmd: '✔ Execute: ',
+
 }

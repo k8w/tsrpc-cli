@@ -114,12 +114,12 @@ export async function cmdDev(options: CmdDevOptions) {
         let restartTimes = devServerRestartTimes;
 
         // 延迟一会，如果没有新的重启请求，则执行重启
-        await new Promise(rs => setTimeout(rs, 500));
+        await new Promise(rs => setTimeout(rs, 200));
         if (devServerRestartTimes !== restartTimes) {
             return;
         }
 
-        console.log(chalk.green('✔ Execute: ') + chalk.cyan(cmdStart) + '\n');
+        console.log(chalk.green(i18n.executeCmd) + chalk.cyan(cmdStart) + '\n');
         devServer = exec(cmdStart);
         devServer.stdout?.pipe(process.stdout);
         devServer.stderr?.pipe(process.stderr);
@@ -130,7 +130,7 @@ export async function cmdDev(options: CmdDevOptions) {
             ++devServerRestartTimes;
 
             if (devServer) {
-                console.log(chalk.yellow('\n------ Recompiling & Restarting ------\n'))
+                console.log(chalk.yellow(i18n.devServerRestarting))
                 await new Promise(rs => {
                     devServer!.once('exit', rs);
                     devServer!.kill();

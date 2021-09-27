@@ -24,9 +24,11 @@ const tsrpcConf: TsrpcConfig = {
     dev: {
         watch: [
             path.resolve(__dirname, '../output'),
-            path.resolve(__dirname, '../protocols')
+            path.resolve(__dirname, '../protocols'),
+            path.resolve(__dirname, '../server.ts'),
         ],
-        command: `node -r ts-node/register "server.ts"`
+        command: `node -r ts-node/register "server.ts"`,
+        delay: 500,
     },
     // verbose: true
 }
