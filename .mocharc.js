@@ -9,5 +9,6 @@ module.exports = {
         './test/cases/api.test.ts',
     ],
     exit: true,
+    timeout: 999999
     // fgrep: 'without config'
 }
