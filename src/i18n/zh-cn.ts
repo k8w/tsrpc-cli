@@ -107,11 +107,12 @@ export const i18nZhCn = {
     nothingSyncConf: '配置文件中没有配置 sync 项目',
     syncedSucc: '✔ 同步完成',
     allSyncedSucc: '✔ 已完成所有同步',
-    copy: '复制文件: ',
-    link: '创建 Symlink: ',
+    copy: '复制文件:',
+    link: '创建 Symlink:',
     linkedSucc: '✔ Symlink 创建成功',
     allLinkedSucc: '✔ 已完成所有 Symlink 创建',
 
-    devServerRestarting: '\n------ Dev Server 自动重启中 ------\n',
-    executeCmd: '✔ 执行命令: ',
+    devServerRestarting: '\n———— Dev Server 自动重启中 ————\n',
+    startDevServer: '✔ 启动本地服务:',
+    devServerStopped: '× Dev Server 已停止运行',
 }

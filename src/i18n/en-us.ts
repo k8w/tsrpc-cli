@@ -101,6 +101,7 @@ Example：
     allLinkedSucc: '✔ All linked successfully',
 
     devServerRestarting: '\n------ Recompiling & Restarting ------\n',
-    executeCmd: '✔ Execute: ',
+    startDevServer: '✔ Start Dev Server:',
+    devServerStopped: '× Dev Server Stopped',
 
 }

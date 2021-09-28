@@ -212,8 +212,17 @@ export class ProtoUtil {
         protocolDir: string,
         newProtoPath: string,
         ugly?: boolean,
-        proto: ServiceProto<any>
+        proto: ServiceProto<any>,
+        /** 当实际 Proto 数据无变化时不重新生成文件 */
+        noEmitWhenNoChange?: boolean
     }, logger?: Logger) {
+        if (options.noEmitWhenNoChange) {
+            let oldProto = await this.loadServiceProto(options.newProtoPath);
+            if (oldProto && JSON.stringify(oldProto) === JSON.stringify(options.proto)) {
+                return;
+            }
+        }
+
         // TS
         if (options.newProtoPath.endsWith('.ts')) {
             let imports: { [path: string]: { srcName: string, asName?: string }[] } = {};
@@ -339,7 +348,7 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
     static async genProtoByConfigItem(confItem: Pick<NonNullable<TsrpcConfig['proto']>[0], 'ptlDir' | 'ignore' | 'output'>, old: {
         proto: ServiceProto<any>,
         path: string
-    } | undefined, verbose: boolean | undefined, checkOptimize: boolean|undefined) {
+    } | undefined, verbose: boolean | undefined, checkOptimize: boolean | undefined, noEmitWhenNoChange?: boolean) {
         // new
         let resGenProto = await ProtoUtil.generateServiceProto({
             protocolDir: confItem.ptlDir,
@@ -354,7 +363,8 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
         await ProtoUtil.outputProto({
             protocolDir: confItem.ptlDir,
             newProtoPath: confItem.output,
-            proto: resGenProto.newProto
+            proto: resGenProto.newProto,
+            noEmitWhenNoChange: noEmitWhenNoChange
         }, console)
 
         verbose && console.log(`Finish: ${confItem.output}...`);

@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { ChildProcess, exec } from "child_process";
+import { ChildProcess, spawn } from "child_process";
 import chokidar from "chokidar";
 import { Stats } from "fs";
 import fse from "fs-extra";
@@ -24,7 +24,9 @@ export async function cmdDev(options: CmdDevOptions) {
     const autoProto = conf.dev?.autoProto ?? true;
     const autoSync = conf.dev?.autoSync ?? true;
     const autoApi = conf.dev?.autoApi ?? true;
-    const cmdStart = conf.dev?.command ?? 'node -r ts-node/register src/index.ts';
+    const entry = conf.dev?.entry ?? 'src/index.ts';
+    const devServerArgs = ['-r', 'ts-node/register', ...(conf.dev?.nodeArgs ?? []), entry];
+    const cmdStart = 'node ' + devServerArgs.map(v => /\s/.test(v) ? `'${v}'` : v).join(' ');
     const watchFiles = conf.dev?.watch ?? 'src';
 
     // Auto Link
@@ -43,27 +45,30 @@ export async function cmdDev(options: CmdDevOptions) {
             // old
             let old = await ProtoUtil.loadOldProtoByConfigItem(confItem, options.config.verbose);
 
+            const onAutoProtoTrigger = async () => {
+                let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto, true).catch(e => {
+                    console.error(e.message);
+                    return undefined;
+                });
+
+                // Auto Api
+                if (autoApi && newProto && confItem.apiDir) {
+                    await genApiFiles({
+                        proto: newProto,
+                        ptlDir: confItem.ptlDir,
+                        apiDir: confItem.apiDir
+                    })
+                }
+            }
+
             delayWatch({
                 matches: confItem.ptlDir,
                 ignore: [confItem.output, ...(confItem.compatible ? [confItem.compatible] : []), ...(confItem.ignore ?? [])],
-                onTrigger: async () => {
-                    let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto).catch(e => {
-                        console.error(e.message);
-                        return undefined;
-                    });
-
-                    // Auto Api
-                    if (autoApi && newProto && confItem.apiDir) {
-                        await genApiFiles({
-                            proto: newProto,
-                            ptlDir: confItem.ptlDir,
-                            apiDir: confItem.apiDir
-                        })
-                    }
-                },
+                onTrigger: onAutoProtoTrigger,
                 delay: conf.dev?.delay ?? DEFAULT_DELAY,
-                watchId: `AutoProto_${conf.proto.indexOf(confItem)}`
-            })
+                watchId: `AutoProto_${conf.proto.indexOf(confItem)}`,
+            });
+            await onAutoProtoTrigger();
         }
     }
 
@@ -81,8 +86,8 @@ export async function cmdDev(options: CmdDevOptions) {
                 onTrigger: async (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', filepath: string, stats?: Stats) => {
                     // 仅第一次全量
                     if (!isInited) {
-                        await copyDirReadonly(confItem.from, confItem.to, options.config.verbose ? console : undefined);
-                        console.log(chalk.green(`✔ ${i18n.copy} "${confItem.from}" -> "${confItem.to}"`));
+                        await copyDirReadonly(confItem.from, confItem.to, !!confItem.clean, options.config.verbose ? console : undefined);
+                        console.log(chalk.green(`✔ ${i18n.copy} '${confItem.from}' -> '${confItem.to}'`));
                         isInited = true;
                     }
                     // 后续改为增量
@@ -98,12 +103,13 @@ export async function cmdDev(options: CmdDevOptions) {
                             if (!eventName.endsWith('Dir')) {
                                 await fse.chmod(dstPath, 0o444);
                             }
-                            console.log(chalk.green(`✔ ${i18n.copy} "${filepath}" -> "${dstPath}"`));
+                            console.log(chalk.green(`✔ ${i18n.copy} '${filepath}' -> '${dstPath}'`));
                         }
                     }
                 },
                 delay: conf.dev?.delay ?? DEFAULT_DELAY,
-                watchId: `AutoSync_${idx}`
+                watchId: `AutoSync_${idx}`,
+
             })
         })
     }
@@ -120,10 +126,11 @@ export async function cmdDev(options: CmdDevOptions) {
             return;
         }
 
-        console.log(chalk.green(i18n.executeCmd) + chalk.cyan(cmdStart) + '\n');
-        devServer = exec(cmdStart);
-        devServer.stdout?.pipe(process.stdout);
-        devServer.stderr?.pipe(process.stderr);
+        console.log(`${chalk.green(i18n.startDevServer)} ${chalk.cyan(cmdStart)}\n`);
+        devServer = spawn('node', devServerArgs, { stdio: 'inherit' });
+        devServer.once('exit', () => {
+            console.log(chalk.red.bold(i18n.devServerStopped));
+        })
     }
     delayWatch({
         matches: watchFiles,
@@ -132,18 +139,22 @@ export async function cmdDev(options: CmdDevOptions) {
 
             if (devServer) {
                 console.log(chalk.yellow(i18n.devServerRestarting))
-                await new Promise(rs => {
-                    devServer!.once('exit', rs);
-                    devServer!.kill();
-                });
-                devServer = undefined;
+                // 还在运行中，kill 之
+                if (devServer.exitCode == null) {
+                    await new Promise(rs => {
+                        devServer!.removeAllListeners('exit');
+                        devServer!.once('exit', rs);
+                        devServer!.kill();
+                    });
+                }
             }
+            devServer = undefined;
         },
         onTrigger: () => {
             startDevServer()
         },
         delay: conf.dev?.delay ?? DEFAULT_DELAY,
-        watchId: 'DEV_SERVER'
+        watchId: 'DEV_SERVER',
     })
     startDevServer()
 }

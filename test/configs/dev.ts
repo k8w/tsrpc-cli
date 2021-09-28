@@ -27,8 +27,9 @@ const tsrpcConf: TsrpcConfig = {
             path.resolve(__dirname, '../protocols'),
             path.resolve(__dirname, '../server.ts'),
         ],
-        command: `node -r ts-node/register "server.ts"`,
-        delay: 500,
+        entry: 'server.ts',
+        // nodeArgs: ['--title=xxx'],
+        // delay: 500,
     },
     // verbose: true
 }

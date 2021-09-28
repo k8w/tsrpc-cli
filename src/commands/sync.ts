@@ -26,11 +26,11 @@ export async function cmdSync(options: CmdSyncOptions) {
         const logger = options.config.verbose ? console : undefined;
         for (let item of options.config.sync) {
             if (item.type === 'copy') {
-                CliUtil.doing(`${i18n.copy} "${item.from}" -> "${item.to}"`);
-                await copyDirReadonly(item.from, item.to, logger);
+                CliUtil.doing(`${i18n.copy} '${item.from}' -> '${item.to}'`);
+                await copyDirReadonly(item.from, item.to, !!item.clean, logger);
             }
             else if (item.type === 'symlink') {
-                CliUtil.doing(`${i18n.link} "${item.from}" -> "${item.to}"`);
+                CliUtil.doing(`${i18n.link} '${item.from}' -> '${item.to}'`);
                 await ensureSymlink(item.from, item.to, logger);
             }
             CliUtil.done(true);
@@ -51,21 +51,23 @@ export async function cmdSync(options: CmdSyncOptions) {
         }
 
         CliUtil.doing(`${i18n.copy} '${path.resolve(options.from)}' -> '${path.resolve(options.to)}'`);
-        await copyDirReadonly(options.from, options.to, options.verbose ? console : undefined);
+        await copyDirReadonly(options.from, options.to, true, options.verbose ? console : undefined);
         CliUtil.done(true);
         console.log(chalk.green(i18n.syncedSucc))
     }
 }
 
-export async function copyDirReadonly(src: string, dst: string, logger?: Logger) {
+export async function copyDirReadonly(src: string, dst: string, clean: boolean, logger?: Logger) {
     // Clean
-    logger?.debug(`Start to clean '${dst}'`)
-    await fs.remove(dst);
-    await fs.ensureDir(dst);
-    logger?.debug(`Cleaned succ`)
+    if (clean) {
+        logger?.debug(`Start to clean '${dst}'`)
+        await fs.remove(dst);
+        logger?.debug(`Cleaned succ`)
+    }
 
     // Copy
     logger?.debug(`Start to copy '${src}' to '${dst}'`)
+    await fs.ensureDir(dst);
     await fs.copy(src, dst);
     logger?.debug('Copyed succ');
 

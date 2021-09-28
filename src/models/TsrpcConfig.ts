@@ -46,6 +46,7 @@ export interface TsrpcConfig {
         type: 'symlink' | 'copy',
         /**
          * 复制文件前是否先清空目标目录
+         * @defaultValue false
          */
         clean?: boolean
     }[],
@@ -75,10 +76,16 @@ export interface TsrpcConfig {
          */
         watch?: string | string[],
         /**
-         * 重启本地服务时使用的命令
-         * @defaultValue `node -r ts-node/register "src/index.ts"`
+         * 重启本地服务时使用的入口点，命令为：
+         * node -r ts-node/register src/index.ts
+         * @defaultValue src/index.ts
          */
-        command?: string,
+        entry?: string,
+        /**
+         * 运行命令的额外参数
+         * node -r ts-node/register ${args} src/index.ts
+         */
+        nodeArgs?: string[],
         /**
          * Watch 文件变动后，延迟多久触发命令（期间如果有新变动，则顺延延迟时间）
          * @defaultValue 2000
