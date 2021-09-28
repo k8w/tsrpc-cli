@@ -104,4 +104,8 @@ Example：
     startDevServer: '✔ Start Dev Server:',
     devServerStopped: '× Dev Server Stopped',
 
+    buildClean: (outDir: string) => `Clean '${outDir}'`,
+    buildTsc: `Compile TypeScript`,
+    buildCopyFiles: `Copy Files`,
+    buildSucc: 'Build Successfully!'
 }

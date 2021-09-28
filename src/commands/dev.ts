@@ -127,10 +127,12 @@ export async function cmdDev(options: CmdDevOptions) {
         }
 
         console.log(`${chalk.green(i18n.startDevServer)} ${chalk.cyan(cmdStart)}\n`);
-        devServer = spawn('node', devServerArgs, { stdio: 'inherit' });
+        devServer = spawn('node', devServerArgs, {
+            stdio: 'inherit'
+        });
         devServer.once('exit', () => {
             console.log(chalk.red.bold(i18n.devServerStopped));
-        })
+        });
     }
     delayWatch({
         matches: watchFiles,

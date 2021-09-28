@@ -219,7 +219,7 @@ export class ProtoUtil {
         if (options.noEmitWhenNoChange) {
             let oldProto = await this.loadServiceProto(options.newProtoPath);
             if (oldProto && JSON.stringify(oldProto) === JSON.stringify(options.proto)) {
-                return;
+                return { emited: false };
             }
         }
 
@@ -325,6 +325,8 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
             await fs.writeFile(options.newProtoPath, options.ugly ? JSON.stringify(options.proto) : JSON.stringify(options.proto, null, 2));
         }
         logger?.log(chalk.green(formatStr(i18n.protoSucc, { output: path.resolve(options.newProtoPath) })));
+
+        return { emited: true };
     }
 
     static async loadOldProtoByConfigItem(confItem: Pick<NonNullable<TsrpcConfig['proto']>[0], 'compatible' | 'output'>, verbose: boolean | undefined): Promise<{

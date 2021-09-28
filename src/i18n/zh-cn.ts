@@ -1,3 +1,4 @@
+
 export const i18nZhCn = {
     welcome: 'https://npmjs.com/tsrpc\n欢迎进入 TSRPC 实用工具 V${version}',
     help: `
@@ -115,4 +116,9 @@ export const i18nZhCn = {
     devServerRestarting: '\n———— Dev Server 自动重启中 ————\n',
     startDevServer: '✔ 启动本地服务:',
     devServerStopped: '× Dev Server 已停止运行',
+
+    buildClean: (outDir: string) => `清空目录 '${outDir}'`,
+    buildTsc: `编译 TypeScript`,
+    buildCopyFiles: `复制文件`,
+    buildSucc:'构建成功！'
 }

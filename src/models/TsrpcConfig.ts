@@ -112,6 +112,11 @@ export interface TsrpcConfig {
          * @defaultValue true
          */
         autoApi?: boolean,
+        /**
+         * 构建后的发布目录，在构建前会先清理此目录
+         * @defaultValue dist
+         */
+        outDir?: string,
     },
 
     /** 工作目录 */

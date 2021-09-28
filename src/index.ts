@@ -1,7 +1,7 @@
 import chalk from "chalk";
+import 'k8w-extend-native';
 import minimist from 'minimist';
 import 'node-json-color-stringify';
-import 'k8w-extend-native';
 import { cmdApi } from './commands/api';
 import { cmdBuild } from './commands/build';
 import { cmdDecode } from './commands/decode';
@@ -137,8 +137,7 @@ async function main() {
     // Build
     else if (args._[0] === 'build') {
         await cmdBuild({
-            protoDir: args['proto-dir'],
-            protoFile: args.proto
+            config: conf
         })
     }
     // Link

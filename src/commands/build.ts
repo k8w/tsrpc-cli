@@ -1,93 +1,78 @@
 import chalk from "chalk";
 import childProcess from "child_process";
 import fs from "fs-extra";
+import path from "path";
 import { i18n } from "../i18n/i18n";
 import { CliUtil } from "../models/CliUtil";
+import { ProtoUtil } from "../models/ProtoUtil";
+import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
+import { genApiFiles } from "./api";
+import { ensureSymlink } from "./link";
+import { copyDirReadonly } from "./sync";
 
-export interface CmdBuildOptions {
-    /** --proto 默认 src/shared/protocols/serviceProto.ts */
-    protoFile: string | undefined
-    /** --proto-dir 默认 path.dirname(protoFile) */
-    protoDir: string | undefined,
+export type CmdBuildOptions = {
+    config?: TsrpcConfig
 }
 
 export async function cmdBuild(options: CmdBuildOptions) {
-    // check proto
-    // let protoFile = options.protoFile ?? 'src/shared/protocols/serviceProto.ts';
-    // let protoDir = options.protoDir ?? path.dirname(protoFile);
-    // if (process.stdin.isTTY && fs.existsSync(protoDir) && fs.existsSync(protoFile) && fs.statSync(protoDir).isDirectory()) {
-    //     // 检测是否协议变更，只生成不输出
-    //     CliUtil.doing('Check serviceProto');
-    //     let resGenProto = await genProto({
-    //         input: protoDir,
-    //         output: undefined,
-    //         compatible: protoFile,
-    //         ugly: undefined,
-    //         new: undefined,
-    //         ignore: undefined,
-    //         verbose: undefined
-    //     });
-    //     CliUtil.done();
+    const outDir = path.resolve(options.config?.build?.outDir ?? 'dist');
 
-    //     if (resGenProto.isChanged) {
-    //         // 询问：检测到协议变更，是否重新生成 ServiceProto？Y/n
-    //         let ifUpdateProto: boolean = (await inquirer.prompt({
-    //             type: 'confirm',
-    //             message: i18n.ifUpdateProto,
-    //             default: true,
-    //             name: 'res'
-    //         })).res;
-    //         if (ifUpdateProto) {
-    //             // 询问：生成成功，是否立即同步（npm run sync）？ Y/n
-    //             let ifSyncNow: boolean = (await inquirer.prompt({
-    //                 type: 'confirm',
-    //                 message: i18n.ifSyncNow,
-    //                 default: true,
-    //                 name: 'res'
-    //             })).res;
+    if (options.config) {
+        const autoProto = options.config.build?.autoProto ?? true;
+        const autoSync = options.config.build?.autoSync ?? true;
+        const autoApi = options.config.build?.autoApi ?? true;
 
-    //             CliUtil.doing('Update serviceProto');
-    //             outputProto({
-    //                 input: protoDir,
-    //                 output: protoFile,
-    //                 ugly: undefined,
-    //                 proto: resGenProto.newProto
-    //             })
-    //             CliUtil.done();
+        // Auto Proto
+        if (autoProto && options.config.proto) {
+            for (let confItem of options.config.proto) {
+                // old
+                let old = await ProtoUtil.loadOldProtoByConfigItem(confItem, options.config.verbose);
 
-    //             if (ifSyncNow) {
-    //                 CliUtil.doing('npm run sync');
-    //                 let res = await new Promise<void>((rs, rj) => {
-    //                     let cp = childProcess.spawn('npm', ['run', 'sync'], {
-    //                         stdio: 'inherit',
-    //                         shell: true
-    //                     });
-    //                     // cp.std
-    //                     cp.on('close', code => {
-    //                         code === 0 ? rs() : rj(new Error(i18n.syncFailed));
-    //                     })
-    //                 });
-    //                 CliUtil.done(true)
-    //             }
-    //         }
-    //     }
-    // }
+                // new
+                let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto, true);
+
+                // Auto API
+                if (autoApi && newProto && confItem.apiDir) {
+                    await genApiFiles({
+                        proto: newProto,
+                        ptlDir: confItem.ptlDir,
+                        apiDir: confItem.apiDir
+                    })
+                }
+            }
+        }
+
+        // Auto Sync
+        if (autoSync && options.config.sync) {
+            const logger = options.config.verbose ? console : undefined;
+            for (let confItem of options.config.sync) {
+                if (confItem.type === 'copy') {
+                    CliUtil.doing(`${i18n.copy} '${confItem.from}' -> '${confItem.to}'`);
+                    await copyDirReadonly(confItem.from, confItem.to, !!confItem.clean, logger);
+                }
+                else if (confItem.type === 'symlink') {
+                    CliUtil.doing(`${i18n.link} '${confItem.from}' -> '${confItem.to}'`);
+                    await ensureSymlink(confItem.from, confItem.to, logger);
+                }
+                CliUtil.done(true);
+            }
+        }
+    }
 
     // clean
-    CliUtil.doing('Clean "dist"');
-    fs.removeSync('dist');
+    CliUtil.doing(i18n.buildClean(outDir));
+    await fs.remove(outDir);
     CliUtil.done();
 
     // tsc
-    CliUtil.doing('Compile TypeScript', '...');
+    CliUtil.doing(i18n.buildTsc, '...');
     await new Promise<void>((rs, rj) => {
         let cp = childProcess.spawn('npx', ['tsc'], {
             stdio: 'inherit',
             shell: true
         });
-        // cp.std
-        cp.on('close', code => {
+        cp.on('exit', code => {
             if (code) {
                 CliUtil.clear();
                 rj(error(i18n.codeError));
@@ -100,17 +85,21 @@ export async function cmdBuild(options: CmdBuildOptions) {
     CliUtil.done();
 
     // Copy files
-    CliUtil.doing('Copy files');
+    CliUtil.doing(i18n.buildCopyFiles);
     fs.existsSync('package-lock.json') && fs.copyFileSync('package-lock.json', 'dist/package-lock.json');
     fs.existsSync('yarn.lock') && fs.copyFileSync('yarn.lock', 'dist/yarn.lock');
     // package.json
-    let packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
+    let packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
     packageJSON.scripts = {
         ...packageJSON.scripts,
         start: packageJSON.scripts.start ?? 'node index.js'
     };
+    // remove dev scripts
+    ['proto', 'sync', 'link', 'api', 'dev', 'build'].forEach(key => {
+        delete packageJSON.scripts[key];
+    });
     fs.writeFileSync('dist/package.json', JSON.stringify(packageJSON, null, 2), 'utf-8');
     CliUtil.done();
 
-    console.log('\n' + chalk.bgGreen.white(i18n.success));
+    console.log(`\n ${chalk.bgGreen.white(i18n.buildSucc)} `);
 }
