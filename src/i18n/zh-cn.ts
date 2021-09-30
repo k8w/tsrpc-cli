@@ -24,14 +24,14 @@ export const i18nZhCn = {
     tsrpc sync <options>                 同步文件夹内容，以只读方式同步到目标位置
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
                                             根据配置文件，初始化 Symlink 或只读复制文件
-        --from <dir>
-        --to <dir>   
+        --from <dir>                        要同步的源文件夹
+        --to <dir>                          要同步到的目标位置（只读复制）
 
     tsrpc link <options>                 在目标位置创建到源的 Symlink，以实现自动同步
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
                                             根据配置文件，初始化 Symlink
-        --from <dir>
-        --to <dir>   
+        --from <dir>                        要同步的源文件夹
+        --to <dir>                          创建 Symlink 的目标位置
 
     tsrpc dev <options>                  启动本地开发服务器，当源代码变更时自动重启
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
@@ -39,6 +39,8 @@ export const i18nZhCn = {
     tsrpc build <options>                构建 TSRPC 后端项目
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
     
+二进制调试工具：
+
     tsrpc encode <options> [exp]         编码JS表达式
         [exp]                               要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
         -p, --proto <file>                  编码要使用的Proto文件
@@ -66,12 +68,12 @@ export const i18nZhCn = {
     example: `
 使用示例：
 
-    tsrpc proto -i protocols -o serviceProto.ts
-
-    tsrpc encode -p proto.ts -s a/b/c/TypeName -o buf.bin "{value: 1}"
-    tsrpc decode -p proto.ts -s a/b/c/TypeName "01 0A 01"
-    tsrpc validate -p proto.ts -s a/b/c/TypeName "{value: 1}"
-    tsrpc show buf.bin
+    tsrpc proto --config tsrpc.config.ts
+    tsrpc api   --config tsrpc.config.ts
+    tsrpc sync  --config tsrpc.config.ts
+    tsrpc link  --config tsrpc.config.ts
+    tsrpc dev   --config tsrpc.config.ts
+    tsrpc build --config tsrpc.config.ts
 `.trim(),
     errCmd: '命令格式有误，键入 tsrpc -h 以查看帮助。',
     missingParam: '缺少 ${param} 参数，键入 tsrpc -h 以查看更多信息。',
@@ -120,5 +122,5 @@ export const i18nZhCn = {
     buildClean: (outDir: string) => `清空目录 '${outDir}'`,
     buildTsc: `编译 TypeScript`,
     buildCopyFiles: `复制文件`,
-    buildSucc:'构建成功！'
+    buildSucc: '构建成功！'
 }

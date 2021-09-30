@@ -4,6 +4,7 @@ export const i18nEnUs = {
 Usage：
 
     tsrpc proto <options>                Generate proto file
+        --config <file>                     Read params from config file (would ignore all other CLI params)
         -i, --input <file>                  Input TS file (support glob expression)
                                             It would generate all exported types
         -o, --output <file>                 Output file (or print to CLI)
@@ -14,17 +15,27 @@ Usage：
         --ignore <glob>                     Files to be ignored from --input
 
     tsrpc api <options>                  Generate TSRPC API implementations
+        --config <file>                     Read params from config file (would ignore all other CLI params)
         -i, --input <file>                  Proto file path (proto.ts or proto.json)
         -o, --output <folder>               Output api folder path
     
-    tsrpc sync --from <dir> --to <dir>   Sync directory content as readonly
+    tsrpc sync                           Sync directory content as readonly
+        --config <file>                     Read params from config file (would ignore all other CLI params)
+        --from <dir>                        Source path
+        --to <dir>                          Target path (copy and set as read-only)
 
-    tsrpc link --from <dir> --to <dir>   Create symlink
+    tsrpc link <options>                 Create symlink (cross all operating system)
+        --config <file>                     Read params from config file (would ignore all other CLI params)
+        --from <dir>                        Source path
+        --to <dir>                          Target path for created symlink
 
-    tsrpc build <options>                构建 TSRPC 后端项目
-        --proto <protoPath>                 proto 文件地址，默认为 src/shared/protocols/serviceProto.ts
-        --proto-dir <folder>                protocols 目录，默认为 serviceProto.ts 所在目录
+    tsrpc dev <options>                  Run local dev server
+        --config <file>                     Read params from config file (would ignore all other CLI params)
 
+    tsrpc build <options>                Build the server project
+        --config <file>                     Read params from config file (would ignore all other CLI params)
+
+Buffer Utilities:
 
     tsrpc encode <options> [exp]         Encode a JS expression or a file (content is JS expression)
         [exp]                               Expression to encode (e.g. "123" "new Uint8Array([1,2,3])")
@@ -53,12 +64,12 @@ Usage：
     example: `
 Example：
 
-    tsrpc proto -i proto -o proto.ts
-
-    tsrpc encode -p proto.json -s a/b/c/TypeName -o buf.bin "{value: 1}"
-    tsrpc decode -p proto.json -s a/b/c/TypeName "01 0A 01"
-    tsrpc validate -p proto.json -s a/b/c/TypeName "{value: 1}"
-    tsrpc show buf.bin
+    tsrpc proto --config tsrpc.config.ts
+    tsrpc api   --config tsrpc.config.ts
+    tsrpc sync  --config tsrpc.config.ts
+    tsrpc link  --config tsrpc.config.ts
+    tsrpc dev   --config tsrpc.config.ts
+    tsrpc build --config tsrpc.config.ts
 `.trim(),
     errCmd: 'Error command, use "tsrpc -h" to see more help info.',
     missingParam: 'Missing parameter ${param}, use "tsrpc -h" to see more help info.',
