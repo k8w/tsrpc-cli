@@ -13,6 +13,7 @@ export default {
             tsconfigOverride: {
                 compilerOptions: {
                     declaration: false,
+                    declarationMap: false,
                     module: "ESNext"
                 }
             },

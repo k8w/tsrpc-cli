@@ -172,3 +172,5 @@ async function main() {
 // process.on('unhandledRejection', e => {
 //     console.error('unhandledRejection', e)
 // })
+
+export { TsrpcConfig };
