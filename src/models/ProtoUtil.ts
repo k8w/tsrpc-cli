@@ -174,8 +174,8 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    !typeProto[res] && console.warn(chalk.yellow(`[WARN] Missing type 'Res${match[3]}' at: "${filepath}"`));
-                    !typeProto[req] && console.warn(chalk.yellow(`[WARN] Missing type 'Req${match[3]}' at: "${filepath}"`));
+                    !typeProto[res] && console.error(chalk.red(`Missing type 'Res${match[3]}' at: "${filepath}"`));
+                    !typeProto[req] && console.error(chalk.red(`Missing type 'Req${match[3]}' at: "${filepath}"`));
                 }
             }
             // Msg 检测Msg类型在
@@ -190,7 +190,7 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    console.warn(chalk.yellow(`Missing type 'Msg${match[3]}' at: ${filepath}`));
+                    console.error(chalk.red(`Missing type 'Msg${match[3]}' at: ${filepath}`));
                 }
             }
         }

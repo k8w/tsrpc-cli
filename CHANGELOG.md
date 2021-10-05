@@ -1,13 +1,11 @@
 # CHANGELOG
 
-## [2.0.7] - 2021-10-05
+## [2.0.8] - 2021-10-05
 ### Fixed
 - ServiceProto JSON 无改变但 TS 报错的情况也重新写入文件
-
-## [2.0.6] - 2021-10-05
-### Fixed
 - `serviceProto.ts` 代码报错时无法正确 watch Proto 变更的 BUG
 - 解析旧 ServiceProto TS 编译报错时，采用正则匹配的方式跳过
+- 协议丢失类型日志由 warn 改为 error
 
 ## [2.0.5] - 2021-09-30
 ### Added

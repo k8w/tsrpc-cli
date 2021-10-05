@@ -1,6 +1,6 @@
 {
   "name": "tsrpc-cli",
-  "version": "2.0.7",
+  "version": "2.0.8-dev.0",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
