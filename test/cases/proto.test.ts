@@ -198,5 +198,5 @@ describe('proto', function () {
                 "type": "api"
             }
         ])
-    })
+    });
 })
