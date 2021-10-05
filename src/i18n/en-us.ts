@@ -110,6 +110,7 @@ Example：
     link: 'Create Symlink:',
     linkedSucc: '✔ Linked successfully',
     allLinkedSucc: '✔ All linked successfully',
+    protoUpdateFailed: (filepath: string) => `× Update ServiceProto failed: ${filepath}`,
 
     devServerRestarting: '\n------ Recompiling & Restarting ------\n',
     startDevServer: '✔ Start Dev Server:',

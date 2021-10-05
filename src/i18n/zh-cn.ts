@@ -114,6 +114,7 @@ export const i18nZhCn = {
     link: '创建 Symlink:',
     linkedSucc: '✔ Symlink 创建成功',
     allLinkedSucc: '✔ 已完成所有 Symlink 创建',
+    protoUpdateFailed: (filepath: string) => `× ServiceProto 更新失败: ${filepath}`,
 
     devServerRestarting: '\n———— Dev Server 自动重启中 ————\n',
     startDevServer: '✔ 启动本地服务:',

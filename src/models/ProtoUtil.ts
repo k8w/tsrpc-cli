@@ -18,8 +18,8 @@ export class ProtoUtil {
         }
 
         if (filepath.endsWith('.ts')) {
-            let module = importTS(path.resolve(filepath));
-            if (!module.serviceProto) {
+            let module = importTS(path.resolve(filepath)).catch();
+            if (!module?.serviceProto) {
                 logger?.error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
                 return undefined;
             }
