@@ -110,6 +110,7 @@ export class ProtoUtil {
         isChanged: boolean
     }> {
         const oldProto = options.oldProto?.proto;
+        let errMsgs: string[] = [];
 
         // 标准化路径（抹平系统差异）
         const protocolDir = options.protocolDir.replace(/\\/g, '/').replace(/\/+$/, '');
@@ -129,28 +130,34 @@ export class ProtoUtil {
 
         // 生成 types （TSBufferSchema）
         const EXP_DIR_TYPE_NAME = /^(.+\/)?(Ptl|Msg)([^\.\/\\]+)\.ts$/;
-        let typeProto = await new TSBufferProtoGenerator({
-            verbose: options.verbose,
-            baseDir: protocolDir
-        }).generate(fileList, {
-            compatibleResult: oldProto?.types,
-            filter: info => {
-                let infoPath = info.path.replace(/\\/g, '/')
-                let match = infoPath.match(EXP_DIR_TYPE_NAME);
+        try {
+            var typeProto = await new TSBufferProtoGenerator({
+                verbose: options.verbose,
+                baseDir: protocolDir
+            }).generate(fileList, {
+                compatibleResult: oldProto?.types,
+                filter: info => {
+                    let infoPath = info.path.replace(/\\/g, '/')
+                    let match = infoPath.match(EXP_DIR_TYPE_NAME);
 
-                if (!match) {
-                    return false;
-                }
+                    if (!match) {
+                        return false;
+                    }
 
-                if (match[2] === 'Ptl') {
-                    return info.name === 'Req' + match[3] || info.name === 'Res' + match[3];
-                }
-                else {
-                    return info.name === 'Msg' + match[3];
-                }
-            },
-            logger: options.verbose ? console : undefined
-        });
+                    if (match[2] === 'Ptl') {
+                        return info.name === 'Req' + match[3] || info.name === 'Res' + match[3];
+                    }
+                    else {
+                        return info.name === 'Msg' + match[3];
+                    }
+                },
+                logger: options.verbose ? console : undefined
+            });
+        }
+        catch (e: any) {
+            e.message = (e.message.startsWith('⨯') ? '' : '⨯ ') + e.message;
+            throw e;
+        }
 
         // 生成 services
         let services: ServiceDef[] = [];
@@ -175,8 +182,8 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    !typeProto[res] && console.error(chalk.red(`⨯ Missing type 'Res${match[3]}' at: "${filepath}"`));
-                    !typeProto[req] && console.error(chalk.red(`⨯ Missing type 'Req${match[3]}' at: "${filepath}"`));
+                    !typeProto[res] && errMsgs.push(chalk.red(`⨯ Missing type 'Res${match[3]}' at: '${filepath}'`));
+                    !typeProto[req] && errMsgs.push(chalk.red(`⨯ Missing type 'Req${match[3]}' at: '${filepath}'`));
                 }
             }
             // Msg 检测Msg类型在
@@ -191,9 +198,14 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    console.error(chalk.red(`⨯ Missing type 'Msg${match[3]}' at: ${filepath}`));
+                    errMsgs.push(chalk.red(`⨯ Missing type 'Msg${match[3]}' at: '${filepath}'`));
                 }
             }
+        }
+
+        // 有 Missing 报错，不生成
+        if (errMsgs.length) {
+            throw new Error(errMsgs.join('\n'))
         }
 
         // 检测可优化的 ID 冗余
@@ -390,7 +402,7 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
             verbose && console.log(`Proto generated succ, start to write output file...`);
         }
         catch (e: any) {
-            console.error(chalk.red((e.message.startsWith('⨯') ? '' : '⨯ ') + e.message))
+            console.error(chalk.red(e.message))
             throw new Error(i18n.protoFailed(confItem.output));
         }
 

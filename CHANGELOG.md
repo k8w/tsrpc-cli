@@ -7,6 +7,7 @@
 - 解析旧 ServiceProto TS 编译报错时，采用正则匹配的方式跳过
 - 协议丢失类型日志由 warn 改为 error
 - 优化 `tsbuffer-proto-generator` 日志
+- `Missing ...` 时改为报错并不生成 ServiceProto
 
 ## [2.0.5] - 2021-09-30
 ### Added
