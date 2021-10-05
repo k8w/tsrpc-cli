@@ -28,6 +28,7 @@ export async function cmdDev(options: CmdDevOptions) {
     const devServerArgs = ['-r', 'ts-node/register', ...(conf.dev?.nodeArgs ?? []), entry];
     const cmdStart = 'node ' + devServerArgs.map(v => /\s/.test(v) ? `'${v}'` : v).join(' ');
     const watchFiles = conf.dev?.watch ?? 'src';
+    let protoErr: { [protoPath: string]: string } = {};
 
     // Auto Link
     if (conf.sync) {
@@ -42,14 +43,23 @@ export async function cmdDev(options: CmdDevOptions) {
     // Auto Proto
     if (autoProto && conf.proto) {
         for (let confItem of conf.proto) {
+            const protoPath = path.resolve(confItem.output);
+
             // old
             let old = await ProtoUtil.loadOldProtoByConfigItem(confItem, options.config.verbose);
 
             const onAutoProtoTrigger = async () => {
                 let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto, true).catch(e => {
+                    // 插入错误记录
+                    protoErr[protoPath] = e.message;
                     console.error(chalk.red(e.message));
                     return undefined;
                 });
+
+                // 生成成功，清除错误记录
+                if (newProto) {
+                    delete protoErr[protoPath];
+                }
 
                 // Auto Api
                 if (autoApi && newProto && confItem.apiDir) {
@@ -124,6 +134,14 @@ export async function cmdDev(options: CmdDevOptions) {
         await new Promise(rs => setTimeout(rs, 200));
         if (devServerRestartTimes !== restartTimes) {
             return;
+        }
+
+        // 有 Proto 生成错误时，始终不启动 devServer
+        for (let protoPath in protoErr) {
+            if (protoErr[protoPath]) {
+                console.error(chalk.red(i18n.devServerStopped + '\n'))
+                return;
+            }
         }
 
         console.log(`${chalk.green(i18n.startDevServer)} ${chalk.cyan(cmdStart)}\n`);

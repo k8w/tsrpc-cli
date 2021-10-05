@@ -8,6 +8,7 @@
 - 协议丢失类型日志由 warn 改为 error
 - 优化 `tsbuffer-proto-generator` 日志
 - `Missing ...` 时改为报错并不生成 ServiceProto
+- ServiceProto 生成出错时始终不启动 devServer
 
 ## [2.0.5] - 2021-09-30
 ### Added
