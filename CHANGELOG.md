@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.0.7] - 2021-10-05
+### Fixed
+- ServiceProto JSON 无改变但 TS 报错的情况也重新写入文件
+
 ## [2.0.6] - 2021-10-05
 ### Fixed
 - `serviceProto.ts` 代码报错时无法正确 watch Proto 变更的 BUG

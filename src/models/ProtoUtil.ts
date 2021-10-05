@@ -11,7 +11,7 @@ import { error, formatStr } from "./util";
 
 export class ProtoUtil {
 
-    static async loadServiceProto(filepath: string, logger?: Logger): Promise<ServiceProto<any> | undefined> {
+    static async loadServiceProto(filepath: string, logger?: Logger, useRegExpWhenTsError: boolean = true): Promise<ServiceProto<any> | undefined> {
         if (await fs.access(filepath).catch(e => true)) {
             logger?.error(formatStr(i18n.fileNotExists, { file: path.resolve(filepath) }))
             return undefined;
@@ -30,17 +30,19 @@ export class ProtoUtil {
 
             // ts-node 解析失败：由于上面检测过，文件必定存在，所以此时应该是 serviceProto.ts 编译报错
             // 尝试通过字符串匹配方式解析 ServiceProto
-            // Read file
-            let fileContent = await fs.readFile(filepath, 'utf-8').catch();
-            if (fileContent) {
-                // Match ServiceProto by RegExp
-                let match = fileContent.match(/export const serviceProto: ServiceProto<ServiceType> = (\{[\s\S]+\});/);
-                if (match) {
-                    try {
-                        let proto = JSON.parse(match[1]);
-                        return proto;
+            if (useRegExpWhenTsError) {
+                // Read file
+                let fileContent = await fs.readFile(filepath, 'utf-8').catch();
+                if (fileContent) {
+                    // Match ServiceProto by RegExp
+                    let match = fileContent.match(/export const serviceProto: ServiceProto<ServiceType> = (\{[\s\S]+\});/);
+                    if (match) {
+                        try {
+                            let proto = JSON.parse(match[1]);
+                            return proto;
+                        }
+                        catch { }
                     }
-                    catch { }
                 }
             }
 
@@ -240,7 +242,8 @@ export class ProtoUtil {
         noEmitWhenNoChange?: boolean
     }, logger?: Logger) {
         if (options.noEmitWhenNoChange) {
-            let oldProto = await this.loadServiceProto(options.newProtoPath);
+            // TS 报错也算需要重新生成
+            let oldProto = await this.loadServiceProto(options.newProtoPath, undefined, false);
             if (oldProto && JSON.stringify(oldProto) === JSON.stringify(options.proto)) {
                 return { emited: false };
             }
