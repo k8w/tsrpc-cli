@@ -45,7 +45,7 @@ export async function cmdProto(options: CmdProtoOptions) {
             compatible: options.compatible,
             output: options.output
         }, options.verbose);
-
+        
         // newProto
         await ProtoUtil.genProtoByConfigItem({
             ptlDir: options.input,

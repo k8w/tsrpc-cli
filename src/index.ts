@@ -28,7 +28,7 @@ main().catch((e: Error) => {
         console.error('\n' + chalk.bgRed.white(i18n.error), e);
     }
     else {
-        e?.message && console.error('\n' + chalk.bgRed.white(i18n.error), chalk.red(e.message));
+        console.error('\n' + chalk.bgRed.white(i18n.error), chalk.red(e?.message ?? e));
     }
     process.exit(-1);
 });

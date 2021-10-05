@@ -48,7 +48,6 @@ export async function cmdDev(options: CmdDevOptions) {
             const onAutoProtoTrigger = async () => {
                 let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto, true).catch(e => {
                     console.error(chalk.red(e.message));
-                    console.error(chalk.red(i18n.protoUpdateFailed(path.resolve(confItem.output))))
                     return undefined;
                 });
 

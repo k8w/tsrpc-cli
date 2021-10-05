@@ -148,7 +148,8 @@ export class ProtoUtil {
                 else {
                     return info.name === 'Msg' + match[3];
                 }
-            }
+            },
+            logger: options.verbose ? console : undefined
         });
 
         // 生成 services
@@ -174,8 +175,8 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    !typeProto[res] && console.error(chalk.red(`Missing type 'Res${match[3]}' at: "${filepath}"`));
-                    !typeProto[req] && console.error(chalk.red(`Missing type 'Req${match[3]}' at: "${filepath}"`));
+                    !typeProto[res] && console.error(chalk.red(`⨯ Missing type 'Res${match[3]}' at: "${filepath}"`));
+                    !typeProto[req] && console.error(chalk.red(`⨯ Missing type 'Req${match[3]}' at: "${filepath}"`));
                 }
             }
             // Msg 检测Msg类型在
@@ -190,7 +191,7 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    console.error(chalk.red(`Missing type 'Msg${match[3]}' at: ${filepath}`));
+                    console.error(chalk.red(`⨯ Missing type 'Msg${match[3]}' at: ${filepath}`));
                 }
             }
         }
@@ -378,14 +379,20 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
         path: string
     } | undefined, verbose: boolean | undefined, checkOptimize: boolean | undefined, noEmitWhenNoChange?: boolean) {
         // new
-        let resGenProto = await ProtoUtil.generateServiceProto({
-            protocolDir: confItem.ptlDir,
-            oldProto: old,
-            ignore: confItem.ignore,
-            verbose: verbose,
-            checkOptimize: checkOptimize
-        })
-        verbose && console.log(`Proto generated succ, start to write output file...`);
+        try {
+            var resGenProto = await ProtoUtil.generateServiceProto({
+                protocolDir: confItem.ptlDir,
+                oldProto: old,
+                ignore: confItem.ignore,
+                verbose: verbose,
+                checkOptimize: checkOptimize
+            })
+            verbose && console.log(`Proto generated succ, start to write output file...`);
+        }
+        catch (e: any) {
+            console.error(chalk.red((e.message.startsWith('⨯') ? '' : '⨯ ') + e.message))
+            throw new Error(i18n.protoFailed(confItem.output));
+        }
 
         // output
         await ProtoUtil.outputProto({
