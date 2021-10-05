@@ -139,7 +139,7 @@ export async function cmdDev(options: CmdDevOptions) {
         // 有 Proto 生成错误时，始终不启动 devServer
         for (let protoPath in protoErr) {
             if (protoErr[protoPath]) {
-                console.error(chalk.red(i18n.devServerStopped + '\n'))
+                console.error(chalk.yellow(i18n.protoNotReady + '\n'))
                 return;
             }
         }

@@ -119,6 +119,7 @@ export const i18nZhCn = {
     devServerRestarting: '\n———— Dev Server 自动重启中 ————\n',
     startDevServer: '✔ 启动本地服务:',
     devServerStopped: '⨯ Dev Server 已停止运行',
+    protoNotReady: '⨯ Dev Server 未启动，请先修复 ServiceProto 问题',
 
     buildClean: (outDir: string) => `清空目录 '${outDir}'`,
     buildTsc: `编译 TypeScript`,

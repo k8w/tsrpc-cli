@@ -182,8 +182,8 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    !typeProto[res] && errMsgs.push(chalk.red(`⨯ Missing type 'Res${match[3]}' at: '${filepath}'`));
-                    !typeProto[req] && errMsgs.push(chalk.red(`⨯ Missing type 'Req${match[3]}' at: '${filepath}'`));
+                    !typeProto[res] && errMsgs.push(chalk.red(`⨯ Missing type ${chalk.cyan(`Res${match[3]}`)} at ${chalk.cyan(filepath)}`));
+                    !typeProto[req] && errMsgs.push(chalk.red(`⨯ Missing type ${chalk.cyan(`Req${match[3]}`)} at ${chalk.cyan(filepath)}`));
                 }
             }
             // Msg 检测Msg类型在
@@ -198,7 +198,7 @@ export class ProtoUtil {
                     })
                 }
                 else {
-                    errMsgs.push(chalk.red(`⨯ Missing type 'Msg${match[3]}' at: '${filepath}'`));
+                    errMsgs.push(chalk.red(`⨯ Missing type ${chalk.cyan(`Msg${match[3]}`)} at ${chalk.cyan}`));
                 }
             }
         }

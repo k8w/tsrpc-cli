@@ -115,6 +115,7 @@ Example：
     devServerRestarting: '\n------ Recompiling & Restarting ------\n',
     startDevServer: '✔ Start Dev Server:',
     devServerStopped: '⨯ Dev Server Stopped',
+    protoNotReady: '⨯ Dev Server cannot start，please fix ServiceProto firstly',
 
     buildClean: (outDir: string) => `Clean '${outDir}'`,
     buildTsc: `Compile TypeScript`,
