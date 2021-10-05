@@ -27,17 +27,17 @@ export const serviceProto: ServiceProto<ServiceType> = {
     "version": 2,
     "services": [
         {
-            "id": 0,
+            "id": 100,
             "name": "AddData",
             "type": "api"
         },
         {
-            "id": 2,
+            "id": 101,
             "name": "DelData",
             "type": "api"
         },
         {
-            "id": 1,
+            "id": 102,
             "name": "GetData",
             "type": "api"
         }
@@ -82,7 +82,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 },
                 {
                     "id": 1,
-                    "name": "forc",
+                    "name": "force",
                     "type": {
                         "type": "Boolean"
                     },

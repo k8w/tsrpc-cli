@@ -18,17 +18,35 @@ export class ProtoUtil {
         }
 
         if (filepath.endsWith('.ts')) {
+            // 首先尝试通过 ts-node 直接解析
             let module: { [key: string]: any } | undefined;
             try {
                 module = importTS(path.resolve(filepath));
             }
-            catch { }
-
-            if (!module?.serviceProto) {
-                logger?.error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
-                return undefined;
+            catch (e) { }
+            if (module?.serviceProto) {
+                return module.serviceProto;
             }
-            return module.serviceProto;
+
+            // ts-node 解析失败：由于上面检测过，文件必定存在，所以此时应该是 serviceProto.ts 编译报错
+            // 尝试通过字符串匹配方式解析 ServiceProto
+            // Read file
+            let fileContent = await fs.readFile(filepath, 'utf-8').catch();
+            if (fileContent) {
+                // Match ServiceProto by RegExp
+                let match = fileContent.match(/export const serviceProto: ServiceProto<ServiceType> = (\{[\s\S]+\});/);
+                if (match) {
+                    try {
+                        let proto = JSON.parse(match[1]);
+                        return proto;
+                    }
+                    catch { }
+                }
+            }
+
+            // 解析失败
+            logger?.error(formatStr(i18n.protoParsedError, { file: path.resolve(filepath) }));
+            return undefined;
         }
         else if (filepath.endsWith('.json')) {
             // 打开OldFile

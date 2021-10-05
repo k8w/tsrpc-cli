@@ -3,6 +3,7 @@
 ## [2.0.6] - 2021-10-05
 ### Fixed
 - `serviceProto.ts` 代码报错时无法正确 watch Proto 变更的 BUG
+- 解析旧 ServiceProto TS 编译报错时，采用正则匹配的方式跳过
 
 ## [2.0.5] - 2021-09-30
 ### Added
