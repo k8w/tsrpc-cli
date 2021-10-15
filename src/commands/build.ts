@@ -8,7 +8,7 @@ import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
 import { genApiFilesByProto } from "./api";
-import { ensureSymlink } from "./link";
+import { ensureSymlinks } from "./link";
 import { copyDirReadonly } from "./sync";
 
 export type CmdBuildOptions = {
@@ -47,17 +47,20 @@ export async function cmdBuild(options: CmdBuildOptions) {
         // Auto Sync
         if (autoSync && options.config.sync) {
             const logger = options.config.verbose ? console : undefined;
+            // Copy
             for (let confItem of options.config.sync) {
                 if (confItem.type === 'copy') {
                     CliUtil.doing(`${i18n.copy} '${confItem.from}' -> '${confItem.to}'`);
                     await copyDirReadonly(confItem.from, confItem.to, !!confItem.clean, logger);
+                    CliUtil.done(true);
                 }
-                else if (confItem.type === 'symlink') {
-                    CliUtil.doing(`${i18n.link} '${confItem.from}' -> '${confItem.to}'`);
-                    await ensureSymlink(confItem.from, confItem.to, logger);
-                }
-                CliUtil.done(true);
             }
+
+            // Symlink
+            await ensureSymlinks(options.config.sync.filter(v => v.type === 'symlink').map(v => ({
+                src: v.from,
+                dst: v.to
+            })), logger);
         }
     }
 

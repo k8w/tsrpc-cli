@@ -7,7 +7,7 @@ import { i18n } from "../i18n/i18n";
 import { CliUtil } from "../models/CliUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
-import { ensureSymlink } from "./link";
+import { ensureSymlinks } from "./link";
 
 export type CmdSyncOptions = {
     from: string | undefined,
@@ -24,17 +24,20 @@ export async function cmdSync(options: CmdSyncOptions) {
         }
 
         const logger = options.config.verbose ? console : undefined;
+        // Copy
         for (let item of options.config.sync) {
             if (item.type === 'copy') {
                 CliUtil.doing(`${i18n.copy} '${item.from}' -> '${item.to}'`);
                 await copyDirReadonly(item.from, item.to, !!item.clean, logger);
+                CliUtil.done(true);
             }
-            else if (item.type === 'symlink') {
-                CliUtil.doing(`${i18n.link} '${item.from}' -> '${item.to}'`);
-                await ensureSymlink(item.from, item.to, logger);
-            }
-            CliUtil.done(true);
         }
+
+        // Symlinks
+        await ensureSymlinks(options.config.sync.filter(v => v.type === 'symlink').map(v => ({
+            src: v.from,
+            dst: v.to
+        })), console);
 
         console.log(chalk.green(i18n.allSyncedSucc))
     }

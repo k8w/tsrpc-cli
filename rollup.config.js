@@ -21,7 +21,8 @@ export default {
             rollupCommonJSResolveHack: true
         }),
         replace({
-            '__TSRPC_CLI_VERSION__': require('./package.json').version
+            '__TSRPC_CLI_VERSION__': require('./package.json').version,
+            'process.env.NODE_ENV': '"production"'
         })
     ],
     external: ['ts-node/register']

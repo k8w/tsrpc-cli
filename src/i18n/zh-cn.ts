@@ -113,8 +113,11 @@ export const i18nZhCn = {
     allSyncedSucc: '✔ 已完成所有同步',
     copy: '复制文件:',
     link: '创建 Symlink:',
+    junction: '创建 Junction:',
     linkedSucc: '✔ Symlink 创建成功',
     allLinkedSucc: '✔ 已完成所有 Symlink 创建',
+    elevatingForLink: '正在获取创建 Symlink 所需的授权',
+    createJunction: '授权失败，是否改为创建 Junction 链接？',
 
     devServerRestarting: '\n———— Dev Server 自动重启中 ————\n',
     startDevServer: '✔ 启动本地服务:',
@@ -124,5 +127,5 @@ export const i18nZhCn = {
     buildClean: (outDir: string) => `清空目录 '${outDir}'`,
     buildTsc: `编译 TypeScript`,
     buildCopyFiles: `复制文件`,
-    buildSucc: '构建成功！'
+    buildSucc: '构建成功！',
 }

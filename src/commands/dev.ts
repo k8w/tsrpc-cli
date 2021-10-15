@@ -5,11 +5,10 @@ import { Stats } from "fs";
 import fse from "fs-extra";
 import path from "path";
 import { i18n } from "../i18n/i18n";
-import { CliUtil } from "../models/CliUtil";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { defaultApiTemplate, genNewApiFile } from "./api";
-import { ensureSymlink } from "./link";
+import { ensureSymlinks } from "./link";
 import { copyDirReadonly } from "./sync";
 
 const DEFAULT_DELAY = 1000;
@@ -33,11 +32,10 @@ export async function cmdDev(options: CmdDevOptions) {
     // Auto Link
     if (conf.sync) {
         let linkConfs = conf.sync.filter(v => v.type === 'symlink');
-        for (let item of linkConfs) {
-            CliUtil.doing(`${i18n.link} ${item.from} -> ${item.to}`);
-            await ensureSymlink(item.from, item.to, options.config.verbose ? console : undefined);
-            CliUtil.done(true);
-        }
+        await ensureSymlinks(linkConfs.map(v => ({
+            src: v.from,
+            dst: v.to
+        })), console);
     }
 
     // Auto Proto

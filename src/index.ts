@@ -2,6 +2,7 @@ import chalk from "chalk";
 import 'k8w-extend-native';
 import minimist from 'minimist';
 import 'node-json-color-stringify';
+import path from "path";
 import { cmdApi } from './commands/api';
 import { cmdBuild } from './commands/build';
 import { cmdDecode } from './commands/decode';
@@ -20,6 +21,8 @@ import { TsrpcConfig } from './models/TsrpcConfig';
 import { error, formatStr, showLogo } from './models/util';
 
 const args = minimist(process.argv.slice(2));
+
+export const resPath = process.env.NODE_ENV === 'production' ? path.resolve(__dirname, './res/') : path.resolve(__dirname, '../res/');
 
 // 进入主流程
 main().catch((e: Error) => {
@@ -143,6 +146,7 @@ async function main() {
     // Link
     else if (args._[0] === 'link') {
         await cmdLink({
+            elevate: args.elevate,
             from: args.from,
             to: args.to,
             verbose: args.verbose,
@@ -174,3 +178,4 @@ async function main() {
 // })
 
 export { TsrpcConfig };
+

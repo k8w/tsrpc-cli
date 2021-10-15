@@ -109,8 +109,11 @@ Example：
     allSyncedSucc: '✔ All Synced successfully',
     copy: 'Copy Files:',
     link: 'Create Symlink:',
+    junction: 'Create Junction:',
     linkedSucc: '✔ Linked successfully',
     allLinkedSucc: '✔ All linked successfully',
+    elevatingForLink: 'Asking for authorization to create symlink',
+    createJunction: 'Authorization failed. Do you want to create a Junction link instead?',
 
     devServerRestarting: '\n------ Recompiling & Restarting ------\n',
     startDevServer: '✔ Start Dev Server:',
