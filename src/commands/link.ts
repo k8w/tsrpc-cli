@@ -136,6 +136,5 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
 
         // Success
         logger?.log(chalk.green(`✔ ${createJunction ? i18n.junction : i18n.link} ${path.resolve(src)} -> ${path.resolve(dst)}`));
-        return;
     }
 }
