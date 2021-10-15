@@ -5,7 +5,7 @@ const tsrpcConf: TsrpcConfig = {
         {
             ptlDir: 'src/shared/protocols',
             output: 'src/shared/protocols/serviceProto.ts',
-            apiDir: 'src/api'
+            apiDir: 'src/api',
         }
     ],
     sync: [

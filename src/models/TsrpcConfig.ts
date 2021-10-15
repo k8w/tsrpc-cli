@@ -28,6 +28,13 @@ export interface TsrpcConfig {
          * false 代表关闭兼容模式，总是生成全新的 ServiceProto
          */
         compatible?: string | false,
+
+        /**  conf.dev.autoFillNewPtl 为 true 时自动填充的新 Ptl 的模板 */
+        newPtlTemplate?: (ptlBaseName: string, ptlPath: string, ptlDir: string) => string;
+        /**  conf.dev.autoFillNewPtl 为 true 时自动填充的新 Msg 的模板 */
+        newMsgTemplate?: (msgBaseName: string, msgPath: string, ptlDir: string) => string;
+        /** conf.dev.autoApi 为 true 时自动填充的新 Api 的模板 */
+        newApiTemplate?: (apiBaseName: string, apiFileDir: string, ptlFileDir: string) => string;
     }[],
 
     /**
@@ -60,16 +67,25 @@ export interface TsrpcConfig {
          * @defaultValue true
          */
         autoProto?: boolean,
+
         /**
          * 当共享目录内文件变动时，是否自动同步到目标位置（仅对 `type: 'copy'` 的项生效）
          * @defaultValue true
          */
         autoSync?: boolean,
+
         /**
          * 自动重新生成 ServiceProto 后，是否自动生成新的 API 文件
          * @defaultValue true
          */
         autoApi?: boolean,
+
+        /**
+         * 当创建新的 Ptl / Msg 文件时，是否自动填充文件内容
+         * @defaultValue true
+         */
+        autoFillNewPtl?: boolean,
+
         /**
          * 当这些目录下内容变化时，重启本地服务
          * @defaultValue src

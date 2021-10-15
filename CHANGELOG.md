@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [2.0.9-dev.0] - 2021-10-15
+### Added
+- `TsrpcConfig` 新增 `autoFillNewPtl`，自动填充新建的 `Ptl` 和 `Msg` 文件。
+- `npm run dev` 期间，如果删除了 `Ptl`，则自动删除自动创建且未更改的 `Api` 文件。
+
 ## [2.0.8] - 2021-10-05
 ### Fixed
 - ServiceProto JSON 无改变但 TS 报错的情况也重新写入文件

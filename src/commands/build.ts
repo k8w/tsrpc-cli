@@ -7,7 +7,7 @@ import { CliUtil } from "../models/CliUtil";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
-import { genApiFiles } from "./api";
+import { genApiFilesByProto } from "./api";
 import { ensureSymlink } from "./link";
 import { copyDirReadonly } from "./sync";
 
@@ -34,10 +34,11 @@ export async function cmdBuild(options: CmdBuildOptions) {
 
                 // Auto API
                 if (autoApi && newProto && confItem.apiDir) {
-                    await genApiFiles({
+                    await genApiFilesByProto({
                         proto: newProto,
                         ptlDir: confItem.ptlDir,
-                        apiDir: confItem.apiDir
+                        apiDir: confItem.apiDir,
+                        template: confItem.newApiTemplate
                     })
                 }
             }

@@ -8,7 +8,7 @@ import { i18n } from "../i18n/i18n";
 import { CliUtil } from "../models/CliUtil";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
-import { genApiFiles } from "./api";
+import { defaultApiTemplate, genNewApiFile } from "./api";
 import { ensureSymlink } from "./link";
 import { copyDirReadonly } from "./sync";
 
@@ -60,20 +60,58 @@ export async function cmdDev(options: CmdDevOptions) {
                 if (newProto) {
                     delete protoErr[protoPath];
                 }
-
-                // Auto Api
-                if (autoApi && newProto && confItem.apiDir) {
-                    await genApiFiles({
-                        proto: newProto,
-                        ptlDir: confItem.ptlDir,
-                        apiDir: confItem.apiDir
-                    })
-                }
             }
 
             delayWatch({
                 matches: confItem.ptlDir,
                 ignore: [confItem.output, ...(confItem.compatible ? [confItem.compatible] : []), ...(confItem.ignore ?? [])],
+                onChange: async (eventName, filepath, stats) => {
+                    let match = path.basename(filepath).match(/^(Ptl|Msg)(\w+)\.ts$/);
+                    if (!match) {
+                        return;
+                    }
+                    let type = match[1] as 'Ptl' | 'Msg';
+                    let basename = match[2];
+
+                    // Auto fill new Ptl
+                    if ((conf.dev?.autoFillNewPtl ?? true) && eventName === 'add') {
+                        // 只写入空白文件
+                        let content = await fse.readFile(filepath);
+                        if (content.length === 0) {
+                            if (type === 'Ptl') {
+                                await fse.writeFile(filepath, (confItem.newPtlTemplate ?? defaultPtlTemplate)(basename, filepath, confItem.ptlDir), 'utf-8');
+                            }
+                            else if (type === 'Msg') {
+                                await fse.writeFile(filepath, (confItem.newMsgTemplate ?? defaultMsgTemplate)(basename, filepath, confItem.ptlDir), 'utf-8');
+                            }
+                        }
+                    }
+
+                    // Auto Api
+                    if (autoApi && confItem.apiDir && type === 'Ptl') {
+                        let apiFilePath = path.join(confItem.apiDir, path.relative(confItem.ptlDir, path.join(path.dirname(filepath), `Api${basename}.ts`)));
+                        let emptyApiContent = (confItem.newApiTemplate ?? defaultApiTemplate)(basename, path.dirname(apiFilePath), path.dirname(filepath));
+
+                        // Auto generate new API
+                        if (eventName === 'add') {
+                            await genNewApiFile(basename, apiFilePath, path.dirname(apiFilePath), path.dirname(filepath), confItem.newApiTemplate ?? defaultApiTemplate).catch();
+                        }
+
+                        // Auto remove unchanged API
+                        if (eventName === 'unlink') {
+                            // File not exists
+                            if (await fse.access(apiFilePath).catch(() => true)) {
+                                return;
+                            }
+
+                            // Compare, only remove when it is unchanged
+                            let apiContent = await fse.readFile(apiFilePath, 'utf-8').catch(() => undefined);
+                            if (apiContent?.length === 0 || apiContent === emptyApiContent) {
+                                await fse.remove(apiFilePath).catch();
+                            }
+                        }
+                    }
+                },
                 onTrigger: onAutoProtoTrigger,
                 delay: conf.dev?.delay ?? DEFAULT_DELAY,
                 watchId: `AutoProto_${conf.proto.indexOf(confItem)}`,
@@ -182,6 +220,7 @@ export async function cmdDev(options: CmdDevOptions) {
 function delayWatch(options: {
     matches: string | string[],
     ignore?: string | string[],
+    onChange?: (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', filepath: string, stats?: Stats) => void | Promise<void>,
     /** 文件已经变化，一段时间后即将触发 */
     onWillTrigger?: (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', filepath: string, stats?: Stats) => void | Promise<void>,
     /** 实际触发 */
@@ -194,6 +233,8 @@ function delayWatch(options: {
     // Real file change handler，禁止并发
     let isProcessing = false;
     const onWillTrigger = async (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', filepath: string, stats?: Stats) => {
+        options.onChange?.(eventName, filepath, stats);
+
         if (isProcessing) {
             return;
         }
@@ -221,4 +262,24 @@ function delayWatch(options: {
         ignored: options.ignore,
         ignoreInitial: true
     }).on('all', onWillTrigger);
+}
+
+export function defaultPtlTemplate(ptlBaseName: string, ptlPath: string, ptlDir: string): string {
+    return `export interface Req${ptlBaseName} {
+    
+}
+
+export interface Res${ptlBaseName} {
+    
+}
+
+// export const conf = {}`;
+}
+
+export function defaultMsgTemplate(msgBaseName: string, msgPath: string, ptlDir: string): string {
+    return `export interface Msg${msgBaseName} {
+    
+}
+
+// export const conf = {}`;
 }
