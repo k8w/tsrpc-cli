@@ -38,6 +38,22 @@ export async function cmdDev(options: CmdDevOptions) {
         })), console);
     }
 
+    // Auto Copy if target is a file (maybe a link)
+    let firstSyncedIndices: number[] = [];
+    if (conf.sync) {
+        let copyConfs = conf.sync.filter(v => v.type === 'copy');
+        for (let i = 0; i < copyConfs.length; ++i) {
+            let conf = copyConfs[i];
+            let lstat = await fse.lstat(conf.to);
+            if (lstat.isSymbolicLink() || lstat.isFile()) {
+                await fse.remove(conf.to);
+                await copyDirReadonly(conf.from, conf.to, !!conf.clean, options.config.verbose ? console : undefined);
+                console.log(chalk.green(`✔ ${i18n.copy} '${conf.from}' -> '${conf.to}'`));
+                firstSyncedIndices.push(i);
+            }
+        }
+    }
+
     // Auto Proto
     if (autoProto && conf.proto) {
         for (let confItem of conf.proto) {
@@ -125,7 +141,7 @@ export async function cmdDev(options: CmdDevOptions) {
                 return;
             }
 
-            let isInited = false;
+            let isInited = firstSyncedIndices.indexOf(idx) > -1;
 
             delayWatch({
                 matches: confItem.from,
