@@ -38,6 +38,11 @@ main().catch((e: Error) => {
 
 async function main() {
     let conf: TsrpcConfig | undefined;
+
+    if (Object.keys(args).filter(v => v !== '_').length === 0) {
+        args.config = 'tsrpc.config.ts';
+    }
+
     if (args.config) {
         conf = importTsrpcConfig(args.config);
     }

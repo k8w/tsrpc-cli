@@ -3,6 +3,17 @@ export const i18nEnUs = {
     help: `
 Usage：
 
+    --- Recommended: Use Via Config File ---
+
+    tsrpc proto --config tsrpc.config.ts
+    tsrpc api   --config tsrpc.config.ts
+    tsrpc sync  --config tsrpc.config.ts
+    tsrpc link  --config tsrpc.config.ts
+    tsrpc dev   --config tsrpc.config.ts
+    tsrpc build --config tsrpc.config.ts
+
+    --- CLI Params Introduction ---
+
     tsrpc proto <options>                Generate proto file
         --config <file>                     Read params from config file (would ignore all other CLI params)
         -i, --input <file>                  Input TS file (support glob expression)

@@ -4,6 +4,17 @@ export const i18nZhCn = {
     help: `
 使用说明：
 
+    --- 推荐：通过配置文件使用 ---
+
+    tsrpc proto --config tsrpc.config.ts
+    tsrpc api   --config tsrpc.config.ts
+    tsrpc sync  --config tsrpc.config.ts
+    tsrpc link  --config tsrpc.config.ts
+    tsrpc dev   --config tsrpc.config.ts
+    tsrpc build --config tsrpc.config.ts
+
+    --- 命令行参数说明 ---
+
     tsrpc proto <options>                生成TSRPC Proto文件
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
         -i, --input <folder>                用来生成Proto的协议文件夹路径
