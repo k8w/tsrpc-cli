@@ -99,7 +99,7 @@ export interface TsrpcConfig {
         entry?: string,
         /**
          * 运行命令的额外参数
-         * node -r ts-node/register ${args} src/index.ts
+         * `node -r ts-node/register ${args} src/index.ts`
          */
         nodeArgs?: string[],
         /**

@@ -17,7 +17,6 @@ export default {
                     module: "ESNext"
                 }
             },
-            objectHashIgnoreUnknownHack: true,
             rollupCommonJSResolveHack: true
         }),
         replace({

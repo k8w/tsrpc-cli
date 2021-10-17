@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [2.0.9-dev.2] - 2021-10-16
+## [2.0.9-dev.3] - 2021-10-16
 ### Added
 - `TsrpcConfig` 新增 `autoFillNewPtl`，自动填充新建的 `Ptl` 和 `Msg` 文件。
 - `npm run dev` 期间，如果删除了 `Ptl`，则自动删除自动创建且未更改的 `Api` 文件。
@@ -8,6 +8,7 @@
 - `link` 时如果目标位置不为空，由询问确认改为自动清空目标。
 - `npm run dev` 时，如果 `sync.type` 为 `copy`，而目标位置为 `Symlink` 或文件，则会自动清空目标位置并完成初次同步。
 - 没有指定任何命令行参数时，默认 `--config tsrpc.config.ts`。
+- 增加对 `mongodb/ObjectId` 的支持。
 
 ## [2.0.8] - 2021-10-05
 ### Fixed
