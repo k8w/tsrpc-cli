@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [2.0.9-dev.3] - 2021-10-16
+## [2.0.9] - 2021-10-16
 ### Added
 - `TsrpcConfig` 新增 `autoFillNewPtl`，自动填充新建的 `Ptl` 和 `Msg` 文件。
 - `npm run dev` 期间，如果删除了 `Ptl`，则自动删除自动创建且未更改的 `Api` 文件。
