@@ -134,7 +134,7 @@ export class ProtoUtil {
             var typeProto = await new TSBufferProtoGenerator({
                 verbose: options.verbose,
                 baseDir: protocolDir,
-                customSchemaIds: ['mongodb/ObjectId', 'mongodb/ObjectID'],
+                customSchemaIds: ['mongodb/ObjectId', 'mongodb/ObjectID', 'bson/ObjectId', 'bson/ObjectID'],
             }).generate(fileList, {
                 compatibleResult: oldProto?.types,
                 filter: info => {

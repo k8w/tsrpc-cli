@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [2.0.10] - 2021-10-18
+### Added
+- Support `bson/ObjectId`
 ## [2.0.9] - 2021-10-16
 ### Added
 - `TsrpcConfig` 新增 `autoFillNewPtl`，自动填充新建的 `Ptl` 和 `Msg` 文件。
