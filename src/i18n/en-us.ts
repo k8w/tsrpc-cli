@@ -124,7 +124,9 @@ Example：
     linkedSucc: '✔ Linked successfully',
     allLinkedSucc: '✔ All linked successfully',
     elevatingForLink: 'Asking for authorization to create symlink',
-    createJunction: 'Authorization failed to create Symlink. Do you want to create a Junction link instead?',
+    linkFailed: 'Authorization to create Symlink failed. Please select "Yes" in the authorization dialog: ',
+    linkRetry: 'Retry',
+    linkJunction: 'Create Junction instead (Not recommended)',
 
     devServerRestarting: '\n------ Recompiling & Restarting ------\n',
     startDevServer: '✔ Start Dev Server:',

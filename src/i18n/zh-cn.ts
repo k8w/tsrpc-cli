@@ -128,7 +128,9 @@ export const i18nZhCn = {
     linkedSucc: '✔ Symlink 创建成功',
     allLinkedSucc: '✔ 已完成所有 Symlink 创建',
     elevatingForLink: '正在获取创建 Symlink 所需的授权',
-    createJunction: '创建 Symlink 授权失败，是否改为创建 Junction？',
+    linkFailed: '创建 Symlink 授权失败，请在授权弹框选择 “是” 以继续：',
+    linkRetry: '重 试',
+    linkJunction: '改为创建 Junction（不推荐）',
 
     devServerRestarting: '\n———— Dev Server 自动重启中 ————\n',
     startDevServer: '✔ 启动本地服务:',

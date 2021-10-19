@@ -84,7 +84,7 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
         // Windows 下无权限
         if (!isElevate && process.platform === 'win32' && err?.code === 'EPERM') {
             // 尚未尝试过提权，提权重试
-            if (elevateResult === undefined) {
+            while (elevateResult === undefined) {
                 // 提权执行
                 let elevateCmd = `"${path.resolve(resPath, 'elevate.cmd')}" "${process.execPath}" ${process.execArgv.join(' ')} "${process.argv[1]}" link --elevate="${encodeURIComponent(JSON.stringify(confs))}"`;
                 await new Promise(rs => {
@@ -111,11 +111,24 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
 
                 // 提权失败，询问是否创建 junction
                 if (!elevateResult) {
-                    createJunction = (await inquirer.prompt({
-                        type: 'confirm',
-                        message: chalk.yellow(i18n.createJunction),
+                    let answer: 'retry' | 'junction' = (await inquirer.prompt({
+                        type: 'list',
+                        message: chalk.yellow(i18n.linkFailed),
+                        choices: [
+                            { name: i18n.linkRetry, value: 'retry' },
+                            { name: i18n.linkJunction, value: 'junction' },
+                        ],
                         name: 'res'
                     })).res;
+
+                    // 清除结果，重试
+                    if (answer === 'retry') {
+                        elevateResult = undefined;
+                    }
+                    // 改为创建 Junction·
+                    else {
+                        createJunction = true;
+                    }
                 }
             }
             // 提权失败，创建 junction

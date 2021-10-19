@@ -1,8 +1,13 @@
 # CHANGELOG
 
+## [2.0.12] - 2021-10-19
+### Changed
+- "创建 Symlink 授权失败" 时，加入重试机制。
+
 ## [2.0.11] - 2021-10-19
 ### Changed
 - 提示文案修改
+
 ## [2.0.10] - 2021-10-18
 ### Added
 - Support `bson/ObjectId`
