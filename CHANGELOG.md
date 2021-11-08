@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.1.0] - 2021-11-08
+### Changed
+- Update to `tsbuffer@2.1` `tsrpc@3.1`
+
 ## [2.0.12] - 2021-10-19
 ### Changed
 - "创建 Symlink 授权失败" 时，加入重试机制。
