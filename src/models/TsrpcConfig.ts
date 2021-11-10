@@ -23,6 +23,10 @@ export interface TsrpcConfig {
          */
         apiDir?: string,
         /**
+         * API 接口文档生成到哪个目录，为空则不生成
+         */
+        docDir?: string,
+        /**
          * 生成 ServiceProto 时，要兼容的上一版 ServiceProto 的路径。
          * @defaultValue 同 `output`，即原地兼容旧版同名文件。
          * false 代表关闭兼容模式，总是生成全新的 ServiceProto

@@ -105,6 +105,7 @@ export class ProtoUtil {
         ignore?: string[] | string,
         checkOptimize?: boolean,
         verbose?: boolean,
+        keepComment?: boolean
     }): Promise<{
         newProto: ServiceProto<any>,
         isChanged: boolean
@@ -135,6 +136,7 @@ export class ProtoUtil {
                 verbose: options.verbose,
                 baseDir: protocolDir,
                 customSchemaIds: ['mongodb/ObjectId', 'mongodb/ObjectID', 'bson/ObjectId', 'bson/ObjectID'],
+                keepComment: options.keepComment
             }).generate(fileList, {
                 compatibleResult: oldProto?.types,
                 filter: info => {
@@ -390,7 +392,7 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
     static async genProtoByConfigItem(confItem: Pick<NonNullable<TsrpcConfig['proto']>[0], 'ptlDir' | 'ignore' | 'output'>, old: {
         proto: ServiceProto<any>,
         path: string
-    } | undefined, verbose: boolean | undefined, checkOptimize: boolean | undefined, noEmitWhenNoChange?: boolean) {
+    } | undefined, verbose: boolean | undefined, checkOptimize: boolean | undefined, noEmitWhenNoChange?: boolean, keepComment?: boolean) {
         // new
         try {
             var resGenProto = await ProtoUtil.generateServiceProto({
@@ -419,4 +421,6 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
 
         return resGenProto.newProto;
     }
+
+    static toJsonSchema(){}
 }

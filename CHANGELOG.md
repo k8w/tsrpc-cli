@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [2.2.0-dev.0]
+### Added
+- `tsrpc doc`: Generate API document
+
+
 ## [2.1.0] - 2021-11-08
 ### Changed
 - Update to `tsbuffer@2.1` `tsrpc@3.1`
