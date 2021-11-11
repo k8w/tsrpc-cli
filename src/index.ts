@@ -7,6 +7,7 @@ import { cmdApi } from './commands/api';
 import { cmdBuild } from './commands/build';
 import { cmdDecode } from './commands/decode';
 import { cmdDev } from "./commands/dev";
+import { cmdDoc } from "./commands/doc";
 import { cmdEncode } from './commands/encode';
 import { cmdLink } from './commands/link';
 import { cmdProto } from './commands/proto';
@@ -25,16 +26,17 @@ const args = minimist(process.argv.slice(2));
 export const resPath = process.env.NODE_ENV === 'production' ? path.resolve(__dirname, './res/') : path.resolve(__dirname, '../res/');
 
 // 进入主流程
-main().catch((e: Error) => {
-    CliUtil.done(false);
-    if (args.verbose) {
-        console.error('\n' + chalk.bgRed.white(i18n.error), e);
-    }
-    else {
-        console.error('\n' + chalk.bgRed.white(i18n.error), chalk.red(e?.message ?? e));
-    }
-    process.exit(-1);
-});
+// main().catch((e: Error) => {
+//     CliUtil.done(false);
+//     if (args.verbose) {
+//         console.error('\n' + chalk.bgRed.white(i18n.error), e);
+//     }
+//     else {
+//         console.error('\n' + chalk.bgRed.white(i18n.error), chalk.red(e?.message ?? e));
+//     }
+//     process.exit(-1);
+// });
+main();
 
 async function main() {
     let conf: TsrpcConfig | undefined;
@@ -157,6 +159,16 @@ async function main() {
             verbose: args.verbose,
             config: conf
         })
+    }
+    // Doc
+    else if (args._[0] === 'doc' || args._[0] === 'docs') {
+        await cmdDoc({
+            input: args.input ?? args.i,
+            output: args.output ?? args.o,
+            ignore: args.ignore,
+            verbose: args.verbose,
+            config: conf
+        });
     }
     // Error
     // No Command

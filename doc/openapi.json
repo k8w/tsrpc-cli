@@ -1,0 +1,7288 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "TSRPC Open API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/activity/FinishActivityRound": {
+      "post": {
+        "tags": [
+          "activity"
+        ],
+        "operationId": "activity/FinishActivityRound",
+        "requestBody": {
+          "description": "Req<FinishActivityRound>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/activity_PtlFinishActivityRound_ReqFinishActivityRound"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResFinishActivityRound>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/activity_PtlFinishActivityRound_ResFinishActivityRound"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activity/FinishQunzhanActivityRound": {
+      "post": {
+        "tags": [
+          "activity"
+        ],
+        "operationId": "activity/FinishQunzhanActivityRound",
+        "requestBody": {
+          "description": "Req<FinishQunzhanActivityRound>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/activity_PtlFinishQunzhanActivityRound_ReqFinishQunzhanActivityRound"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResFinishQunzhanActivityRound>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/activity_PtlFinishQunzhanActivityRound_ResFinishQunzhanActivityRound"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activity/GetActivityInfo": {
+      "post": {
+        "tags": [
+          "activity"
+        ],
+        "operationId": "activity/GetActivityInfo",
+        "requestBody": {
+          "description": "Req<GetActivityInfo>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/activity_PtlGetActivityInfo_ReqGetActivityInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetActivityInfo>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/activity_PtlGetActivityInfo_ResGetActivityInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activity/StartActivityRound": {
+      "post": {
+        "tags": [
+          "activity"
+        ],
+        "operationId": "activity/StartActivityRound",
+        "requestBody": {
+          "description": "Req<StartActivityRound>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/activity_PtlStartActivityRound_ReqStartActivityRound"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResStartActivityRound>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/activity_PtlStartActivityRound_ResStartActivityRound"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activity/StartQunzhanActivityRound": {
+      "post": {
+        "tags": [
+          "activity"
+        ],
+        "operationId": "activity/StartQunzhanActivityRound",
+        "requestBody": {
+          "description": "Req<StartQunzhanActivityRound>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/activity_PtlStartQunzhanActivityRound_ReqStartQunzhanActivityRound"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResStartQunzhanActivityRound>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/activity_PtlStartQunzhanActivityRound_ResStartQunzhanActivityRound"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/award/GetMyAwards": {
+      "post": {
+        "tags": [
+          "award"
+        ],
+        "operationId": "award/GetMyAwards",
+        "requestBody": {
+          "description": "Req<GetMyAwards>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/award_PtlGetMyAwards_ReqGetMyAwards"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetMyAwards>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/award_PtlGetMyAwards_ResGetMyAwards"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/award/GetToReceivedInfo": {
+      "post": {
+        "tags": [
+          "award"
+        ],
+        "operationId": "award/GetToReceivedInfo",
+        "requestBody": {
+          "description": "Req<GetToReceivedInfo>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/award_PtlGetToReceivedInfo_ReqGetToReceivedInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetToReceivedInfo>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/award_PtlGetToReceivedInfo_ResGetToReceivedInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/award/GetWorkAreas": {
+      "post": {
+        "tags": [
+          "award"
+        ],
+        "operationId": "award/GetWorkAreas",
+        "requestBody": {
+          "description": "Req<GetWorkAreas>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/award_PtlGetWorkAreas_ReqGetWorkAreas"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetWorkAreas>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/award_PtlGetWorkAreas_ResGetWorkAreas"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/award/OpenLuckyBox": {
+      "post": {
+        "tags": [
+          "award"
+        ],
+        "operationId": "award/OpenLuckyBox",
+        "requestBody": {
+          "description": "Req<OpenLuckyBox>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/award_PtlOpenLuckyBox_ReqOpenLuckyBox"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResOpenLuckyBox>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/award_PtlOpenLuckyBox_ResOpenLuckyBox"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/award/SelectLuckyBoxAward": {
+      "post": {
+        "tags": [
+          "award"
+        ],
+        "operationId": "award/SelectLuckyBoxAward",
+        "requestBody": {
+          "description": "Req<SelectLuckyBoxAward>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/award_PtlSelectLuckyBoxAward_ReqSelectLuckyBoxAward"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResSelectLuckyBoxAward>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/award_PtlSelectLuckyBoxAward_ResSelectLuckyBoxAward"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/award/SubmitAddr": {
+      "post": {
+        "tags": [
+          "award"
+        ],
+        "operationId": "award/SubmitAddr",
+        "requestBody": {
+          "description": "Req<SubmitAddr>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/award_PtlSubmitAddr_ReqSubmitAddr"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResSubmitAddr>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/award_PtlSubmitAddr_ResSubmitAddr"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/daily/FinishRound": {
+      "post": {
+        "tags": [
+          "daily"
+        ],
+        "operationId": "daily/FinishRound",
+        "requestBody": {
+          "description": "Req<FinishRound>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/daily_PtlFinishRound_ReqFinishRound"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResFinishRound>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/daily_PtlFinishRound_ResFinishRound"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/daily/StartRound": {
+      "post": {
+        "tags": [
+          "daily"
+        ],
+        "operationId": "daily/StartRound",
+        "requestBody": {
+          "description": "Req<StartRound>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/daily_PtlStartRound_ReqStartRound"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResStartRound>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/daily_PtlStartRound_ResStartRound"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/GetPlayData": {
+      "post": {
+        "tags": [
+          "data"
+        ],
+        "operationId": "data/GetPlayData",
+        "requestBody": {
+          "description": "Req<GetPlayData>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/data_PtlGetPlayData_ReqGetPlayData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetPlayData>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/data_PtlGetPlayData_ResGetPlayData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/SetPlayData": {
+      "post": {
+        "tags": [
+          "data"
+        ],
+        "operationId": "data/SetPlayData",
+        "requestBody": {
+          "description": "Req<SetPlayData>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/data_PtlSetPlayData_ReqSetPlayData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResSetPlayData>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/data_PtlSetPlayData_ResSetPlayData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draw/Draw": {
+      "post": {
+        "tags": [
+          "draw"
+        ],
+        "operationId": "draw/Draw",
+        "requestBody": {
+          "description": "Req<Draw>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/draw_PtlDraw_ReqDraw"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResDraw>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/draw_PtlDraw_ResDraw"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draw/GetDrawInfo": {
+      "post": {
+        "tags": [
+          "draw"
+        ],
+        "operationId": "draw/GetDrawInfo",
+        "requestBody": {
+          "description": "Req<GetDrawInfo>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/draw_PtlGetDrawInfo_ReqGetDrawInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetDrawInfo>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/draw_PtlGetDrawInfo_ResGetDrawInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/2021-10-24/GetStatus": {
+      "post": {
+        "tags": [
+          "events/2021-10-24"
+        ],
+        "operationId": "events/2021-10-24/GetStatus",
+        "requestBody": {
+          "description": "Req<GetStatus>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/events_2021-10-24_PtlGetStatus_ReqGetStatus"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetStatus>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/events_2021-10-24_PtlGetStatus_ResGetStatus"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/2021-10-24/StartExp": {
+      "post": {
+        "tags": [
+          "events/2021-10-24"
+        ],
+        "operationId": "events/2021-10-24/StartExp",
+        "requestBody": {
+          "description": "Req<StartExp>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/events_2021-10-24_PtlStartExp_ReqStartExp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResStartExp>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/events_2021-10-24_PtlStartExp_ResStartExp"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/home/GetHomeInfo": {
+      "post": {
+        "tags": [
+          "home"
+        ],
+        "operationId": "home/GetHomeInfo",
+        "requestBody": {
+          "description": "Req<GetHomeInfo>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/home_PtlGetHomeInfo_ReqGetHomeInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetHomeInfo>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/home_PtlGetHomeInfo_ResGetHomeInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mistake/GetMyMistakes": {
+      "post": {
+        "tags": [
+          "mistake"
+        ],
+        "operationId": "mistake/GetMyMistakes",
+        "requestBody": {
+          "description": "Req<GetMyMistakes>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/mistake_PtlGetMyMistakes_ReqGetMyMistakes"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetMyMistakes>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/mistake_PtlGetMyMistakes_ResGetMyMistakes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/platform/LoginDev": {
+      "post": {
+        "tags": [
+          "platform"
+        ],
+        "operationId": "platform/LoginDev",
+        "requestBody": {
+          "description": "Req<LoginDev>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/platform_PtlLoginDev_ReqLoginDev"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResLoginDev>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/platform_PtlLoginDev_ResLoginDev"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/platform/LoginFeishu": {
+      "post": {
+        "tags": [
+          "platform"
+        ],
+        "operationId": "platform/LoginFeishu",
+        "requestBody": {
+          "description": "Req<LoginFeishu>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/platform_PtlLoginFeishu_ReqLoginFeishu"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResLoginFeishu>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/platform_PtlLoginFeishu_ResLoginFeishu"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetGameConfig": {
+      "post": {
+        "operationId": "GetGameConfig",
+        "requestBody": {
+          "description": "Req<GetGameConfig>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PtlGetGameConfig_ReqGetGameConfig"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetGameConfig>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/PtlGetGameConfig_ResGetGameConfig"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qunzhan/GetQunzhanFirstRoundNum": {
+      "post": {
+        "tags": [
+          "qunzhan"
+        ],
+        "operationId": "qunzhan/GetQunzhanFirstRoundNum",
+        "requestBody": {
+          "description": "Req<GetQunzhanFirstRoundNum>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanFirstRoundNum_ReqGetQunzhanFirstRoundNum"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetQunzhanFirstRoundNum>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanFirstRoundNum_ResGetQunzhanFirstRoundNum"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qunzhan/GetQunzhanIndexInfo": {
+      "post": {
+        "tags": [
+          "qunzhan"
+        ],
+        "operationId": "qunzhan/GetQunzhanIndexInfo",
+        "requestBody": {
+          "description": "Req<GetQunzhanIndexInfo>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanIndexInfo_ReqGetQunzhanIndexInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetQunzhanIndexInfo>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanIndexInfo_ResGetQunzhanIndexInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qunzhan/GetQunzhanPictureAward": {
+      "post": {
+        "tags": [
+          "qunzhan"
+        ],
+        "operationId": "qunzhan/GetQunzhanPictureAward",
+        "requestBody": {
+          "description": "Req<GetQunzhanPictureAward>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanPictureAward_ReqGetQunzhanPictureAward"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetQunzhanPictureAward>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanPictureAward_ResGetQunzhanPictureAward"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qunzhan/GetQunzhanPictureConfigs": {
+      "post": {
+        "tags": [
+          "qunzhan"
+        ],
+        "operationId": "qunzhan/GetQunzhanPictureConfigs",
+        "requestBody": {
+          "description": "Req<GetQunzhanPictureConfigs>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanPictureConfigs_ReqGetQunzhanPictureConfigs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetQunzhanPictureConfigs>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanPictureConfigs_ResGetQunzhanPictureConfigs"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qunzhan/GetQunzhanRoomInfo": {
+      "post": {
+        "tags": [
+          "qunzhan"
+        ],
+        "operationId": "qunzhan/GetQunzhanRoomInfo",
+        "requestBody": {
+          "description": "Req<GetQunzhanRoomInfo>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanRoomInfo_ReqGetQunzhanRoomInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetQunzhanRoomInfo>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanRoomInfo_ResGetQunzhanRoomInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qunzhan/GetQunzhanUser": {
+      "post": {
+        "tags": [
+          "qunzhan"
+        ],
+        "operationId": "qunzhan/GetQunzhanUser",
+        "requestBody": {
+          "description": "Req<GetQunzhanUser>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanUser_ReqGetQunzhanUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetQunzhanUser>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/qunzhan_PtlGetQunzhanUser_ResGetQunzhanUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qunzhan/SelectQunzhanSkin": {
+      "post": {
+        "tags": [
+          "qunzhan"
+        ],
+        "operationId": "qunzhan/SelectQunzhanSkin",
+        "requestBody": {
+          "description": "Req<SelectQunzhanSkin>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qunzhan_PtlSelectQunzhanSkin_ReqSelectQunzhanSkin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResSelectQunzhanSkin>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/qunzhan_PtlSelectQunzhanSkin_ResSelectQunzhanSkin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qunzhan/SetCurrentQunzhanPicture": {
+      "post": {
+        "tags": [
+          "qunzhan"
+        ],
+        "operationId": "qunzhan/SetCurrentQunzhanPicture",
+        "requestBody": {
+          "description": "Req<SetCurrentQunzhanPicture>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qunzhan_PtlSetCurrentQunzhanPicture_ReqSetCurrentQunzhanPicture"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResSetCurrentQunzhanPicture>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/qunzhan_PtlSetCurrentQunzhanPicture_ResSetCurrentQunzhanPicture"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rank/GetRankList": {
+      "post": {
+        "tags": [
+          "rank"
+        ],
+        "operationId": "rank/GetRankList",
+        "requestBody": {
+          "description": "Req<GetRankList>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rank_PtlGetRankList_ReqGetRankList"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetRankList>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/rank_PtlGetRankList_ResGetRankList"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rank/UpdateRank": {
+      "post": {
+        "tags": [
+          "rank"
+        ],
+        "operationId": "rank/UpdateRank",
+        "requestBody": {
+          "description": "Req<UpdateRank>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rank_PtlUpdateRank_ReqUpdateRank"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResUpdateRank>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/rank_PtlUpdateRank_ResUpdateRank"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stat/StatAction": {
+      "post": {
+        "tags": [
+          "stat"
+        ],
+        "operationId": "stat/StatAction",
+        "requestBody": {
+          "description": "Req<StatAction>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/stat_PtlStatAction_ReqStatAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResStatAction>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/stat_PtlStatAction_ResStatAction"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ugc/AddUgcQuestion": {
+      "post": {
+        "tags": [
+          "ugc"
+        ],
+        "operationId": "ugc/AddUgcQuestion",
+        "requestBody": {
+          "description": "Req<AddUgcQuestion>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ugc_PtlAddUgcQuestion_ReqAddUgcQuestion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResAddUgcQuestion>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/ugc_PtlAddUgcQuestion_ResAddUgcQuestion"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ugc/GetUgcAwards": {
+      "post": {
+        "tags": [
+          "ugc"
+        ],
+        "operationId": "ugc/GetUgcAwards",
+        "requestBody": {
+          "description": "Req<GetUgcAwards>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ugc_PtlGetUgcAwards_ReqGetUgcAwards"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetUgcAwards>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/ugc_PtlGetUgcAwards_ResGetUgcAwards"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ugc/GetUgcQuestions": {
+      "post": {
+        "tags": [
+          "ugc"
+        ],
+        "operationId": "ugc/GetUgcQuestions",
+        "requestBody": {
+          "description": "Req<GetUgcQuestions>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ugc_PtlGetUgcQuestions_ReqGetUgcQuestions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetUgcQuestions>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/ugc_PtlGetUgcQuestions_ResGetUgcQuestions"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/BuyEnergy": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/BuyEnergy",
+        "requestBody": {
+          "description": "Req<BuyEnergy>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlBuyEnergy_ReqBuyEnergy"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResBuyEnergy>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlBuyEnergy_ResBuyEnergy"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/ConsumePoints": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/ConsumePoints",
+        "requestBody": {
+          "description": "Req<ConsumePoints>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlConsumePoints_ReqConsumePoints"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResConsumePoints>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlConsumePoints_ResConsumePoints"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/GetCurrentUser": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/GetCurrentUser",
+        "requestBody": {
+          "description": "Req<GetCurrentUser>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlGetCurrentUser_ReqGetCurrentUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetCurrentUser>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlGetCurrentUser_ResGetCurrentUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/GetDailyEnergy": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/GetDailyEnergy",
+        "requestBody": {
+          "description": "Req<GetDailyEnergy>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlGetDailyEnergy_ReqGetDailyEnergy"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetDailyEnergy>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlGetDailyEnergy_ResGetDailyEnergy"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/GetEnergy": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/GetEnergy",
+        "requestBody": {
+          "description": "Req<GetEnergy>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlGetEnergy_ReqGetEnergy"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetEnergy>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlGetEnergy_ResGetEnergy"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/GetMine": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/GetMine",
+        "requestBody": {
+          "description": "Req<GetMine>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlGetMine_ReqGetMine"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetMine>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlGetMine_ResGetMine"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/GetPointsHistory": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/GetPointsHistory",
+        "requestBody": {
+          "description": "Req<GetPointsHistory>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlGetPointsHistory_ReqGetPointsHistory"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetPointsHistory>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlGetPointsHistory_ResGetPointsHistory"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/GetTodayRoundNum": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/GetTodayRoundNum",
+        "requestBody": {
+          "description": "Req<GetTodayRoundNum>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlGetTodayRoundNum_ReqGetTodayRoundNum"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetTodayRoundNum>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlGetTodayRoundNum_ResGetTodayRoundNum"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/GetUserInfo": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/GetUserInfo",
+        "requestBody": {
+          "description": "Req<GetUserInfo>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlGetUserInfo_ReqGetUserInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetUserInfo>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlGetUserInfo_ResGetUserInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/RedeemStorePoints": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/RedeemStorePoints",
+        "requestBody": {
+          "description": "Req<RedeemStorePoints>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlRedeemStorePoints_ReqRedeemStorePoints"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResRedeemStorePoints>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlRedeemStorePoints_ResRedeemStorePoints"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/Sign": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/Sign",
+        "requestBody": {
+          "description": "Req<Sign>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlSign_ReqSign"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResSign>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlSign_ResSign"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/UpdateUser": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/UpdateUser",
+        "requestBody": {
+          "description": "Req<UpdateUser>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlUpdateUser_ReqUpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResUpdateUser>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlUpdateUser_ResUpdateUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/Upload": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/Upload",
+        "requestBody": {
+          "description": "Req<Upload>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlUpload_ReqUpload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResUpload>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlUpload_ResUpload"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/UseEnergy": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/UseEnergy",
+        "requestBody": {
+          "description": "Req<UseEnergy>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlUseEnergy_ReqUseEnergy"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResUseEnergy>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlUseEnergy_ResUseEnergy"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "activity_PtlFinishActivityRound_ReqFinishActivityRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "self": {
+                "$ref": "#/components/schemas/models_QuizRound_QuizRoundSelf"
+              },
+              "questionNum": {
+                "type": "number",
+                "description": "对局所有题目的数量"
+              }
+            },
+            "required": [
+              "_id",
+              "self",
+              "questionNum"
+            ]
+          }
+        ]
+      },
+      "base_BaseRequest": {
+        "type": "object",
+        "properties": {
+          "sso": {
+            "type": "string"
+          }
+        }
+      },
+      "models_QuizRound_QuizRoundSelf": {
+        "type": "object",
+        "properties": {
+          "operations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/models_QuizOperation_QuizOperation"
+            }
+          },
+          "score": {
+            "type": "number"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "win"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "lose"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "draw"
+                ]
+              }
+            ],
+            "description": "战斗结果 胜利/失败/平局"
+          },
+          "byteStyleScore": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {
+              "type": "number"
+            },
+            "description": "字节范特质得分"
+          },
+          "medals": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "operations",
+          "score",
+          "result",
+          "byteStyleScore",
+          "medals"
+        ]
+      },
+      "models_QuizOperation_QuizOperation": {
+        "$ref": "#/components/schemas/models_QuizOperation_QuizOperationItem",
+        "nullable": true
+      },
+      "models_QuizOperation_QuizOperationItem": {
+        "type": "object",
+        "properties": {
+          "answer": {
+            "type": "number",
+            "description": "选择了第几个选项 从0开始"
+          },
+          "usedTime": {
+            "type": "number",
+            "description": "答题所用的时间"
+          },
+          "isRight": {
+            "type": "boolean",
+            "description": "是否答对"
+          },
+          "score": {
+            "type": "object",
+            "properties": {
+              "right": {
+                "type": "number"
+              },
+              "speed": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "right",
+              "speed"
+            ],
+            "description": "得分"
+          }
+        },
+        "required": [
+          "answer",
+          "usedTime",
+          "isRight",
+          "score"
+        ]
+      },
+      "activity_PtlFinishActivityRound_ResFinishActivityRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "pointsChange": {
+                "type": "number"
+              },
+              "byteStyleChange": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "amount"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "pointsChange",
+              "byteStyleChange"
+            ]
+          }
+        ]
+      },
+      "base_BaseResponse": {
+        "type": "object",
+        "properties": {
+          "__refresh": {
+            "type": "object",
+            "properties": {
+              "sso": {
+                "type": "string"
+              },
+              "medals": {
+                "type": "number"
+              },
+              "points": {
+                "type": "number"
+              },
+              "energy": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "activity_PtlFinishQunzhanActivityRound_ReqFinishQunzhanActivityRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "qunzhanRoundHistoryId": {
+                "type": "string"
+              },
+              "activityId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "qunzhanRoundHistoryId",
+              "activityId"
+            ]
+          }
+        ]
+      },
+      "activity_PtlFinishQunzhanActivityRound_ResFinishQunzhanActivityRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "isWin": {
+                "type": "boolean"
+              },
+              "remainedPlayTimes": {
+                "type": "number",
+                "description": "剩余参与次数"
+              }
+            },
+            "required": [
+              "isWin",
+              "remainedPlayTimes"
+            ]
+          }
+        ]
+      },
+      "activity_PtlGetActivityInfo_ReqGetActivityInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "activityId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "activityId"
+            ]
+          }
+        ]
+      },
+      "activity_PtlGetActivityInfo_ResGetActivityInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "activityConfig": {
+                "$ref": "#/components/schemas/models_ActivityConfig_ActivityConfig"
+              },
+              "self": {
+                "type": "object",
+                "properties": {
+                  "remainedPlayTimes": {
+                    "type": "number",
+                    "description": "剩余参与次数"
+                  },
+                  "winRoundId": {
+                    "type": "string",
+                    "description": "挑战通过的roundId"
+                  },
+                  "myAwardId": {
+                    "type": "string",
+                    "description": "抽到的奖品MyAwardID"
+                  }
+                },
+                "required": [
+                  "remainedPlayTimes"
+                ]
+              }
+            },
+            "required": [
+              "activityConfig",
+              "self"
+            ]
+          }
+        ]
+      },
+      "models_ActivityConfig_ActivityConfig": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "isEnabled": {
+            "type": "boolean",
+            "description": "是否启用"
+          },
+          "name": {
+            "type": "string",
+            "description": "活动名称"
+          },
+          "homeBanner": {
+            "type": "string",
+            "description": "首页的Banner图地址"
+          },
+          "titleImage": {
+            "type": "string",
+            "description": "活动首页的标题图"
+          },
+          "descImage": {
+            "type": "string",
+            "description": "活动首页的详情图"
+          },
+          "startTime": {
+            "type": "number",
+            "description": "开始时间"
+          },
+          "endTime": {
+            "type": "number",
+            "description": "结束时间"
+          },
+          "maxPlayTimesPerUser": {
+            "type": "number",
+            "description": "每个用户最多参与几次"
+          },
+          "showByteStyle": {
+            "type": "boolean",
+            "description": "是否启用字节范特质显示"
+          },
+          "tacticUrl": {
+            "type": "string",
+            "description": "攻略地址"
+          },
+          "qunzhan": {
+            "type": "object",
+            "properties": {
+              "awards": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "description": "对几道题给多少积分"
+              }
+            },
+            "required": [
+              "awards"
+            ],
+            "description": "是群战模式"
+          },
+          "joinedUserNum": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "_id",
+          "isEnabled",
+          "name",
+          "titleImage",
+          "descImage",
+          "startTime",
+          "endTime",
+          "maxPlayTimesPerUser",
+          "showByteStyle",
+          "joinedUserNum"
+        ]
+      },
+      "activity_PtlStartActivityRound_ReqStartActivityRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "指定ActivityRoundID 一般情况下不用 只有在例如误退出 希望不消耗次数重来的情况下可用"
+              },
+              "activityId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "activityId"
+            ]
+          }
+        ]
+      },
+      "activity_PtlStartActivityRound_ResStartActivityRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/models_QuizQuestion_QuizQuestion"
+                }
+              },
+              "opponent": {
+                "type": "object",
+                "properties": {
+                  "userInfo": {
+                    "$ref": "#/components/schemas/models_UserInfo_UserInfo"
+                  },
+                  "operations": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/models_QuizOperation_QuizOperation"
+                    }
+                  },
+                  "score": {
+                    "type": "number"
+                  },
+                  "byteStyleScore": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  "roundId": {
+                    "type": "string",
+                    "description": "对手对局的记录ID 如果为空 说明这是一个AI"
+                  }
+                },
+                "required": [
+                  "userInfo",
+                  "operations",
+                  "score",
+                  "byteStyleScore"
+                ]
+              }
+            },
+            "required": [
+              "_id",
+              "questions",
+              "opponent"
+            ]
+          }
+        ]
+      },
+      "models_QuizQuestion_QuizQuestion": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "questionBankIndices": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "options对应题库的索引，>=0为错误答案索引，-1为正确答案"
+          },
+          "category": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rightAnswerIndex": {
+            "type": "number"
+          },
+          "byteStyle": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "provider": {
+            "type": "string"
+          },
+          "analysis": {
+            "type": "string",
+            "description": "题目解析"
+          },
+          "analysisUrl": {
+            "type": "string",
+            "description": "题目解析链接"
+          }
+        },
+        "required": [
+          "_id",
+          "questionBankIndices",
+          "category",
+          "question",
+          "options",
+          "rightAnswerIndex",
+          "byteStyle"
+        ],
+        "description": "局内的问题（已经生成好的）"
+      },
+      "models_QuizRound_QuizRound": {
+        "type": "object",
+        "properties": {
+          "selfInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/models_UserInfo_UserInfo"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string",
+                    "description": "保护不能同城匹配"
+                  },
+                  "isDev": {
+                    "type": "boolean",
+                    "description": "保护测试账号不被匹配"
+                  }
+                }
+              }
+            ],
+            "description": "答题人（左侧）"
+          },
+          "self": {
+            "$ref": "#/components/schemas/models_QuizRound_QuizRoundSelf",
+            "description": "自己的操作和结果，为空则说明尚未完成"
+          },
+          "opponent": {
+            "type": "object",
+            "properties": {
+              "userInfo": {
+                "$ref": "#/components/schemas/models_UserInfo_UserInfo"
+              },
+              "operations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/models_QuizOperation_QuizOperation"
+                }
+              },
+              "score": {
+                "type": "number"
+              },
+              "byteStyleScore": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "roundId": {
+                "type": "string",
+                "description": "对手对局的记录ID 如果为空 说明这是一个AI"
+              }
+            },
+            "required": [
+              "userInfo",
+              "operations",
+              "score",
+              "byteStyleScore"
+            ]
+          },
+          "matchable": {
+            "type": "boolean",
+            "description": "该对局当前是否可以开放被匹配（根据self的表现来判定，目的是过滤劣质对局），最终能否匹配还要结合matchedNum一起看"
+          },
+          "matchedNum": {
+            "type": "number",
+            "description": "已被匹配的次数"
+          },
+          "random": {
+            "type": "number"
+          },
+          "createTime": {
+            "type": "number"
+          },
+          "finishTime": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "selfInfo",
+          "opponent",
+          "matchable",
+          "matchedNum",
+          "random",
+          "createTime"
+        ]
+      },
+      "models_UserInfo_UserInfo": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/models_UserInfo_UserGender"
+          },
+          "medals": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "uid",
+          "nickname",
+          "avatar",
+          "gender",
+          "medals"
+        ]
+      },
+      "models_UserInfo_UserGender": {
+        "type": "number",
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "activity_PtlStartQunzhanActivityRound_ReqStartQunzhanActivityRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "activityId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "activityId"
+            ]
+          }
+        ]
+      },
+      "activity_PtlStartQunzhanActivityRound_ResStartQunzhanActivityRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "remainedPlayTimes": {
+                "type": "number",
+                "description": "剩余参与次数"
+              }
+            },
+            "required": [
+              "remainedPlayTimes"
+            ]
+          }
+        ]
+      },
+      "award_PtlGetMyAwards_ReqGetMyAwards": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "number",
+                "description": "从1开始"
+              },
+              "pageSize": {
+                "type": "number"
+              },
+              "activityId": {
+                "type": "string",
+                "description": "给【活动首页】->【查看奖品】预留，只显示本活动奖品"
+              }
+            },
+            "required": [
+              "page",
+              "pageSize"
+            ]
+          }
+        ]
+      },
+      "award_PtlGetMyAwards_ResGetMyAwards": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/models_MyAward_MyAward"
+                }
+              },
+              "total": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "data",
+              "total"
+            ]
+          }
+        ]
+      },
+      "models_MyAward_MyAward": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/models_MyAward_MyAwardReal"
+          },
+          {
+            "$ref": "#/components/schemas/models_MyAward_MyAwardVirtual"
+          },
+          {
+            "$ref": "#/components/schemas/models_MyAward_MyAwardLuckyBox"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "models_MyAward_MyAwardReal": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/models_MyAward_BaseMyAward"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "实物"
+                ]
+              },
+              "address": {
+                "$ref": "#/components/schemas/models_MyAward_RealAwardAddress",
+                "description": "登记的收货地址"
+              },
+              "allowedDeliveryType": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "快递"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "工区自提"
+                      ]
+                    }
+                  ]
+                },
+                "description": "物流信息"
+              },
+              "delivery": {
+                "type": "object",
+                "properties": {
+                  "time": {
+                    "type": "number"
+                  },
+                  "expressCompany": {
+                    "type": "string",
+                    "description": "快递公司"
+                  },
+                  "expressNo": {
+                    "type": "string",
+                    "description": "快递单号"
+                  }
+                },
+                "required": [
+                  "time",
+                  "expressCompany",
+                  "expressNo"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "allowedDeliveryType"
+            ]
+          }
+        ],
+        "description": "实物奖品"
+      },
+      "models_MyAward_BaseMyAward": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "jobNo": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "description": "奖品名称"
+          },
+          "icon": {
+            "type": "string",
+            "description": "奖品图标"
+          },
+          "from": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/models_MyAward_MyAwardFromDaily"
+              },
+              {
+                "$ref": "#/components/schemas/models_MyAward_MyAwardFromActivity"
+              },
+              {
+                "$ref": "#/components/schemas/models_MyAward_MyAwardFromRank"
+              },
+              {
+                "$ref": "#/components/schemas/models_MyAward_MyAwardFromCustom"
+              },
+              {
+                "$ref": "#/components/schemas/models_MyAward_MyAwardFromQunzhan"
+              }
+            ],
+            "description": "奖品来源"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "待领取"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "待发出"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "已发出"
+                ]
+              }
+            ]
+          },
+          "createTime": {
+            "type": "number",
+            "description": "中奖时间"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "_id",
+          "uid",
+          "nickname",
+          "jobNo",
+          "name",
+          "icon",
+          "from",
+          "status",
+          "createTime"
+        ]
+      },
+      "models_MyAward_MyAwardFromDaily": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "日常抽奖"
+            ]
+          },
+          "desc": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "desc"
+        ]
+      },
+      "models_MyAward_MyAwardFromActivity": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "活动"
+            ]
+          },
+          "activityId": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "activityId",
+          "desc"
+        ]
+      },
+      "models_MyAward_MyAwardFromRank": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "周排名"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "月排名"
+                ]
+              }
+            ]
+          },
+          "desc": {
+            "type": "string"
+          },
+          "period": {
+            "type": "object",
+            "properties": {
+              "startDate": {
+                "type": "string",
+                "description": "yyyy-MM-dd"
+              },
+              "endDate": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "startDate",
+              "endDate"
+            ]
+          },
+          "rank": {
+            "type": "integer",
+            "description": "自己的排名"
+          }
+        },
+        "required": [
+          "type",
+          "desc",
+          "period",
+          "rank"
+        ],
+        "description": "排名奖励"
+      },
+      "models_MyAward_MyAwardFromCustom": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "Custom"
+            ]
+          },
+          "poolId": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "keys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "领奖凭据"
+          }
+        },
+        "required": [
+          "type",
+          "poolId",
+          "desc",
+          "keys"
+        ],
+        "description": "自定义发放"
+      },
+      "models_MyAward_MyAwardFromQunzhan": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "群战拼图"
+            ]
+          },
+          "poolId": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "poolId",
+          "desc"
+        ]
+      },
+      "models_MyAward_RealAwardAddress": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/models_MyAward_RealAwardAddressExpress"
+          },
+          {
+            "$ref": "#/components/schemas/models_MyAward_RealAwardAddressZiti"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "models_MyAward_RealAwardAddressExpress": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/models_MyAward_BaseRealAwardAddress"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "快递"
+                ]
+              },
+              "province": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "area": {
+                "type": "string"
+              },
+              "addr": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "province",
+              "city",
+              "area",
+              "addr"
+            ]
+          }
+        ]
+      },
+      "models_MyAward_BaseRealAwardAddress": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "number",
+            "description": "登记时间"
+          },
+          "name": {
+            "type": "string"
+          },
+          "tel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "time",
+          "name",
+          "tel"
+        ]
+      },
+      "models_MyAward_RealAwardAddressZiti": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/models_MyAward_BaseRealAwardAddress"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "工区自提"
+                ]
+              },
+              "city": {
+                "type": "string"
+              },
+              "area": {
+                "type": "string",
+                "description": "工区"
+              }
+            },
+            "required": [
+              "type",
+              "city",
+              "area"
+            ]
+          }
+        ]
+      },
+      "models_MyAward_MyAwardVirtual": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/models_MyAward_BaseMyAward"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "虚拟"
+                ]
+              },
+              "delivery": {
+                "type": "object",
+                "properties": {
+                  "time": {
+                    "type": "number"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "time",
+                  "content"
+                ],
+                "description": "发货的卡密"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        ],
+        "description": "虚拟奖品"
+      },
+      "models_MyAward_MyAwardLuckyBox": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/models_MyAward_BaseMyAward"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "LuckyBox"
+                ]
+              },
+              "selectedPoolItemId": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string",
+                "description": "宝箱标题"
+              },
+              "desc": {
+                "type": "string",
+                "description": "宝箱描述"
+              }
+            },
+            "required": [
+              "type",
+              "title",
+              "desc"
+            ]
+          }
+        ],
+        "description": "待开宝箱"
+      },
+      "award_PtlGetToReceivedInfo_ReqGetToReceivedInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ],
+        "description": "获取待领取奖励的信息"
+      },
+      "award_PtlGetToReceivedInfo_ResGetToReceivedInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "luckyBoxIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "myAwardIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "luckyBoxIds",
+              "myAwardIds"
+            ]
+          }
+        ]
+      },
+      "award_PtlGetWorkAreas_ReqGetWorkAreas": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "award_PtlGetWorkAreas_ResGetWorkAreas": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "workAreas": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "city": {
+                      "type": "string"
+                    },
+                    "areas": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "city",
+                    "areas"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "workAreas"
+            ]
+          }
+        ]
+      },
+      "award_PtlOpenLuckyBox_ReqOpenLuckyBox": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "luckyBoxId": {
+                "type": "string",
+                "description": "LuckyBox的MyAward ID"
+              }
+            },
+            "required": [
+              "luckyBoxId"
+            ]
+          }
+        ],
+        "description": "打开宝箱 查看宝箱里的奖品"
+      },
+      "award_PtlOpenLuckyBox_ResOpenLuckyBox": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "desc": {
+                "type": "string"
+              },
+              "from": {
+                "$ref": "#/components/schemas/award_PtlOpenLuckyBox_LuckyBoxFrom"
+              },
+              "poolItems": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    },
+                    "lockedMsg": {
+                      "type": "string",
+                      "description": "有此值则被锁住无法选择"
+                    }
+                  },
+                  "required": [
+                    "_id",
+                    "name",
+                    "icon"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "title",
+              "desc",
+              "from",
+              "poolItems"
+            ]
+          }
+        ]
+      },
+      "award_PtlOpenLuckyBox_LuckyBoxFrom": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/models_MyAward_MyAwardFromRank"
+          },
+          {
+            "$ref": "#/components/schemas/models_MyAward_MyAwardFromCustom"
+          }
+        ]
+      },
+      "award_PtlSelectLuckyBoxAward_ReqSelectLuckyBoxAward": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "luckyBoxId": {
+                "type": "string",
+                "description": "LuckyBox对应的 MyAward ID"
+              },
+              "poolItemId": {
+                "type": "string",
+                "description": "选择的奖品的 AwardPoolItem ID"
+              }
+            },
+            "required": [
+              "luckyBoxId",
+              "poolItemId"
+            ]
+          }
+        ],
+        "description": "选择宝箱的奖品"
+      },
+      "award_PtlSelectLuckyBoxAward_ResSelectLuckyBoxAward": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "award": {
+                "$ref": "#/components/schemas/models_MyAward_MyAward"
+              }
+            },
+            "required": [
+              "award"
+            ]
+          }
+        ]
+      },
+      "award_PtlSubmitAddr_ReqSubmitAddr": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "myAwardId": {
+                "type": "string"
+              },
+              "address": {
+                "$ref": "#/components/schemas/models_MyAward_RealAwardAddress"
+              }
+            },
+            "required": [
+              "myAwardId",
+              "address"
+            ]
+          }
+        ]
+      },
+      "award_PtlSubmitAddr_ResSubmitAddr": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "newMyAward": {
+                "$ref": "#/components/schemas/models_MyAward_MyAward"
+              }
+            },
+            "required": [
+              "newMyAward"
+            ]
+          }
+        ]
+      },
+      "daily_PtlFinishRound_ReqFinishRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "self": {
+                "$ref": "#/components/schemas/models_QuizRound_QuizRoundSelf"
+              },
+              "questionNum": {
+                "type": "number",
+                "description": "对局所有题目的数量"
+              },
+              "questionGroupId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "_id",
+              "self",
+              "questionNum",
+              "questionGroupId"
+            ]
+          }
+        ]
+      },
+      "daily_PtlFinishRound_ResFinishRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "pointsChange": {
+                "type": "number"
+              },
+              "medalsChange": {
+                "type": "number"
+              },
+              "byteStyleChange": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "amount"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "pointsChange",
+              "medalsChange",
+              "byteStyleChange"
+            ]
+          }
+        ]
+      },
+      "daily_PtlStartRound_ReqStartRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/daily_PtlStartRound_DailyRoundType"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        ]
+      },
+      "daily_PtlStartRound_DailyRoundType": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "practise"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "match"
+            ]
+          }
+        ]
+      },
+      "daily_PtlStartRound_ResStartRound": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/models_QuizQuestion_QuizQuestion"
+                }
+              },
+              "opponent": {
+                "type": "object",
+                "properties": {
+                  "userInfo": {
+                    "$ref": "#/components/schemas/models_UserInfo_UserInfo"
+                  },
+                  "operations": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/models_QuizOperation_QuizOperation"
+                    }
+                  },
+                  "score": {
+                    "type": "number"
+                  },
+                  "byteStyleScore": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  "roundId": {
+                    "type": "string",
+                    "description": "对手对局的记录ID 如果为空 说明这是一个AI"
+                  }
+                },
+                "required": [
+                  "userInfo",
+                  "operations",
+                  "score",
+                  "byteStyleScore"
+                ]
+              },
+              "questionGroupId": {
+                "type": "string",
+                "description": "问题组合标识，Finish时透传"
+              }
+            },
+            "required": [
+              "_id",
+              "questions",
+              "opponent",
+              "questionGroupId"
+            ]
+          }
+        ]
+      },
+      "data_PtlGetPlayData_ReqGetPlayData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "data_PtlGetPlayData_ResGetPlayData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "energy": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "energy"
+                ]
+              }
+            },
+            "required": [
+              "data"
+            ]
+          }
+        ]
+      },
+      "models_PlayData_PlayData": {
+        "type": "object",
+        "properties": {
+          "energy": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "energy"
+        ],
+        "description": "前端控制的用户数据"
+      },
+      "data_PtlSetPlayData_ReqSetPlayData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/models_PlayData_PlayData"
+              }
+            },
+            "required": [
+              "data"
+            ]
+          }
+        ]
+      },
+      "data_PtlSetPlayData_ResSetPlayData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "updateTime": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "updateTime"
+            ]
+          }
+        ]
+      },
+      "draw_PtlDraw_ReqDraw": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ticket": {
+                "$ref": "#/components/schemas/___models_AwardUtil_DrawTicket"
+              }
+            },
+            "required": [
+              "ticket"
+            ]
+          }
+        ],
+        "description": "进行一次抽奖操作"
+      },
+      "___models_AwardUtil_DrawTicket": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/___models_AwardUtil_DrawTicketDaily"
+          },
+          {
+            "$ref": "#/components/schemas/___models_AwardUtil_DrawTicketActivity"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "___models_AwardUtil_DrawTicketDaily": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "daily"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "___models_AwardUtil_DrawTicketActivity": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "activity"
+            ]
+          },
+          "activityId": {
+            "type": "string"
+          },
+          "roundId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "activityId",
+          "roundId"
+        ]
+      },
+      "draw_PtlDraw_ResDraw": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "award": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "icon": {
+                        "type": "string"
+                      },
+                      "myAwardId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "_id",
+                      "name",
+                      "icon",
+                      "myAwardId"
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "实物"
+                            ]
+                          },
+                          "allowedDeliveryType": {
+                            "type": "array",
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "快递"
+                                  ]
+                                },
+                                {
+                                  "type": "string",
+                                  "enum": [
+                                    "工区自提"
+                                  ]
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "allowedDeliveryType"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "虚拟"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "NoAward"
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "award"
+            ]
+          }
+        ]
+      },
+      "draw_PtlGetDrawInfo_ReqGetDrawInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "ticket": {
+                "$ref": "#/components/schemas/___models_AwardUtil_DrawTicket"
+              }
+            },
+            "required": [
+              "ticket"
+            ]
+          }
+        ]
+      },
+      "draw_PtlGetDrawInfo_ResGetDrawInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "awards": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "实物"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "虚拟"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "NoAward"
+                          ]
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "_id",
+                    "type",
+                    "name",
+                    "icon"
+                  ]
+                },
+                "description": "奖品列表"
+              },
+              "activityConfig": {
+                "$ref": "#/components/schemas/models_ActivityConfig_ActivityConfig",
+                "description": "如果req的type为activity，则此项必有值"
+              }
+            },
+            "required": [
+              "awards"
+            ]
+          }
+        ]
+      },
+      "events_2021-10-24_PtlGetStatus_ReqGetStatus": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "events_2021-10-24_PtlGetStatus_ResGetStatus": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "remainedExpTimes": {
+                "type": "number"
+              },
+              "formalResult": {
+                "type": "object",
+                "properties": {
+                  "rightNum": {
+                    "type": "number"
+                  },
+                  "addPoints": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "rightNum",
+                  "addPoints"
+                ]
+              }
+            },
+            "required": [
+              "remainedExpTimes"
+            ]
+          }
+        ]
+      },
+      "events_2021-10-24_PtlStartExp_ReqStartExp": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ],
+        "description": "开始一局体验模式"
+      },
+      "events_2021-10-24_PtlStartExp_ResStartExp": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "home_PtlGetHomeInfo_ReqGetHomeInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ],
+        "description": "获取首页需要的小红点等信息\n一次游戏周期获取一次即可"
+      },
+      "home_PtlGetHomeInfo_ResGetHomeInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dots": {
+                "type": "object",
+                "properties": {
+                  "ugc": {
+                    "type": "boolean",
+                    "description": "用户出题（红点）"
+                  },
+                  "award": {
+                    "type": "integer",
+                    "description": "奖品（带数字红点）"
+                  }
+                },
+                "required": [
+                  "ugc",
+                  "award"
+                ],
+                "description": "小红点"
+              },
+              "luckyBoxIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "自动开宝箱（每开启一个，dots.award -1）"
+              },
+              "activity": {
+                "type": "object",
+                "properties": {
+                  "activityId": {
+                    "type": "string"
+                  },
+                  "banner": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "activityId",
+                  "banner"
+                ],
+                "description": "活动Banner"
+              }
+            },
+            "required": [
+              "dots",
+              "luckyBoxIds"
+            ]
+          }
+        ]
+      },
+      "mistake_PtlGetMyMistakes_ReqGetMyMistakes": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer",
+                "description": "从1开始"
+              },
+              "pageSize": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "page",
+              "pageSize"
+            ]
+          }
+        ]
+      },
+      "mistake_PtlGetMyMistakes_ResGetMyMistakes": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "question": {
+                      "type": "string"
+                    },
+                    "options": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "rightIndex": {
+                      "type": "integer",
+                      "description": "打对勾的选项"
+                    },
+                    "wrongIndex": {
+                      "type": "integer",
+                      "description": "打红叉的选项"
+                    },
+                    "analysis": {
+                      "type": "string",
+                      "description": "题目解析"
+                    },
+                    "analysisUrl": {
+                      "type": "string",
+                      "description": "题目解析链接"
+                    }
+                  },
+                  "required": [
+                    "question",
+                    "options",
+                    "rightIndex",
+                    "wrongIndex"
+                  ]
+                }
+              },
+              "total": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "data",
+              "total"
+            ]
+          }
+        ]
+      },
+      "platform_PtlLoginDev_ReqLoginDev": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "loginKey": {
+                "type": "string"
+              },
+              "from": {
+                "type": "string"
+              },
+              "fromUid": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "loginKey"
+            ]
+          }
+        ]
+      },
+      "platform_PtlLoginDev_ResLoginDev": {
+        "$ref": "#/components/schemas/platform_ResLogin_ResLogin"
+      },
+      "platform_ResLogin_ResLogin": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "user": {
+                "$ref": "#/components/schemas/models_CurrentUser_CurrentUser"
+              },
+              "playData": {
+                "type": "object",
+                "properties": {
+                  "energy": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "energy"
+                ]
+              },
+              "isFirstLogin": {
+                "type": "boolean"
+              },
+              "__refresh": {
+                "type": "object",
+                "properties": {
+                  "sso": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "sso"
+                ]
+              }
+            },
+            "required": [
+              "user",
+              "playData",
+              "isFirstLogin",
+              "__refresh"
+            ]
+          }
+        ]
+      },
+      "models_CurrentUser_CurrentUser": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "小号头像 72x72"
+          },
+          "avatarMiddle": {
+            "type": "string",
+            "description": "中号头像 240x240"
+          },
+          "avatarBig": {
+            "type": "string",
+            "description": "大号头像 640x640"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/models_UserInfo_UserGender"
+          },
+          "jobNo": {
+            "type": "string",
+            "description": "工号"
+          },
+          "country": {
+            "type": "string",
+            "description": "地区"
+          },
+          "province": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "fromUid": {
+            "type": "string"
+          },
+          "points": {
+            "type": "number",
+            "description": "积分"
+          },
+          "medals": {
+            "type": "number",
+            "description": "段位奖章数量"
+          },
+          "byteStyle": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {
+              "type": "number"
+            },
+            "description": "字节范特质称号"
+          },
+          "energy": {
+            "type": "number",
+            "description": "体力"
+          },
+          "invitedNewUser": {
+            "type": "integer",
+            "description": "拉新人数"
+          },
+          "createTime": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "_id",
+          "nickname",
+          "avatar",
+          "avatarMiddle",
+          "avatarBig",
+          "gender",
+          "jobNo",
+          "country",
+          "province",
+          "city",
+          "points",
+          "medals",
+          "byteStyle",
+          "energy",
+          "createTime"
+        ]
+      },
+      "platform_PtlLoginFeishu_ReqLoginFeishu": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "from": {
+                "type": "string"
+              },
+              "fromUid": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          }
+        ]
+      },
+      "platform_PtlLoginFeishu_ResLoginFeishu": {
+        "$ref": "#/components/schemas/platform_ResLogin_ResLogin"
+      },
+      "PtlGetGameConfig_ReqGetGameConfig": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "number"
+              }
+            }
+          }
+        ]
+      },
+      "PtlGetGameConfig_ResGetGameConfig": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "number"
+              },
+              "config": {
+                "$ref": "#/components/schemas/models_GameConfig_GameConfig",
+                "description": "config返回为空，代表version没变，所以不需要再返回（节省流量）"
+              }
+            },
+            "required": [
+              "version"
+            ]
+          }
+        ]
+      },
+      "models_GameConfig_GameConfig": {
+        "type": "object",
+        "properties": {
+          "points": {
+            "type": "object",
+            "properties": {
+              "default": {
+                "type": "integer",
+                "description": "新人初始积分"
+              },
+              "round": {
+                "type": "object",
+                "properties": {
+                  "activity": {
+                    "type": "object",
+                    "properties": {
+                      "win": {
+                        "type": "integer"
+                      },
+                      "lose": {
+                        "type": "integer"
+                      },
+                      "draw": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "win",
+                      "lose",
+                      "draw"
+                    ]
+                  },
+                  "1v1": {
+                    "type": "object",
+                    "properties": {
+                      "win": {
+                        "type": "integer"
+                      },
+                      "lose": {
+                        "type": "integer"
+                      },
+                      "draw": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "win",
+                      "lose",
+                      "draw"
+                    ]
+                  },
+                  "qunzhan": {
+                    "type": "object",
+                    "properties": {
+                      "win": {
+                        "type": "integer"
+                      },
+                      "lose": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "win",
+                      "lose"
+                    ]
+                  }
+                },
+                "required": [
+                  "activity",
+                  "1v1",
+                  "qunzhan"
+                ]
+              },
+              "dailyDraw": {
+                "type": "integer",
+                "description": "抽奖消耗积分"
+              },
+              "ugcAward": {
+                "type": "integer",
+                "description": "出题通过奖励积分"
+              },
+              "buyEnergy": {
+                "type": "object",
+                "properties": {
+                  "points": {
+                    "type": "integer",
+                    "description": "兑换一次消耗的积分价格"
+                  },
+                  "energy": {
+                    "type": "integer",
+                    "description": "兑换一次获得的体力数量"
+                  }
+                },
+                "required": [
+                  "points",
+                  "energy"
+                ],
+                "description": "兑换体力消耗积分"
+              },
+              "freeEnergy": {
+                "type": "object",
+                "properties": {
+                  "hours": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "体力恢复时间 (0~23)[]"
+                  },
+                  "energy": {
+                    "type": "integer",
+                    "description": "每次免费体力的恢复数量"
+                  }
+                },
+                "required": [
+                  "hours",
+                  "energy"
+                ],
+                "description": "每日免费体力"
+              },
+              "inviteNewUser": {
+                "type": "integer",
+                "description": "拉新有礼奖励"
+              }
+            },
+            "required": [
+              "default",
+              "round",
+              "dailyDraw",
+              "ugcAward",
+              "buyEnergy",
+              "freeEnergy",
+              "inviteNewUser"
+            ],
+            "description": "积分数值统一配置"
+          },
+          "medals": {
+            "type": "object",
+            "properties": {
+              "default": {
+                "type": "integer",
+                "description": "新人初始奖章"
+              }
+            },
+            "required": [
+              "default"
+            ],
+            "description": "奖章数值统一配置"
+          },
+          "levels": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "段位ID（用于拿图标啊之类的）"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "minMedals": {
+                  "type": "integer"
+                },
+                "maxMedals": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "minMedals",
+                "maxMedals"
+              ]
+            },
+            "description": "段位配置"
+          },
+          "round": {
+            "type": "object",
+            "properties": {
+              "questionScore": {
+                "type": "object",
+                "properties": {
+                  "right": {
+                    "type": "integer",
+                    "description": "正确得分"
+                  },
+                  "speed": {
+                    "type": "integer",
+                    "description": "速度得分"
+                  }
+                },
+                "required": [
+                  "right",
+                  "speed"
+                ]
+              },
+              "roundTime": {
+                "type": "integer",
+                "description": "单局时长（毫秒）"
+              },
+              "maxMatchedTimes": {
+                "type": "object",
+                "properties": {
+                  "activity": {
+                    "type": "integer"
+                  },
+                  "match": {
+                    "type": "integer"
+                  },
+                  "practise": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "activity",
+                  "match",
+                  "practise"
+                ],
+                "description": "一局最多颁发几个字节范奖杯"
+              },
+              "aiDifficulty": {
+                "type": "object",
+                "properties": {
+                  "activity": {
+                    "type": "number"
+                  },
+                  "match": {
+                    "type": "number"
+                  },
+                  "practise": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "activity",
+                  "match",
+                  "practise"
+                ],
+                "description": "AI的难度"
+              }
+            },
+            "required": [
+              "questionScore",
+              "roundTime",
+              "maxMatchedTimes",
+              "aiDifficulty"
+            ]
+          },
+          "activity": {
+            "type": "object",
+            "properties": {}
+          },
+          "draw": {
+            "type": "object",
+            "properties": {
+              "maxDailyLimit": {
+                "type": "integer",
+                "description": "日常抽奖每日最多几次"
+              }
+            },
+            "required": [
+              "maxDailyLimit"
+            ],
+            "description": "抽奖模块"
+          },
+          "limitEmployeeType": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "允许进入的雇员类型 为undefined则代表所有人"
+          },
+          "rankAward": {
+            "type": "object",
+            "properties": {
+              "maxWeekRank": {
+                "type": "integer",
+                "description": "排名小于等于多少可获得周排名奖励"
+              },
+              "maxMonthRank": {
+                "type": "integer",
+                "description": "排名小于等于多少可获得月排名奖励"
+              }
+            },
+            "required": [
+              "maxWeekRank",
+              "maxMonthRank"
+            ],
+            "description": "排名奖励领取条件"
+          },
+          "texts": {
+            "type": "object",
+            "properties": {
+              "ugcRules": {
+                "type": "string"
+              },
+              "dailyDrawRules": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "ugcRules",
+              "dailyDrawRules"
+            ]
+          },
+          "endAlert": {
+            "type": "object",
+            "properties": {
+              "entry": {
+                "type": "object",
+                "properties": {
+                  "endTime": {
+                    "type": "integer",
+                    "description": "此时间后开始出现"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "btnText": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "endTime",
+                  "title",
+                  "content",
+                  "btnText"
+                ],
+                "description": "进入游戏时的提醒"
+              },
+              "daily": {
+                "type": "object",
+                "properties": {
+                  "endTime1v1": {
+                    "type": "integer",
+                    "description": "1v1 模式，此时间后开始出现"
+                  },
+                  "endTimeQunzhan": {
+                    "type": "integer",
+                    "description": "群战模式，此时间后开始出现"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "btnText": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "endTime1v1",
+                  "endTimeQunzhan",
+                  "title",
+                  "content",
+                  "btnText"
+                ],
+                "description": "日常模式关闭提醒"
+              },
+              "rankEnd": {
+                "type": "object",
+                "properties": {
+                  "endTime": {
+                    "type": "integer"
+                  },
+                  "weekText": {
+                    "type": "string"
+                  },
+                  "monthText": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "endTime",
+                  "weekText",
+                  "monthText"
+                ],
+                "description": "排行榜定格在某一刻"
+              }
+            },
+            "required": [
+              "entry",
+              "daily"
+            ],
+            "description": "游戏运营结束提醒"
+          }
+        },
+        "required": [
+          "points",
+          "medals",
+          "levels",
+          "round",
+          "activity",
+          "draw",
+          "rankAward",
+          "texts"
+        ],
+        "description": "游戏配置（存储在后台）"
+      },
+      "qunzhan_PtlGetQunzhanFirstRoundNum_ReqGetQunzhanFirstRoundNum": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "qunzhan_PtlGetQunzhanFirstRoundNum_ResGetQunzhanFirstRoundNum": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "firstRoundNum": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "firstRoundNum"
+            ]
+          }
+        ]
+      },
+      "qunzhan_PtlGetQunzhanIndexInfo_ReqGetQunzhanIndexInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "qunzhan_PtlGetQunzhanIndexInfo_ResGetQunzhanIndexInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "richText": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "richText",
+                    "time"
+                  ]
+                }
+              },
+              "onlineUserNum": {
+                "type": "integer"
+              },
+              "roomNum": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "list",
+              "onlineUserNum",
+              "roomNum"
+            ]
+          }
+        ]
+      },
+      "qunzhan_PtlGetQunzhanPictureAward_ReqGetQunzhanPictureAward": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "pictureId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pictureId"
+            ]
+          }
+        ],
+        "description": "领取群战拼图奖励"
+      },
+      "qunzhan_PtlGetQunzhanPictureAward_ResGetQunzhanPictureAward": {
+        "type": "object",
+        "properties": {
+          "luckyBoxId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "luckyBoxId"
+        ]
+      },
+      "qunzhan_PtlGetQunzhanPictureConfigs_ReqGetQunzhanPictureConfigs": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "qunzhan_PtlGetQunzhanPictureConfigs_ResGetQunzhanPictureConfigs": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "confs": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/models_QunzhanPictureConfig_QunzhanPictureConfig"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "awards": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "icon": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "icon"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "awards"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "confs"
+            ]
+          }
+        ]
+      },
+      "models_QunzhanPictureConfig_QunzhanPictureConfig": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "col": {
+            "type": "integer"
+          },
+          "row": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "url",
+          "col",
+          "row"
+        ]
+      },
+      "qunzhan_PtlGetQunzhanRoomInfo_ReqGetQunzhanRoomInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "roomId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "roomId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "面对面开黑码"
+                  }
+                },
+                "required": [
+                  "code"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "qunzhan_PtlGetQunzhanRoomInfo_ResGetQunzhanRoomInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "room": {
+                "$ref": "#/components/schemas/models_QunzhanRoom_QunzhanRoom"
+              }
+            }
+          }
+        ]
+      },
+      "models_QunzhanRoom_QunzhanRoom": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "serverUrl": {
+            "type": "string"
+          },
+          "state": {
+            "$ref": "#/components/schemas/models_QunzhanRoom_QunzhanRoomState",
+            "description": "房间状态"
+          },
+          "isPublic": {
+            "type": "boolean",
+            "description": "是否公共房间"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "firstRoundNum": {
+            "type": "integer",
+            "description": "强制新手题目判定依据"
+          },
+          "activityId": {
+            "type": "string",
+            "description": "活动模式，用于指定题目"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/models_QunzhanRoom_QunzhanRoomUser"
+            },
+            "description": "房间内成员（第一位是房主）"
+          },
+          "roomStat": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uid": {
+                  "type": "string"
+                },
+                "nickname": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "winRounds": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "uid",
+                "nickname",
+                "avatar",
+                "winRounds"
+              ]
+            }
+          },
+          "code": {
+            "type": "string",
+            "description": "面对面开黑房间码"
+          },
+          "createTime": {
+            "type": "integer"
+          },
+          "lastActiveTime": {
+            "type": "integer"
+          },
+          "startMatchTime": {
+            "type": "integer"
+          },
+          "startGameTime": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "_id",
+          "serverUrl",
+          "state",
+          "isPublic",
+          "isActive",
+          "users",
+          "roomStat",
+          "createTime",
+          "lastActiveTime"
+        ]
+      },
+      "models_QunzhanRoom_QunzhanRoomState": {
+        "type": "string",
+        "enum": [
+          "Waiting",
+          "Matching",
+          "Gaming"
+        ]
+      },
+      "models_QunzhanRoom_QunzhanRoomUser": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "skinId": {
+            "type": "string"
+          },
+          "joinBy": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "随机匹配"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "邀请同事"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "面对面开黑"
+                ]
+              }
+            ]
+          },
+          "isAI": {
+            "type": "boolean"
+          },
+          "activity": {
+            "type": "object",
+            "properties": {
+              "activityId": {
+                "type": "string"
+              },
+              "isFormal": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "activityId",
+              "isFormal"
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "nickname",
+          "avatar",
+          "skinId",
+          "joinBy"
+        ]
+      },
+      "qunzhan_PtlGetQunzhanUser_ReqGetQunzhanUser": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "qunzhan_PtlGetQunzhanUser_ResGetQunzhanUser": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "qunzhanUser": {
+                "$ref": "#/components/schemas/models_QunzhanUser_QunzhanUser"
+              },
+              "isFirstTime": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "qunzhanUser"
+            ]
+          }
+        ]
+      },
+      "models_QunzhanUser_QunzhanUser": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "同 uid"
+          },
+          "currentSkinId": {
+            "type": "string"
+          },
+          "pictures": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": {
+                "type": "integer"
+              }
+            },
+            "description": "解锁的拼图"
+          },
+          "currentPictureId": {
+            "type": "string",
+            "description": "正在收集的拼图 ID"
+          },
+          "awardedPictureIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "已经集齐的拼图 ID"
+          }
+        },
+        "required": [
+          "_id",
+          "currentSkinId",
+          "pictures",
+          "awardedPictureIds"
+        ]
+      },
+      "qunzhan_PtlSelectQunzhanSkin_ReqSelectQunzhanSkin": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "skinId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skinId"
+            ]
+          }
+        ]
+      },
+      "qunzhan_PtlSelectQunzhanSkin_ResSelectQunzhanSkin": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "qunzhan_PtlSetCurrentQunzhanPicture_ReqSetCurrentQunzhanPicture": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "picId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "picId"
+            ]
+          }
+        ],
+        "description": "设置群战拼图"
+      },
+      "qunzhan_PtlSetCurrentQunzhanPicture_ResSetCurrentQunzhanPicture": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "rank_PtlGetRankList_ReqGetRankList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rankId": {
+                "type": "string"
+              },
+              "score": {
+                "type": "number"
+              },
+              "topCount": {
+                "type": "integer"
+              },
+              "nearCount": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "rankId",
+              "topCount",
+              "nearCount"
+            ]
+          }
+        ]
+      },
+      "rank_PtlGetRankList_ResGetRankList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/rank_PtlGetRankList_RankListItem"
+                }
+              },
+              "province": {
+                "type": "string"
+              },
+              "self": {
+                "type": "object",
+                "properties": {
+                  "rank": {
+                    "type": "integer"
+                  },
+                  "score": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "rank",
+                  "score"
+                ]
+              }
+            },
+            "required": [
+              "list",
+              "province"
+            ]
+          }
+        ]
+      },
+      "rank_PtlGetRankList_RankListItem": {
+        "type": "object",
+        "properties": {
+          "nickName": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          },
+          "rank": {
+            "type": "integer"
+          },
+          "province": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nickName",
+          "avatar",
+          "score",
+          "rank",
+          "province",
+          "city"
+        ]
+      },
+      "rank_PtlUpdateRank_ReqUpdateRank": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rankId": {
+                "type": "string"
+              },
+              "score": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "rankId",
+              "score"
+            ]
+          }
+        ]
+      },
+      "rank_PtlUpdateRank_ResUpdateRank": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "stat_PtlStatAction_ReqStatAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "isTodayFirst": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          }
+        ]
+      },
+      "stat_PtlStatAction_ResStatAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "ugc_PtlAddUgcQuestion_ReqAddUgcQuestion": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string"
+              },
+              "rightAnswer": {
+                "type": "string"
+              },
+              "wrongAnswers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "byteStyle": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "description": "例如 { 踏实肯干: 1, 勇于创新: 1 }"
+              }
+            },
+            "required": [
+              "question",
+              "rightAnswer",
+              "wrongAnswers",
+              "byteStyle"
+            ]
+          }
+        ]
+      },
+      "ugc_PtlAddUgcQuestion_ResAddUgcQuestion": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "ugc_PtlGetUgcAwards_ReqGetUgcAwards": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ],
+        "description": "领取UGC出题奖励\n本次游戏生命周期，首次进入UGC界面调用"
+      },
+      "ugc_PtlGetUgcAwards_ResGetUgcAwards": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "pointsChange": {
+                "type": "integer",
+                "description": "奖励了多少积分"
+              }
+            },
+            "required": [
+              "pointsChange"
+            ]
+          }
+        ]
+      },
+      "ugc_PtlGetUgcQuestions_ReqGetUgcQuestions": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer"
+              },
+              "pageSize": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "page",
+              "pageSize"
+            ]
+          }
+        ]
+      },
+      "ugc_PtlGetUgcQuestions_ResGetUgcQuestions": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "question": {
+                      "type": "string"
+                    },
+                    "rightAnswer": {
+                      "type": "string"
+                    },
+                    "wrongAnswers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createTime": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "审核中"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "不通过"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "已通过"
+                          ]
+                        }
+                      ]
+                    },
+                    "rejectReason": {
+                      "type": "string",
+                      "description": "审核不通过原因"
+                    }
+                  },
+                  "required": [
+                    "question",
+                    "rightAnswer",
+                    "wrongAnswers",
+                    "createTime",
+                    "status"
+                  ]
+                }
+              },
+              "total": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "data",
+              "total"
+            ]
+          }
+        ]
+      },
+      "user_PtlBuyEnergy_ReqBuyEnergy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlBuyEnergy_ResBuyEnergy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlConsumePoints_ReqConsumePoints": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "points": {
+                "type": "integer"
+              },
+              "reason": {
+                "type": "string",
+                "description": "消费用途"
+              }
+            },
+            "required": [
+              "points",
+              "reason"
+            ]
+          }
+        ]
+      },
+      "user_PtlConsumePoints_ResConsumePoints": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlGetCurrentUser_ReqGetCurrentUser": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "fromUid": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "user_PtlGetCurrentUser_ResGetCurrentUser": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "user": {
+                "$ref": "#/components/schemas/models_CurrentUser_CurrentUser"
+              }
+            },
+            "required": [
+              "user"
+            ]
+          }
+        ]
+      },
+      "user_PtlGetDailyEnergy_ReqGetDailyEnergy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlGetDailyEnergy_ResGetDailyEnergy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "gotFreeEnergy": {
+                "type": "integer"
+              },
+              "nextGetTime": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "gotFreeEnergy",
+              "nextGetTime"
+            ]
+          }
+        ]
+      },
+      "user_PtlGetEnergy_ReqGetEnergy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "integer"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "amount",
+              "reason"
+            ]
+          }
+        ],
+        "description": "返还体力"
+      },
+      "user_PtlGetEnergy_ResGetEnergy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlGetMine_ReqGetMine": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlGetMine_ResGetMine": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "career": {
+                "type": "object",
+                "properties": {
+                  "medals": {
+                    "type": "integer"
+                  },
+                  "medals1v1": {
+                    "type": "integer"
+                  },
+                  "medalsQunzhan": {
+                    "type": "integer"
+                  },
+                  "rank": {
+                    "type": "integer"
+                  },
+                  "rank1v1": {
+                    "type": "integer"
+                  },
+                  "rankQunzhan": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "medals",
+                  "medals1v1",
+                  "medalsQunzhan"
+                ],
+                "description": "段位（生涯统计）"
+              },
+              "byteStyles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "num": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "num"
+                  ]
+                },
+                "description": "字节范特质奖杯"
+              },
+              "qunzhanUser": {
+                "$ref": "#/components/schemas/models_QunzhanUser_QunzhanUser"
+              },
+              "thisWeek": {
+                "type": "object",
+                "properties": {
+                  "medals": {
+                    "type": "integer"
+                  },
+                  "medals1v1": {
+                    "type": "integer"
+                  },
+                  "medalsQunzhan": {
+                    "type": "integer"
+                  },
+                  "rank": {
+                    "type": "integer"
+                  },
+                  "rank1v1": {
+                    "type": "integer"
+                  },
+                  "rankQunzhan": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "medals",
+                  "medals1v1",
+                  "medalsQunzhan"
+                ],
+                "description": "本周表现"
+              },
+              "thisMonth": {
+                "type": "object",
+                "properties": {
+                  "medals": {
+                    "type": "integer"
+                  },
+                  "medals1v1": {
+                    "type": "integer"
+                  },
+                  "medalsQunzhan": {
+                    "type": "integer"
+                  },
+                  "rank": {
+                    "type": "integer"
+                  },
+                  "rank1v1": {
+                    "type": "integer"
+                  },
+                  "rankQunzhan": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "medals",
+                  "medals1v1",
+                  "medalsQunzhan"
+                ],
+                "description": "本月表现"
+              },
+              "ugc": {
+                "type": "object",
+                "properties": {
+                  "created": {
+                    "type": "integer",
+                    "description": "累计出题"
+                  },
+                  "approved": {
+                    "type": "integer",
+                    "description": "审核通过"
+                  }
+                },
+                "required": [
+                  "created",
+                  "approved"
+                ]
+              },
+              "history1v1": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "win"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "draw"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "lose"
+                          ]
+                        }
+                      ]
+                    },
+                    "selfScore": {
+                      "type": "integer"
+                    },
+                    "oppScore": {
+                      "type": "integer"
+                    },
+                    "opponentInfo": {
+                      "$ref": "#/components/schemas/models_UserInfo_UserInfo"
+                    }
+                  },
+                  "required": [
+                    "result",
+                    "selfScore",
+                    "oppScore",
+                    "opponentInfo"
+                  ]
+                },
+                "description": "最近战绩"
+              },
+              "historyQunzhan": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "skinId": {
+                      "type": "string"
+                    },
+                    "joinBy": {
+                      "$ref": "#/components/schemas/___roomProtocols_room_PtlJoinRoom_JoinBy"
+                    },
+                    "isWin": {
+                      "type": "boolean"
+                    },
+                    "endTime": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "skinId",
+                    "joinBy",
+                    "isWin",
+                    "endTime"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "career",
+              "byteStyles",
+              "qunzhanUser",
+              "thisWeek",
+              "thisMonth",
+              "ugc",
+              "history1v1",
+              "historyQunzhan"
+            ]
+          }
+        ]
+      },
+      "___roomProtocols_room_PtlJoinRoom_JoinBy": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "随机匹配"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "邀请同事"
+            ]
+          },
+          {
+            "type": "string",
+            "enum": [
+              "面对面开黑"
+            ]
+          }
+        ]
+      },
+      "user_PtlGetPointsHistory_ReqGetPointsHistory": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer"
+              },
+              "pageSize": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "page",
+              "pageSize"
+            ]
+          }
+        ]
+      },
+      "user_PtlGetPointsHistory_ResGetPointsHistory": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "createTime": {
+                      "type": "number"
+                    },
+                    "change": {
+                      "type": "number"
+                    },
+                    "reason": {
+                      "type": "string"
+                    },
+                    "after": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "createTime",
+                    "change",
+                    "reason",
+                    "after"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "list"
+            ]
+          }
+        ]
+      },
+      "user_PtlGetTodayRoundNum_ReqGetTodayRoundNum": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlGetTodayRoundNum_ResGetTodayRoundNum": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "1v1": {
+                "type": "integer"
+              },
+              "qunzhan": {
+                "type": "integer"
+              },
+              "total": {
+                "type": "integer"
+              },
+              "date": {
+                "type": "string"
+              },
+              "exceedTodayMax": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "1v1",
+              "qunzhan",
+              "total",
+              "date",
+              "exceedTodayMax"
+            ]
+          }
+        ]
+      },
+      "user_PtlGetUserInfo_ReqGetUserInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "uid"
+            ]
+          }
+        ]
+      },
+      "user_PtlGetUserInfo_ResGetUserInfo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string"
+              },
+              "nickname": {
+                "type": "string"
+              },
+              "avatar": {
+                "type": "string"
+              },
+              "gender": {
+                "$ref": "#/components/schemas/models_UserInfo_UserGender"
+              }
+            },
+            "required": [
+              "uid",
+              "nickname",
+              "avatar",
+              "gender"
+            ]
+          }
+        ]
+      },
+      "user_PtlRedeemStorePoints_ReqRedeemStorePoints": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "amount"
+            ]
+          }
+        ]
+      },
+      "user_PtlRedeemStorePoints_ResRedeemStorePoints": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlSign_ReqSign": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        ]
+      },
+      "user_PtlSign_ResSign": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "appId": {
+                "type": "string"
+              },
+              "nonceStr": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "integer"
+              },
+              "signature": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "appId",
+              "nonceStr",
+              "timestamp",
+              "signature"
+            ]
+          }
+        ]
+      },
+      "user_PtlUpdateUser_ReqUpdateUser": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "nickname": {
+                "type": "string"
+              },
+              "avatar": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "user_PtlUpdateUser_ResUpdateUser": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "user": {
+                "$ref": "#/components/schemas/models_CurrentUser_CurrentUser"
+              }
+            },
+            "required": [
+              "user"
+            ]
+          }
+        ]
+      },
+      "user_PtlUpload_ReqUpload": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "format": "base64"
+              },
+              "ext": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "data",
+              "ext"
+            ]
+          }
+        ]
+      },
+      "user_PtlUpload_ResUpload": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "文件的绝对地址"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        ]
+      },
+      "user_PtlUseEnergy_ReqUseEnergy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "useAmount": {
+                "type": "integer"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "useAmount",
+              "reason"
+            ]
+          }
+        ]
+      },
+      "user_PtlUseEnergy_ResUseEnergy": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "newEnergy": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "newEnergy"
+            ]
+          }
+        ]
+      },
+      "ApiError": {
+        "type": "object",
+        "title": "API 错误",
+        "description": "业务错误（ApiError）返回 HTTP 状态码 200，其它错误返回 HTTP 状态码 500",
+        "properties": {
+          "isSucc": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "default": false
+          },
+          "err": {
+            "type": "object",
+            "description": "TsrpcError",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ApiError",
+                  "NetworkError",
+                  "ServerError",
+                  "ClientError"
+                ]
+              },
+              "code": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "nullable": true
+              }
+            },
+            "required": [
+              "message",
+              "type"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

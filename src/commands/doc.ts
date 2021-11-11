@@ -1,4 +1,8 @@
+import chalk from "chalk";
+import fs from "fs-extra";
+import path from "path";
 import { i18n } from "../i18n/i18n";
+import { ApiDocUtil } from "../models/ApiDocUtil";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
@@ -17,7 +21,7 @@ export async function cmdDoc(options: CmdDocOptions) {
             throw new Error(i18n.missingConfigItem('proto'))
         }
         for (let conf of options.config.proto) {
-            // options.config.verbose && console.log(`Start to generate ${conf.output}...`);
+            options.config.verbose && console.log(`Start to generate ${conf.output}...`);
 
             // // old
             // let old = await ProtoUtil.loadOldProtoByConfigItem(conf, options.config.verbose);
@@ -28,21 +32,29 @@ export async function cmdDoc(options: CmdDocOptions) {
     }
     else {
         // 检查参数
-        if (!options.input) {
+        if (typeof options.input !== 'string') {
             throw error(i18n.missingParam, { param: 'input' });
         }
-        if (!options.output) {
+        if (typeof options.output !== 'string') {
             throw error(i18n.missingParam, { param: 'output' });
         }
 
         // Generate proto
-        let proto = await ProtoUtil.generateServiceProto({
+        let { newProto } = await ProtoUtil.generateServiceProto({
             protocolDir: options.input,
             ignore: options.ignore,
             verbose: options.verbose,
             checkOptimize: false,
             keepComment: true
         });
+
+        // Generate OpenAPI
+        let openAPI = ApiDocUtil.toOpenAPI(newProto);
+
+        // Output OpenAPI
+        await fs.ensureDir(options.output);
+        await fs.writeFile(path.join(options.output, 'openapi.json'), JSON.stringify(openAPI, null, 2), 'utf-8');
+        console.log(chalk.bgGreen.white(i18n.success));
     }
 }
 

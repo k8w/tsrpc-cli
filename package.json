@@ -7,7 +7,7 @@
     "build": "npm run build:js && npm run build:dts",
     "build:js": "rm -rf dist && npx rollup -c && cp -rf res LICENSE README.md README_CN.md package.json dist/",
     "build:dts": "rm -rf lib && npx tsc && npx api-extractor run --local --verbose && rm -rf lib",
-    "try": "npx ts-node src/index.ts proto -i try/proto -o try/proto/proto.ts -n",
+    "try": "node -r ts-node/register src/index.ts proto -i try/proto -o try/proto/proto.ts -n",
     "try:npx": "npx tsrpc proto -i try/proto -o try/proto/proto.ts -n",
     "test": "npx mocha"
   },
