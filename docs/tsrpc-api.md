@@ -6,8 +6,8 @@ TSRPC API 接口文档
 ## admin
 
 ###  Admin-管理后台埋点
-- **POST** `/admin/ActionStat`
-
+- **路径**
+    - POST `/admin/ActionStat`
 - **请求**
 ```ts
 interface ReqReqActionStat {
@@ -16,24 +16,22 @@ interface ReqReqActionStat {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResActionStat {
     sso?: string
 }
 ```
-
+---
 ### Admin-管理员操作日志列表
-- **POST** `/admin/AdminLogList`
-
+- **路径**
+    - POST `/admin/AdminLogList`
 - **请求**
 ```ts
 interface ReqReqAdminLogList {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResAdminLogList {
@@ -58,34 +56,32 @@ interface ReqResAdminLogList {
     sso?: string
 }
 ```
-
+---
 ### Admin-后台退出登录
-- **POST** `/admin/AdminOutLogin`
-
+- **路径**
+    - POST `/admin/AdminOutLogin`
 - **请求**
 ```ts
 interface ReqReqAdminOutLogin {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResAdminOutLogin {
     sso?: string
 }
 ```
-
+---
 ### Admin-获取管理员信息
-- **POST** `/admin/AdminUserInfo`
-
+- **路径**
+    - POST `/admin/AdminUserInfo`
 - **请求**
 ```ts
 interface ReqReqAdminUserInfo {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResAdminUserInfo {
@@ -117,10 +113,10 @@ interface ReqResAdminUserInfo {
     sso?: string
 }
 ```
-
+---
 ### Admin -保存管理员用户信息
-- **POST** `/admin/CreateAdminUser`
-
+- **路径**
+    - POST `/admin/CreateAdminUser`
 - **请求**
 ```ts
 interface ReqReqCreateAdminUser {
@@ -141,7 +137,6 @@ interface ReqReqCreateAdminUser {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResCreateAdminUser {
@@ -150,10 +145,10 @@ interface ReqResCreateAdminUser {
     sso?: string
 }
 ```
-
+---
 ### Admin-修改管理员信息
-- **POST** `/admin/EditAdminInfo`
-
+- **路径**
+    - POST `/admin/EditAdminInfo`
 - **请求**
 ```ts
 interface ReqReqEditAdminInfo {
@@ -186,7 +181,6 @@ interface ReqReqEditAdminInfo {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResEditAdminInfo {
@@ -195,17 +189,16 @@ interface ReqResEditAdminInfo {
     sso?: string
 }
 ```
-
+---
 ### Admin-管理员列表
-- **POST** `/admin/GetAdminList`
-
+- **路径**
+    - POST `/admin/GetAdminList`
 - **请求**
 ```ts
 interface ReqReqGetAdminList {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetAdminList {
@@ -241,10 +234,10 @@ interface ReqResGetAdminList {
     sso?: string
 }
 ```
-
+---
 ### Admin-控制后台登陆接口
-- **POST** `/admin/Login`
-
+- **路径**
+    - POST `/admin/Login`
 - **请求**
 ```ts
 interface ReqReqLogin {
@@ -252,21 +245,18 @@ interface ReqReqLogin {
     password: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResLogin {
     sso: string
 }
 ```
-
 ---
-
 ## content
 
 ### Content-内容事件
-- **POST** `/content/ContentMainEvent`
-
+- **路径**
+    - POST `/content/ContentMainEvent`
 - **请求**
 ```ts
 interface ReqReqContentMainEvent {
@@ -277,24 +267,22 @@ interface ReqReqContentMainEvent {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResContentMainEvent {
     sso?: string
 }
 ```
-
+---
 ### Content-获取内容list
-- **POST** `/content/GetContentMainList`
-
+- **路径**
+    - POST `/content/GetContentMainList`
 - **请求**
 ```ts
 interface ReqReqGetContentMainList {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetContentMainList {
@@ -332,17 +320,16 @@ interface ReqResGetContentMainList {
     sso?: string
 }
 ```
-
+---
 ### Content-获取城市list
-- **POST** `/content/GetMainClassCityList`
-
+- **路径**
+    - POST `/content/GetMainClassCityList`
 - **请求**
 ```ts
 interface ReqReqGetMainClassCityList {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetMainClassCityList {
@@ -351,10 +338,10 @@ interface ReqResGetMainClassCityList {
     sso?: string
 }
 ```
-
+---
 ### Content-获取内容信息
-- **POST** `/content/GetMainClassInfo`
-
+- **路径**
+    - POST `/content/GetMainClassInfo`
 - **请求**
 ```ts
 interface ReqReqGetMainClassInfo {
@@ -365,7 +352,6 @@ interface ReqReqGetMainClassInfo {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetMainClassInfo {
@@ -391,17 +377,16 @@ interface ReqResGetMainClassInfo {
     sso?: string
 }
 ```
-
+---
 ### Content-获取内容标题list
-- **POST** `/content/GetMainClassList`
-
+- **路径**
+    - POST `/content/GetMainClassList`
 - **请求**
 ```ts
 interface ReqReqGetMainClassList {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetMainClassList {
@@ -413,10 +398,10 @@ interface ReqResGetMainClassList {
     sso?: string
 }
 ```
-
+---
 ### Content-获取子类列表
-- **POST** `/content/GetSubClassList`
-
+- **路径**
+    - POST `/content/GetSubClassList`
 - **请求**
 ```ts
 interface ReqReqGetSubClassList {
@@ -424,7 +409,6 @@ interface ReqReqGetSubClassList {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetSubClassList {
@@ -441,10 +425,10 @@ interface ReqResGetSubClassList {
     sso?: string
 }
 ```
-
+---
 ### Content-获取子类内容
-- **POST** `/content/GetValueClassInfo`
-
+- **路径**
+    - POST `/content/GetValueClassInfo`
 - **请求**
 ```ts
 interface ReqReqGetValueClassInfo {
@@ -453,7 +437,6 @@ interface ReqReqGetValueClassInfo {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetValueClassInfo {
@@ -468,10 +451,10 @@ interface ReqResGetValueClassInfo {
     sso?: string
 }
 ```
-
+---
 ### Content-获取子类内容lsit
-- **POST** `/content/GetValueClassList`
-
+- **路径**
+    - POST `/content/GetValueClassList`
 - **请求**
 ```ts
 interface ReqReqGetValueClassList {
@@ -480,7 +463,6 @@ interface ReqReqGetValueClassList {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetValueClassList {
@@ -492,10 +474,10 @@ interface ReqResGetValueClassList {
     sso?: string
 }
 ```
-
+---
 ### Content-保存内容
-- **POST** `/content/SaveMainClass`
-
+- **路径**
+    - POST `/content/SaveMainClass`
 - **请求**
 ```ts
 interface ReqReqSaveMainClass {
@@ -515,17 +497,16 @@ interface ReqReqSaveMainClass {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResSaveMainClass {
     sso?: string
 }
 ```
-
+---
 ### Contnet-保存子类配置
-- **POST** `/content/SaveSubClass`
-
+- **路径**
+    - POST `/content/SaveSubClass`
 - **请求**
 ```ts
 interface ReqReqSaveSubClass {
@@ -539,17 +520,16 @@ interface ReqReqSaveSubClass {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResSaveSubClass {
     sso?: string
 }
 ```
-
+---
 ### Content-保存子类具体内容信息
-- **POST** `/content/SaveValueClass`
-
+- **路径**
+    - POST `/content/SaveValueClass`
 - **请求**
 ```ts
 interface ReqReqSaveValueClass {
@@ -562,17 +542,16 @@ interface ReqReqSaveValueClass {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResSaveValueClass {
     sso?: string
 }
 ```
-
+---
 ### Content-标签事件
-- **POST** `/content/TagsEvent`
-
+- **路径**
+    - POST `/content/TagsEvent`
 - **请求**
 ```ts
 interface ReqReqTagsEvent {
@@ -585,7 +564,6 @@ interface ReqReqTagsEvent {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResTagsEvent {
@@ -600,14 +578,12 @@ interface ReqResTagsEvent {
     sso?: string
 }
 ```
-
 ---
-
 ## main
 
 ### Main-获取首页内容配置
-- **POST** `/main/GetMainCfgList`
-
+- **路径**
+    - POST `/main/GetMainCfgList`
 - **请求**
 ```ts
 interface ReqReqGetMainCfgList {
@@ -619,7 +595,6 @@ interface ReqReqGetMainCfgList {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetMainCfgList {
@@ -646,10 +621,10 @@ interface ReqResGetMainCfgList {
     sso?: string
 }
 ```
-
+---
 ### Main-获取首页城市海报配置
-- **POST** `/main/GetMainClassCityPoster`
-
+- **路径**
+    - POST `/main/GetMainClassCityPoster`
 - **请求**
 ```ts
 interface ReqReqGetMainClassCityPoster {
@@ -658,7 +633,6 @@ interface ReqReqGetMainClassCityPoster {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetMainClassCityPoster {
@@ -677,10 +651,10 @@ interface ReqResGetMainClassCityPoster {
     sso?: string
 }
 ```
-
+---
 ### Main-获取首页轮播图细信息
-- **POST** `/main/GetMainClassScrollImg`
-
+- **路径**
+    - POST `/main/GetMainClassScrollImg`
 - **请求**
 ```ts
 interface ReqReqGetMainClassScrollImg {
@@ -688,7 +662,6 @@ interface ReqReqGetMainClassScrollImg {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResGetMainClassScrollImg {
@@ -702,10 +675,10 @@ interface ReqResGetMainClassScrollImg {
     sso?: string
 }
 ```
-
+---
 ### Main-保存首页城市海报图配置
-- **POST** `/main/SaveMainClassCityPoster`
-
+- **路径**
+    - POST `/main/SaveMainClassCityPoster`
 - **请求**
 ```ts
 interface ReqReqSaveMainClassCityPoster {
@@ -720,17 +693,16 @@ interface ReqReqSaveMainClassCityPoster {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResSaveMainClassCityPoster {
     sso?: string
 }
 ```
-
+---
 ### Main-保存轮播图配置
-- **POST** `/main/SaveMainClassScrollImg`
-
+- **路径**
+    - POST `/main/SaveMainClassScrollImg`
 - **请求**
 ```ts
 interface ReqReqSaveMainClassScrollImg {
@@ -740,12 +712,9 @@ interface ReqReqSaveMainClassScrollImg {
     sso?: string
 }
 ```
-
 - **响应**
 ```ts
 interface ReqResSaveMainClassScrollImg {
     sso?: string
 }
 ```
-
----

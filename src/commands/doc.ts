@@ -94,39 +94,34 @@ ${groupApis.length ? groupApis.map(ga => `
 ## ${ga.key}
 
 ${ga.map(({ api }) => `
-### ${api.title ? api.title : api.path}
-- **POST** \`${api.path}\`
-
+### ${api.title ? api.title : api.path.split('/').last()!}
+- **路径**
+    - POST \`${api.path}\`
 - **请求**
 \`\`\`ts
 ${api.req.ts}
 \`\`\`
-
 - **响应**
 \`\`\`ts
 ${api.res.ts}
 \`\`\`
-
-`.trim()).join('\n\n')}
-
----
-`.trim()).join('\n\n') : ''}
+`.trim()).join('\n---\n')}
+`.trim()).join('\n---\n') : ''}
 
 ${rootApis.map(api => `
-## ${api.title ? api.title : api.path}
-- **POST** \`${api.path}\`
-
+## ${api.title ? api.title : api.path.split('/').last()!}
+- **路径**
+    - POST \`${api.path}\`
 - **请求**
 \`\`\`ts
 ${api.req.ts}
 \`\`\`
-
 - **响应**
 \`\`\`ts
 ${api.res.ts}
 \`\`\`
 
-`.trim()).join('\n\n')}
+`.trim()).join('\n---\n')}
     `.trim();
 
     await fs.ensureDir(outputDir);

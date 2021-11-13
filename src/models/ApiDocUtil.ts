@@ -463,7 +463,7 @@ export class ApiDocUtil {
 
     private static async _formatTsCode(schema: TSBufferSchema, basename: string) {
         let code = this.toCode(schema);
-        code = `${this.protoHelper.isInterface(schema) ? `interface Req${basename}` : `type Req${basename} =`} ${code}`;
+        code = `${this.protoHelper.isInterface(schema) ? `interface ${basename}` : `type ${basename} =`} ${code}`;
         let format = await processString('a.ts', code, {} as any);
         return format.dest;
     }
