@@ -392,7 +392,8 @@ export class ApiDocUtil {
                     props.push(`[key: ${flat.indexSignature.keyType.toLowerCase()}]: ${this.toCode(flat.indexSignature.type)}`)
                 }
 
-                return props.length > 1 ? `{\n${props.join(',\n')}\n}` : `{${props.join(', ')}}`
+                // return props.length > 1 ? `{\n${props.join(',\n')}\n}` : `{${props.join(', ')}}`
+                return `{\n${props.join(',\n')}\n}`;
             }
             case SchemaType.Buffer:
                 return 'string';

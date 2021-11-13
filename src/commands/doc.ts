@@ -78,35 +78,55 @@ async function generateTsrpcApi(proto: ServiceProto, outputDir: string) {
 }
 
 async function generateMarkdown(api: TsrpcApi, outputDir: string) {
+    let rootApis = api.apis.filter(v => v.path.split('/').length === 2);
+    let groupApis = api.apis.map(v => ({
+        api: v,
+        pathArr: v.path.split('/')
+    })).filter(v => v.pathArr.length > 2).groupBy(v => v.pathArr[1]);
+
     let md = `
-TSRPC API
+TSRPC API 接口文档
 ===
 
-# ${api.servers.length > 1 ? 'Servers' : 'Server'}
-${api.servers.map(v => `- ${v}`).join('\n')}
+# API 接口列表
 
-# APIs
+${groupApis.length ? groupApis.map(ga => `
+## ${ga.key}
 
-${api.apis.map(api => `
-## ${api.path}
-${(api.title ?? '').trim() + (api.title ? '\n' : '')}
-### Request
+${ga.map(({ api }) => `
+### ${api.title ? api.title : api.path}
+- **POST** \`${api.path}\`
 
+- **请求**
 \`\`\`ts
 ${api.req.ts}
 \`\`\`
 
-### Response
-
+- **响应**
 \`\`\`ts
 ${api.res.ts}
 \`\`\`
 
 `.trim()).join('\n\n')}
 
-# Schemas
+---
+`.trim()).join('\n\n') : ''}
 
+${rootApis.map(api => `
+## ${api.title ? api.title : api.path}
+- **POST** \`${api.path}\`
 
+- **请求**
+\`\`\`ts
+${api.req.ts}
+\`\`\`
+
+- **响应**
+\`\`\`ts
+${api.res.ts}
+\`\`\`
+
+`.trim()).join('\n\n')}
     `.trim();
 
     await fs.ensureDir(outputDir);

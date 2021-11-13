@@ -24,12 +24,19 @@
     <h1>API</h1>
     ${data.apis.map(api => `
         <div class='api-item>
-            <h2>${api.path}</h2>
-            <p>${api.title ?? ''}</p>
-            <h3>请求</h3>
-            <code>${api.req.ts}</code>
-            <h3>响应</h3>
-            <code>${api.res.ts}</code>
+            <h2>${api.title ?? api.path}</h2>
+            <dl>
+                <dt>路径</dt>
+                <dd><span>POST</span> <code>${api.path}</code></dd>
+                <dt>请求</dt>
+                <dd>
+                    <code>${api.req.ts}</code>
+                </dd>
+                <dt>响应</dt>
+                <dd>
+                    <code>${api.res.ts}</code>
+                </dd>
+            </dl>            
         </div>
     `).join('\n')}    
 </div>
