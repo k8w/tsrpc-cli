@@ -63,8 +63,9 @@
     "ts-node": "^10.4.0",
     "tsbuffer": "^2.1.0",
     "tsbuffer-proto-generator": "^1.6.0-dev.0",
-    "tsbuffer-schema": "^2.0.9",
+    "tsbuffer-schema": "^2.1.0",
     "tsrpc-proto": "^1.3.9",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "typescript-formatter": "^7.2.2"
   }
 }

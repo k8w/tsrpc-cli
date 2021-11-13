@@ -1,9 +1,11 @@
 import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
+import { ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
 import { ApiDocUtil } from "../models/ApiDocUtil";
 import { ProtoUtil } from "../models/ProtoUtil";
+import { TsrpcApi } from "../models/TsrpcApi";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
 
@@ -48,18 +50,65 @@ export async function cmdDoc(options: CmdDocOptions) {
             keepComment: true
         });
 
-        // Generate OpenAPI
-        let openAPI = ApiDocUtil.toOpenAPI(newProto);
-
-        // Output OpenAPI
-        await fs.ensureDir(options.output);
-        await fs.writeFile(path.join(options.output, 'openapi.json'), JSON.stringify(openAPI, null, 2), 'utf-8');
+        await generateOpenApi(newProto, options.output);
+        let tsrpcAPI = await generateTsrpcApi(newProto, options.output);
+        await generateMarkdown(tsrpcAPI, options.output);
         console.log(chalk.bgGreen.white(i18n.success));
     }
 }
 
+async function generateOpenApi(proto: ServiceProto, outputDir: string) {
+    // Generate OpenAPI
+    let openAPI = ApiDocUtil.toOpenAPI(proto);
+
+    // Output OpenAPI
+    await fs.ensureDir(outputDir);
+    await fs.writeFile(path.join(outputDir, 'openapi.json'), JSON.stringify(openAPI, null, 2), 'utf-8');
+}
+
+async function generateTsrpcApi(proto: ServiceProto, outputDir: string) {
+    // Generate OpenAPI
+    let tsrpcAPI = await ApiDocUtil.toTsrpcApi(proto);
+
+    // Output OpenAPI
+    await fs.ensureDir(outputDir);
+    await fs.writeFile(path.join(outputDir, 'tsrpc-api.js'), 'var tsrpcAPI = ' + JSON.stringify(tsrpcAPI, null, 2), 'utf-8');
+
+    return tsrpcAPI;
+}
+
+async function generateMarkdown(api: TsrpcApi, outputDir: string) {
+    let md = `
+TSRPC API
+===
+
+# ${api.servers.length > 1 ? 'Servers' : 'Server'}
+${api.servers.map(v => `- ${v}`).join('\n')}
+
+# APIs
+
+${api.apis.map(api => `
+## ${api.path}
+${(api.title ?? '').trim() + (api.title ? '\n' : '')}
+### Request
+
+\`\`\`ts
+${api.req.ts}
+\`\`\`
+
+### Response
+
+\`\`\`ts
+${api.res.ts}
+\`\`\`
+
+`.trim()).join('\n\n')}
+
+# Schemas
 
 
-async function generateOpenApi() {
+    `.trim();
 
+    await fs.ensureDir(outputDir);
+    await fs.writeFile(path.join(outputDir, 'tsrpc-api.md'), md, 'utf-8');
 }

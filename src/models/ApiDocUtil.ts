@@ -1,8 +1,10 @@
 import { OpenAPIV3 } from 'openapi-types';
-import { SchemaType, TSBufferProto } from 'tsbuffer-schema';
+import { SchemaType, TSBufferProto, TSBufferSchema } from 'tsbuffer-schema';
 import { TSBufferValidator } from 'tsbuffer-validator';
 import { ServiceProto } from 'tsrpc-proto';
+import { processString } from 'typescript-formatter';
 import { ApiService, ServiceMapUtil } from './ServiceMapUtil';
+import { TsrpcApi } from './TsrpcApi';
 
 // https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md
 // https://tools.ietf.org/html/draft-bhutton-json-schema-00#section-4.2.1
@@ -358,7 +360,9 @@ export class ApiDocUtil {
             case SchemaType.String:
                 return 'string';
             case SchemaType.Array:
-                return `Array<${this.toCode(schema.elementType)}>`
+                let elemType = this.protoHelper.isTypeReference(schema.elementType) ? this.protoHelper.parseReference(schema.elementType) : schema.elementType;
+                let code = this.toCode(elemType);
+                return (elemType.type === SchemaType.Union || elemType.type === SchemaType.Intersection) ? `(${code})[]` : `${code}[]`;
             case SchemaType.Tuple:
                 return `[${schema.elementTypes.map((v, i) => this.toCode(v)
                     + (schema.optionalStartIndex !== undefined && i >= schema.optionalStartIndex ? '?' : ''))
@@ -380,25 +384,87 @@ export class ApiDocUtil {
             case SchemaType.Overwrite:
             case SchemaType.Interface: {
                 let flat = this.protoHelper.getFlatInterfaceSchema(schema);
-                let output = '{\n';
-                // for (let prop of flat.properties) {
-                //     if (prop.)
-                // }
-                output += '}';
-                return output;
+                let props: string[] = [];
+                for (let prop of flat.properties) {
+                    props.push(`${prop.type.comment ? `${this.toCodeComment(prop.type.comment)}\n` : ''}${prop.name}${prop.optional ? '?' : ''}: ${this.toCode(prop.type)}`);
+                }
+                if (flat.indexSignature) {
+                    props.push(`[key: ${flat.indexSignature.keyType.toLowerCase()}]: ${this.toCode(flat.indexSignature.type)}`)
+                }
+
+                return props.length > 1 ? `{\n${props.join(',\n')}\n}` : `{${props.join(', ')}}`
             }
             case SchemaType.Buffer:
+                return 'string';
             case SchemaType.IndexedAccess:
-            case SchemaType.Reference:
+            case SchemaType.Reference: {
+                let parsed = this.protoHelper.parseReference(schema);
+                return this.toCode(parsed);
+            }
             case SchemaType.Union:
+                return schema.members.map(v => {
+                    let parsed = this.protoHelper.isTypeReference(v.type) ? this.protoHelper.parseReference(v.type) : v.type;
+                    let code = this.toCode(parsed);
+                    return parsed.type === SchemaType.Intersection ? `(${code})` : code;
+                }).join(' | ');
             case SchemaType.Intersection:
+                return schema.members.map(v => {
+                    let parsed = this.protoHelper.isTypeReference(v.type) ? this.protoHelper.parseReference(v.type) : v.type;
+                    let code = this.toCode(parsed);
+                    return parsed.type === SchemaType.Union ? `(${code})` : code;
+                }).join(' & ');
             case SchemaType.NonNullable:
+                return `NonNullable<${this.toCode(schema.target)}>`;
             case SchemaType.Date:
-
+                return 'string';
             case SchemaType.Custom:
+                return 'string';
         }
 
         return '';
+    }
+
+    static async toTsrpcApi(proto: ServiceProto): Promise<TsrpcApi> {
+        let output: TsrpcApi = {
+            version: '1.0.0',
+            servers: ['http://localhost:3000'],
+            apis: [],
+            schemas: {}
+        };
+
+        // Schema
+        for (let key in proto.types) {
+            let schema = proto.types[key];
+            let basename = key.split('/').last()!;
+            output.schemas[key] = {
+                ts: await this._formatTsCode(schema, basename)
+            }
+        }
+
+        // API
+        let apiSvcs = Object.values(ServiceMapUtil.getServiceMap(proto).apiName2Service) as ApiService[];
+        for (let api of apiSvcs) {
+            let basename = api.name.split('/').last()!;
+            output.apis.push({
+                path: '/' + api.name,
+                title: proto.types[api.reqSchemaId].comment,
+                req: {
+                    ts: await this._formatTsCode(proto.types[api.reqSchemaId], `Req${basename}`),
+                },
+                res: {
+                    ts: await this._formatTsCode(proto.types[api.resSchemaId], `Res${basename}`),
+                }
+            })
+        }
+
+        return output;
+    }
+
+    private static async _formatTsCode(schema: TSBufferSchema, basename: string) {
+        let code = this.toCode(schema);
+        code = `${this.protoHelper.isInterface(schema) ? `interface Req${basename}` : `type Req${basename} =`} ${code}`;
+        let format = await processString('a.ts', code, {} as any);
+        return format.dest;
     }
 
     /** 将 TSBufferProto 的 comment 还原为代码注释 */
