@@ -13,10 +13,19 @@ export class ApiDocUtil {
 
     static protoHelper: TSBufferValidator['protoHelper'];
 
-    static toOpenAPI(proto: ServiceProto<any>): OpenAPIV3.Document {
+    static init(proto: ServiceProto<any>) {
+        // Custom types
+        proto.types['?mongodb/ObjectId'] = proto.types['?mongodb/ObjectID'] =
+            proto.types['?bson/ObjectId'] = proto.types['?bson/ObjectID'] = {
+                type: 'Custom',
+                validate: v => ({ isSucc: true })
+            };
+
         let generator = new TSBufferValidator(proto.types);
         this.protoHelper = generator.protoHelper;
+    }
 
+    static toOpenAPI(proto: ServiceProto<any>): OpenAPIV3.Document {
         // schemas
         let schemas: NonNullable<OpenAPIV3.ComponentsObject['schemas']> = {};
         for (let key in proto.types) {
@@ -67,6 +76,7 @@ export class ApiDocUtil {
                             }
                         },
                         default: {
+                            description: 'Error',
                             $ref: '#/components/responses/error'
                         }
                     }
@@ -453,7 +463,7 @@ export class ApiDocUtil {
     private static _toCodeData: {
         refs: string[]
     };
-    private static _toCode(schema: TSBufferSchema, options?: { isRoot?: boolean }): string {
+    private static _toCode(schema: TSBufferSchema, options?: { isRoot?: boolean, schemaId?: string }): string {
         switch (schema.type) {
             case SchemaType.Boolean:
                 return 'boolean';
@@ -486,12 +496,15 @@ export class ApiDocUtil {
             case SchemaType.Pick:
             case SchemaType.Partial:
             case SchemaType.Omit:
-            case SchemaType.Overwrite:
+            case SchemaType.Overwrite: {
+                let parsed = this.protoHelper.parseMappedType(schema);
+                return this._toCode(parsed);
+            }
             case SchemaType.Interface: {
                 let flat = this.protoHelper.getFlatInterfaceSchema(schema);
                 let props: string[] = [];
                 for (let prop of flat.properties) {
-                    props.push(`${prop.type.comment ? `${this._toCodeComment(prop.type.comment)}\n` : ''}${prop.name}${prop.optional ? '?' : ''}: ${this._toCode(prop.type)}`);
+                    props.push(`${prop.type.comment ? `${this._toCodeComment(prop.type.comment)}\n` : ''}${/^[a-z_]/i.test(prop.name) ? prop.name : `'${prop.name}'`}${prop.optional ? '?' : ''}: ${this._toCode(prop.type)}`);
                 }
                 if (flat.indexSignature) {
                     props.push(`[key: ${flat.indexSignature.keyType.toLowerCase()}]: ${this._toCode(flat.indexSignature.type)}`)
@@ -507,26 +520,31 @@ export class ApiDocUtil {
                 if (this._toCodeData.refs.includes(schema.target)) {
                     return schema.target.split('/').last()!;
                 }
-                return this._toCode(this.protoHelper.parseReference(schema));
+                return this._toCode(this.protoHelper.parseReference(schema), { schemaId: schema.target });
             }
             case SchemaType.Union:
                 return schema.members.map(v => {
                     let parsed = this.protoHelper.isTypeReference(v.type) ? this.protoHelper.parseReference(v.type) : v.type;
                     let code = this._toCode(v.type);
                     return parsed.type === SchemaType.Intersection ? `(${code})` : code;
-                }).join(' | ');
+                }).distinct().join(' | ');
             case SchemaType.Intersection:
                 return schema.members.map(v => {
                     let parsed = this.protoHelper.isTypeReference(v.type) ? this.protoHelper.parseReference(v.type) : v.type;
                     let code = this._toCode(v.type);
                     return parsed.type === SchemaType.Union ? `(${code})` : code;
-                }).join(' & ');
+                }).distinct().join(' & ');
             case SchemaType.NonNullable:
                 return `NonNullable<${this._toCode(schema.target)}>`;
             case SchemaType.Date:
                 return '/*datetime*/ string';
-            case SchemaType.Custom:
+            case SchemaType.Custom: {
+                let schemaId = options?.schemaId?.toLowerCase();
+                if (schemaId === '?mongodb/objectid' || schemaId === '?json/objectid') {
+                    return '/*ObjectId*/ string';
+                }
                 return 'string';
+            }
         }
 
         return '';
@@ -589,7 +607,7 @@ ${api.req.ts}
 \`\`\`ts
 ${api.res.ts}
 \`\`\`
-${api.conf ? `
+${api.conf && (typeof api.conf !== 'object' || Object.keys(api.conf).length > 0) ? `
 **配置**
 \`\`\`ts
 ${JSON.stringify(api.conf, null, 2)}

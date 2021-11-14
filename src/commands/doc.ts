@@ -55,6 +55,8 @@ async function generate(ptlDir: string, outDir: string, ignore: string | string[
         keepComment: true
     });
 
+    ApiDocUtil.init(newProto);
+
     await generateOpenApi(newProto, outDir);
     let tsrpcAPI = await generateTSAPI(newProto, outDir);
     await generateMarkdown(tsrpcAPI, outDir);
