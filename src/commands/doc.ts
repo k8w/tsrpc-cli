@@ -5,7 +5,7 @@ import { ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
 import { ApiDocUtil } from "../models/ApiDocUtil";
 import { ProtoUtil } from "../models/ProtoUtil";
-import { TsrpcApi } from "../models/TsrpcApi";
+import { TSAPI } from "../models/TSAPI";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
 
@@ -51,7 +51,7 @@ export async function cmdDoc(options: CmdDocOptions) {
         });
 
         await generateOpenApi(newProto, options.output);
-        let tsrpcAPI = await generateTsrpcApi(newProto, options.output);
+        let tsrpcAPI = await generateTSAPI(newProto, options.output);
         await generateMarkdown(tsrpcAPI, options.output);
         console.log(chalk.bgGreen.white(i18n.success));
     }
@@ -63,67 +63,29 @@ async function generateOpenApi(proto: ServiceProto, outputDir: string) {
 
     // Output OpenAPI
     await fs.ensureDir(outputDir);
-    await fs.writeFile(path.join(outputDir, 'openapi.json'), JSON.stringify(openAPI, null, 2), 'utf-8');
+    let outputPath = path.resolve(outputDir, 'openapi.json');
+    await fs.writeFile(outputPath, JSON.stringify(openAPI, null, 2), 'utf-8');
+    console.log(chalk.green('OpenAPI 已成成到：' + outputPath))
 }
 
-async function generateTsrpcApi(proto: ServiceProto, outputDir: string) {
+async function generateTSAPI(proto: ServiceProto, outputDir: string) {
     // Generate OpenAPI
-    let tsrpcAPI = await ApiDocUtil.toTsrpcApi(proto);
+    let tsrpcAPI = await ApiDocUtil.toTSAPI(proto);
 
     // Output OpenAPI
     await fs.ensureDir(outputDir);
-    await fs.writeFile(path.join(outputDir, 'tsrpc-api.js'), 'var tsrpcAPI = ' + JSON.stringify(tsrpcAPI, null, 2), 'utf-8');
+    let outputPath = path.resolve(outputDir, 'tsapi.json');
+    await fs.writeFile(outputPath, JSON.stringify(tsrpcAPI, null, 2), 'utf-8');
 
+    console.log(chalk.green('TSAPI (JSON) 已成成到：' + outputPath))
     return tsrpcAPI;
 }
 
-async function generateMarkdown(api: TsrpcApi, outputDir: string) {
-    let rootApis = api.apis.filter(v => v.path.split('/').length === 2);
-    let groupApis = api.apis.map(v => ({
-        api: v,
-        pathArr: v.path.split('/')
-    })).filter(v => v.pathArr.length > 2).groupBy(v => v.pathArr[1]);
-
-    let md = `
-TSRPC API 接口文档
-===
-
-# API 接口列表
-
-${groupApis.length ? groupApis.map(ga => `
-## ${ga.key}
-
-${ga.map(({ api }) => `
-### ${api.title ? api.title : api.path.split('/').last()!}
-- **路径**
-    - POST \`${api.path}\`
-- **请求**
-\`\`\`ts
-${api.req.ts}
-\`\`\`
-- **响应**
-\`\`\`ts
-${api.res.ts}
-\`\`\`
-`.trim()).join('\n---\n')}
-`.trim()).join('\n---\n') : ''}
-
-${rootApis.map(api => `
-## ${api.title ? api.title : api.path.split('/').last()!}
-- **路径**
-    - POST \`${api.path}\`
-- **请求**
-\`\`\`ts
-${api.req.ts}
-\`\`\`
-- **响应**
-\`\`\`ts
-${api.res.ts}
-\`\`\`
-
-`.trim()).join('\n---\n')}
-    `.trim();
-
+async function generateMarkdown(api: TSAPI, outputDir: string) {
+    let md = ApiDocUtil.toMarkdown(api);
     await fs.ensureDir(outputDir);
-    await fs.writeFile(path.join(outputDir, 'tsrpc-api.md'), md, 'utf-8');
+    let outputPath = path.resolve(outputDir, 'tsapi.md');
+    await fs.writeFile(outputPath, md, 'utf-8');
+    console.log(chalk.green('TSAPI (Markdown) 已成成到：' + outputPath))
+
 }

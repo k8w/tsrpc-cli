@@ -4,7 +4,7 @@ import { TSBufferValidator } from 'tsbuffer-validator';
 import { ServiceProto } from 'tsrpc-proto';
 import { processString } from 'typescript-formatter';
 import { ApiService, ServiceMapUtil } from './ServiceMapUtil';
-import { TsrpcApi } from './TsrpcApi';
+import { TSAPI } from './TSAPI';
 
 // https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md
 // https://tools.ietf.org/html/draft-bhutton-json-schema-00#section-4.2.1
@@ -129,7 +129,7 @@ export class ApiDocUtil {
         return output;
     }
 
-    static toSchemaObject(schema: TSBufferProto[string]): OpenAPIV3.SchemaObject {
+    static toSchemaObject(schema: TSBufferSchema): OpenAPIV3.SchemaObject {
         let output: OpenAPIV3.SchemaObject = {};
 
         switch (schema.type) {
@@ -351,24 +351,127 @@ export class ApiDocUtil {
         return output;
     }
 
-    static toCode(schema: TSBufferProto[string]): string {
+    private static _refStack: string[] = [];
+    static async toCode(proto: TSBufferProto, schemaId: string, typeName: string): Promise<string> {
+        let schema = proto[schemaId];
+
+        // Get circular refs
+        this._genCircularData = {
+            refStack: [],
+            proto: proto,
+            output: []
+        }
+        this._generateCircularRefs(schema);
+
+        // Circular refs would be kept
+        this._toCodeData = {
+            refs: this._genCircularData.output
+        }
+        let code = this._toCode(schema, { isRoot: true });
+        code = `${this.protoHelper.isInterface(schema) ? `interface ${typeName}` : `type ${typeName} =`} ${code}`;
+
+        // Generate code of refs
+        if (this._toCodeData.refs.length) {
+            code += '\n\n' + this._toCodeData.refs.map(v => {
+                let refName = v.split('/').last()!;
+                let refCode = this._toCode(proto[v], { isRoot: true });
+                refCode = `${this.protoHelper.isInterface(schema) ? `interface ${refName}` : `type ${refName} =`} ${refCode}`;
+                if (proto[v].comment) {
+                    refCode = this._toCodeComment(proto[v].comment!) + '\n' + refCode;
+                }
+                return refCode;
+            }).join('\n\n');
+        }
+
+        // Clear
+        this._genCircularData = undefined as any;
+        this._toCodeData = undefined as any;
+
+        // Format
+        let format = await processString('a.ts', code, {} as any);
+        return format.dest;
+    }
+
+    // #region _generateCircularRefs
+    /** _generateCircularRefs 期间的共享数据，需要在方法调用前初始化 */
+    private static _genCircularData: {
+        refStack: string[],
+        proto: TSBufferProto,
+        output: string[]
+    }
+    private static _generateCircularRefs(schema: TSBufferSchema) {
+        switch (schema.type) {
+            case SchemaType.Array:
+                this._generateCircularRefs(schema.elementType);
+                return;
+            case SchemaType.Tuple:
+                schema.elementTypes.forEach(v => { this._generateCircularRefs(v) });
+                return;
+            case SchemaType.Interface:
+                schema.extends?.forEach(v => { this._generateCircularRefs(v.type) });
+                schema.properties?.forEach(v => { this._generateCircularRefs(v.type) });
+                schema.indexSignature && this._generateCircularRefs(schema.indexSignature.type);
+                return;
+            case SchemaType.IndexedAccess:
+                this._generateCircularRefs(schema.objectType);
+                return;
+            case SchemaType.Reference:
+                if (this._genCircularData.output.includes(schema.target)) {
+                    return;
+                }
+                if (this._genCircularData.refStack.includes(schema.target)) {
+                    this._genCircularData.output.push(schema.target);
+                    return;
+                }
+                this._genCircularData?.refStack.push(schema.target);
+                this._generateCircularRefs(this._genCircularData.proto[schema.target])
+                this._genCircularData?.refStack.pop();
+                return;
+            case SchemaType.Union:
+            case SchemaType.Intersection:
+                schema.members.forEach(v => { this._generateCircularRefs(v.type) });
+                return;
+            case SchemaType.NonNullable:
+                this._generateCircularRefs(schema.target);
+                return;
+            case SchemaType.Pick:
+            case SchemaType.Partial:
+            case SchemaType.Omit:
+                this._generateCircularRefs(schema.target);
+                return;
+            case SchemaType.Overwrite:
+                this._generateCircularRefs(schema.target);
+                this._generateCircularRefs(schema.overwrite);
+                return;
+        }
+    }
+    // #endregion _generateCircularRefs
+
+    // #region _toCode
+    private static _toCodeData: {
+        refs: string[]
+    };
+    private static _toCode(schema: TSBufferSchema, options?: { isRoot?: boolean }): string {
         switch (schema.type) {
             case SchemaType.Boolean:
                 return 'boolean';
             case SchemaType.Number:
+                if (schema.scalarType && schema.scalarType !== 'double') {
+                    return `/*${schema.scalarType}*/ number`;
+                }
                 return 'number';
             case SchemaType.String:
                 return 'string';
             case SchemaType.Array:
                 let elemType = this.protoHelper.isTypeReference(schema.elementType) ? this.protoHelper.parseReference(schema.elementType) : schema.elementType;
-                let code = this.toCode(elemType);
+                let code = this._toCode(schema.elementType);
                 return (elemType.type === SchemaType.Union || elemType.type === SchemaType.Intersection) ? `(${code})[]` : `${code}[]`;
             case SchemaType.Tuple:
-                return `[${schema.elementTypes.map((v, i) => this.toCode(v)
+                return `[${schema.elementTypes.map((v, i) => this._toCode(v)
                     + (schema.optionalStartIndex !== undefined && i >= schema.optionalStartIndex ? '?' : ''))
                     .join(', ')}]`;
             case SchemaType.Enum:
-                return schema.members.map(v => this.toCode({ type: 'Literal', literal: v.value })).join(' | ');
+                return schema.members.map(v => this._toCode({ type: 'Literal', literal: v.value })).join(' | ');
             case SchemaType.Any:
                 return 'any';
             case SchemaType.Literal:
@@ -386,61 +489,63 @@ export class ApiDocUtil {
                 let flat = this.protoHelper.getFlatInterfaceSchema(schema);
                 let props: string[] = [];
                 for (let prop of flat.properties) {
-                    props.push(`${prop.type.comment ? `${this.toCodeComment(prop.type.comment)}\n` : ''}${prop.name}${prop.optional ? '?' : ''}: ${this.toCode(prop.type)}`);
+                    props.push(`${prop.type.comment ? `${this._toCodeComment(prop.type.comment)}\n` : ''}${prop.name}${prop.optional ? '?' : ''}: ${this._toCode(prop.type)}`);
                 }
                 if (flat.indexSignature) {
-                    props.push(`[key: ${flat.indexSignature.keyType.toLowerCase()}]: ${this.toCode(flat.indexSignature.type)}`)
+                    props.push(`[key: ${flat.indexSignature.keyType.toLowerCase()}]: ${this._toCode(flat.indexSignature.type)}`)
                 }
 
-                // return props.length > 1 ? `{\n${props.join(',\n')}\n}` : `{${props.join(', ')}}`
-                return `{\n${props.join(',\n')}\n}`;
+                return (props.length > 1 || options?.isRoot) ? `{\n${props.join(',\n')}\n}` : `{${props.join(', ')}}`
             }
             case SchemaType.Buffer:
-                return 'string';
+                return '/*base64*/ string';
             case SchemaType.IndexedAccess:
+                return this._toCode(this.protoHelper.parseReference(schema));
             case SchemaType.Reference: {
-                let parsed = this.protoHelper.parseReference(schema);
-                return this.toCode(parsed);
+                if (this._toCodeData.refs.includes(schema.target)) {
+                    return schema.target.split('/').last()!;
+                }
+                return this._toCode(this.protoHelper.parseReference(schema));
             }
             case SchemaType.Union:
                 return schema.members.map(v => {
                     let parsed = this.protoHelper.isTypeReference(v.type) ? this.protoHelper.parseReference(v.type) : v.type;
-                    let code = this.toCode(parsed);
+                    let code = this._toCode(v.type);
                     return parsed.type === SchemaType.Intersection ? `(${code})` : code;
                 }).join(' | ');
             case SchemaType.Intersection:
                 return schema.members.map(v => {
                     let parsed = this.protoHelper.isTypeReference(v.type) ? this.protoHelper.parseReference(v.type) : v.type;
-                    let code = this.toCode(parsed);
+                    let code = this._toCode(v.type);
                     return parsed.type === SchemaType.Union ? `(${code})` : code;
                 }).join(' & ');
             case SchemaType.NonNullable:
-                return `NonNullable<${this.toCode(schema.target)}>`;
+                return `NonNullable<${this._toCode(schema.target)}>`;
             case SchemaType.Date:
-                return 'string';
+                return '/*datetime*/ string';
             case SchemaType.Custom:
                 return 'string';
         }
 
         return '';
     }
+    // #endregion _toCode
 
-    static async toTsrpcApi(proto: ServiceProto): Promise<TsrpcApi> {
-        let output: TsrpcApi = {
+    static async toTSAPI(proto: ServiceProto): Promise<TSAPI> {
+        let output: TSAPI = {
             version: '1.0.0',
             servers: ['http://localhost:3000'],
             apis: [],
-            schemas: {}
+            // schemas: {}
         };
 
         // Schema
-        for (let key in proto.types) {
-            let schema = proto.types[key];
-            let basename = key.split('/').last()!;
-            output.schemas[key] = {
-                ts: await this._formatTsCode(schema, basename)
-            }
-        }
+        // for (let key in proto.types) {
+        //     let basename = key.split('/').last()!;
+        //     output.schemas[key] = {
+        //         ts: await this.toCode(proto.types, key, basename)
+        //     }
+        // }
 
         // API
         let apiSvcs = Object.values(ServiceMapUtil.getServiceMap(proto).apiName2Service) as ApiService[];
@@ -450,26 +555,80 @@ export class ApiDocUtil {
                 path: '/' + api.name,
                 title: proto.types[api.reqSchemaId].comment,
                 req: {
-                    ts: await this._formatTsCode(proto.types[api.reqSchemaId], `Req${basename}`),
+                    ts: await this.toCode(proto.types, api.reqSchemaId, `Req${basename}`),
                 },
                 res: {
-                    ts: await this._formatTsCode(proto.types[api.resSchemaId], `Res${basename}`),
-                }
+                    ts: await this.toCode(proto.types, api.resSchemaId, `Res${basename}`),
+                },
+                conf: api.conf
             })
         }
 
         return output;
     }
 
-    private static async _formatTsCode(schema: TSBufferSchema, basename: string) {
-        let code = this.toCode(schema);
-        code = `${this.protoHelper.isInterface(schema) ? `interface ${basename}` : `type ${basename} =`} ${code}`;
-        let format = await processString('a.ts', code, {} as any);
-        return format.dest;
+    static toMarkdown(api: TSAPI): string {
+        let rootApis = api.apis.filter(v => v.path.split('/').length === 2);
+        let groupApis = api.apis.map(v => ({
+            api: v,
+            pathArr: v.path.split('/')
+        })).filter(v => v.pathArr.length > 2).groupBy(v => v.pathArr[1]);
+
+        const genApiContent = (api: TSAPI['apis'][number]) => `
+**路径**
+- POST \`${api.path}\`
+
+**请求**
+\`\`\`ts
+${api.req.ts}
+\`\`\`
+
+**响应**
+\`\`\`ts
+${api.res.ts}
+\`\`\`
+${api.conf ? `
+**配置**
+\`\`\`ts
+${JSON.stringify(api.conf, null, 2)}
+\`\`\`
+` : ''}
+`.trim();
+
+        let md = `
+TSRPC API 接口文档
+===
+
+# 通用说明
+
+- 所有请求方法均为 \`POST\`
+- 所有请求均需加入以下 Header :
+    - \`Content-Type: application/json\`
+
+# API 接口列表
+
+${groupApis.length ? groupApis.map(ga => `
+## ${ga.key}
+
+${ga.map(({ api }) => `
+### ${api.title ? api.title : api.path.split('/').last()!}
+
+${genApiContent(api)}
+`.trim()).join('\n---\n')}
+`.trim()).join('\n---\n') : ''}
+
+${rootApis.map(api => `
+## ${api.title ? api.title : api.path.split('/').last()!}
+
+${genApiContent(api)}
+`.trim()).join('\n---\n')}
+`.trim();
+        
+        return md;
     }
 
     /** 将 TSBufferProto 的 comment 还原为代码注释 */
-    static toCodeComment(comment: string,) {
+    private static _toCodeComment(comment: string,) {
         let arr = comment.split('\n');
         if (arr.length === 1) {
             return `/** ${comment} */`;

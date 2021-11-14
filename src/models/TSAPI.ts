@@ -1,4 +1,4 @@
-export interface TsrpcApi {
+export interface TSAPI {
     version: string,
     servers: string[],
     apis: {
@@ -9,11 +9,12 @@ export interface TsrpcApi {
         },
         res: {
             ts: string
-        }
+        },
+        conf?: any
     }[],
-    schemas: {
-        [schemaId: string]: {
-            ts: string
-        }
-    }
+    // schemas: {
+    //     [schemaId: string]: {
+    //         ts: string
+    //     }
+    // }
 }
