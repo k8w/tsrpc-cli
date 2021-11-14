@@ -1,9 +1,9 @@
 # CHANGELOG
 
-## [2.2.0-dev.0]
+## [2.2.0] - 2021-11-14
 ### Added
 - `tsrpc doc`: Generate API document
-
+- `TsrpcConfig.proto` add `docDir` option
 
 ## [2.1.0] - 2021-11-08
 ### Changed

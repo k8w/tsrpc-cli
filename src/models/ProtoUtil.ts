@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import glob from "glob";
 import path from "path";
 import { EncodeIdUtil, TSBufferProtoGenerator } from "tsbuffer-proto-generator";
+import { TSBufferProto } from "tsbuffer-schema";
 import { Logger, ServiceDef, ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
 import { importTS } from './importTS';
@@ -67,7 +68,10 @@ export class ProtoUtil {
         }
     }
 
-    static async parseProtoAndSchema(proto: string | undefined, schemaId: string | undefined) {
+    static async parseProtoAndSchema(proto: string | undefined, schemaId: string | undefined): Promise<{
+        proto: TSBufferProto,
+        schemaId: string
+    }> {
         // #region 解析Proto
         if (!proto) {
             throw error(i18n.missingParam, { param: '--proto' });
@@ -422,5 +426,5 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
         return resGenProto.newProto;
     }
 
-    static toJsonSchema(){}
+    static toJsonSchema() { }
 }
