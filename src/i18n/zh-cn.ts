@@ -12,6 +12,7 @@ export const i18nZhCn = {
     tsrpc link  --config tsrpc.config.ts
     tsrpc dev   --config tsrpc.config.ts
     tsrpc build --config tsrpc.config.ts
+    tsrpc doc --config tsrpc.config.ts
 
     --- 命令行参数说明 ---
 
@@ -49,6 +50,14 @@ export const i18nZhCn = {
 
     tsrpc build <options>                构建 TSRPC 后端项目
         --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
+
+    tsrpc doc <options>                  生成多种格式的 API 接口文档 （如 Swagger/OpenAPI、Markdown、TSAPI）
+        -i, --input <folder>                协议文件夹路径
+        -o, --output <folder>               输出文档的文件夹路径
+        --verbose                           显示调试信息
+        --ignore <glob>                     从--input范围中要忽略的文件，Glob 表达式
+                                            支持传入多个，例如 --ignore "AAA" --ignore "BBB"
+
     
 二进制调试工具：
 
@@ -141,4 +150,8 @@ export const i18nZhCn = {
     buildTsc: `编译 TypeScript`,
     buildCopyFiles: `复制文件`,
     buildSucc: '构建成功！',
+
+    docOpenApiSucc: (path: string) => `OpenAPI 已成成到：${path}`,
+    docTsapiSucc: (path: string) => `TSAPI 已成成到：${path}`,
+    docMdSucc: (path: string) => `Markdown 已成成到：${path}`,
 }

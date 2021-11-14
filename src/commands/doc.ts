@@ -24,12 +24,11 @@ export async function cmdDoc(options: CmdDocOptions) {
         }
         for (let conf of options.config.proto) {
             options.config.verbose && console.log(`Start to generate ${conf.output}...`);
-
-            // // old
-            // let old = await ProtoUtil.loadOldProtoByConfigItem(conf, options.config.verbose);
-
-            // // new
-            // await ProtoUtil.genProtoByConfigItem(conf, old, options.config.verbose, options.config.checkOptimizableProto)
+            if (!conf.docDir) {
+                continue;
+            }
+            await generate(conf.ptlDir, conf.docDir, conf.ignore, options.config.verbose);
+            console.log(chalk.bgGreen.white(i18n.success));
         }
     }
     else {
@@ -41,20 +40,24 @@ export async function cmdDoc(options: CmdDocOptions) {
             throw error(i18n.missingParam, { param: 'output' });
         }
 
-        // Generate proto
-        let { newProto } = await ProtoUtil.generateServiceProto({
-            protocolDir: options.input,
-            ignore: options.ignore,
-            verbose: options.verbose,
-            checkOptimize: false,
-            keepComment: true
-        });
-
-        await generateOpenApi(newProto, options.output);
-        let tsrpcAPI = await generateTSAPI(newProto, options.output);
-        await generateMarkdown(tsrpcAPI, options.output);
+        await generate(options.input, options.output, options.ignore, options.verbose);
         console.log(chalk.bgGreen.white(i18n.success));
     }
+}
+
+async function generate(ptlDir: string, outDir: string, ignore: string | string[] | undefined, verbose: boolean | undefined) {
+    // Generate proto
+    let { newProto } = await ProtoUtil.generateServiceProto({
+        protocolDir: ptlDir,
+        ignore: ignore,
+        verbose: verbose,
+        checkOptimize: false,
+        keepComment: true
+    });
+
+    await generateOpenApi(newProto, outDir);
+    let tsrpcAPI = await generateTSAPI(newProto, outDir);
+    await generateMarkdown(tsrpcAPI, outDir);
 }
 
 async function generateOpenApi(proto: ServiceProto, outputDir: string) {
@@ -65,7 +68,7 @@ async function generateOpenApi(proto: ServiceProto, outputDir: string) {
     await fs.ensureDir(outputDir);
     let outputPath = path.resolve(outputDir, 'openapi.json');
     await fs.writeFile(outputPath, JSON.stringify(openAPI, null, 2), 'utf-8');
-    console.log(chalk.green('OpenAPI 已成成到：' + outputPath))
+    console.log(chalk.green(i18n.docOpenApiSucc(outputPath)))
 }
 
 async function generateTSAPI(proto: ServiceProto, outputDir: string) {
@@ -77,7 +80,7 @@ async function generateTSAPI(proto: ServiceProto, outputDir: string) {
     let outputPath = path.resolve(outputDir, 'tsapi.json');
     await fs.writeFile(outputPath, JSON.stringify(tsrpcAPI, null, 2), 'utf-8');
 
-    console.log(chalk.green('TSAPI (JSON) 已成成到：' + outputPath))
+    console.log(chalk.green(i18n.docTsapiSucc(outputPath)))
     return tsrpcAPI;
 }
 
@@ -86,6 +89,6 @@ async function generateMarkdown(api: TSAPI, outputDir: string) {
     await fs.ensureDir(outputDir);
     let outputPath = path.resolve(outputDir, 'tsapi.md');
     await fs.writeFile(outputPath, md, 'utf-8');
-    console.log(chalk.green('TSAPI (Markdown) 已成成到：' + outputPath))
+    console.log(chalk.green(i18n.docMdSucc(outputPath)))
 
 }

@@ -11,6 +11,7 @@ Usage：
     tsrpc link  --config tsrpc.config.ts
     tsrpc dev   --config tsrpc.config.ts
     tsrpc build --config tsrpc.config.ts
+    tsrpc doc --config tsrpc.config.ts
 
     --- CLI Params Introduction ---
 
@@ -45,6 +46,12 @@ Usage：
 
     tsrpc build <options>                Build the server project
         --config <file>                     Read params from config file (would ignore all other CLI params)
+
+    tsrpc doc <options>                  Generate API documents (Swagger/OpenAPI, Markdown, TSAPI)
+        -i, --input <folder>                The path of protocols folder
+        -o, --output <folder>               The path of output documents folder
+        --verbose                           Show debug info
+        --ignore <glob>                     Files to be ignored from --input
 
 Buffer Utilities:
 
@@ -136,5 +143,9 @@ Example：
     buildClean: (outDir: string) => `Clean '${outDir}'`,
     buildTsc: `Compile TypeScript`,
     buildCopyFiles: `Copy Files`,
-    buildSucc: 'Build Successfully!'
+    buildSucc: 'Build Successfully!',
+
+    docOpenApiSucc: (path: string) => `OpenAPI generated successfully: ${path}`,
+    docTsapiSucc: (path: string) => `TSAPI generated successfully: ${path}`,
+    docMdSucc: (path: string) => `Markdown generated successfully: ${path}`,
 }
