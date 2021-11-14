@@ -1,3 +1,4 @@
+import chalk from "chalk";
 
 export const i18nZhCn = {
     welcome: 'https://npmjs.com/tsrpc\n欢迎进入 TSRPC 实用工具 V${version}',
@@ -151,7 +152,7 @@ export const i18nZhCn = {
     buildCopyFiles: `复制文件`,
     buildSucc: '构建成功！',
 
-    docOpenApiSucc: (path: string) => `OpenAPI 已成成到：${path}`,
-    docTsapiSucc: (path: string) => `TSAPI 已成成到：${path}`,
-    docMdSucc: (path: string) => `Markdown 已成成到：${path}`,
+    docOpenApiSucc: (path: string) => `OpenAPI 已成成到：${chalk.cyan(path)}`,
+    docTsapiSucc: (path: string) => `TSAPI 已成成到：${chalk.cyan(path)}`,
+    docMdSucc: (path: string) => `Markdown 已成成到：${chalk.cyan(path)}`,
 }

@@ -22,39 +22,6 @@ export class ApiDocUtil {
         for (let key in proto.types) {
             schemas[key.replace(/[\.\/]/g, '_')] = this.toSchemaObject(proto.types[key]);
         }
-        schemas['ApiError'] = {
-            type: 'object',
-            title: 'API 错误',
-            description: '业务错误（ApiError）返回 HTTP 状态码 200，其它错误返回 HTTP 状态码 500',
-            properties: {
-                isSucc: {
-                    type: 'boolean',
-                    enum: [false],
-                    default: false
-                },
-                err: {
-                    type: 'object',
-                    description: 'TsrpcError',
-                    properties: {
-                        message: {
-                            type: 'string'
-                        },
-                        type: {
-                            type: 'string',
-                            enum: ['ApiError', 'NetworkError', 'ServerError', 'ClientError']
-                        },
-                        code: {
-                            oneOf: [
-                                { type: 'string' },
-                                { type: 'integer' }
-                            ],
-                            nullable: true
-                        }
-                    },
-                    required: ['message', 'type']
-                }
-            }
-        }
 
         let apiSvcs = Object.values(ServiceMapUtil.getServiceMap(proto).apiName2Service) as ApiService[];
         let pathObj: OpenAPIV3.PathsObject = Object.fromEntries(apiSvcs.map(v => {
@@ -99,15 +66,8 @@ export class ApiDocUtil {
                                 }
                             }
                         },
-                        500: {
-                            description: 'Error',
-                            content: {
-                                'application/json': {
-                                    schema: {
-                                        $ref: '#/components/schemas/ApiError'
-                                    }
-                                }
-                            }
+                        default: {
+                            $ref: '#/components/responses/error'
                         }
                     }
                 }
@@ -123,7 +83,49 @@ export class ApiDocUtil {
             },
             paths: pathObj,
             components: {
-                schemas: schemas
+                schemas: schemas,
+                responses: {
+                    error: {
+                        description: 'Error',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    title: 'API 错误',
+                                    description: '业务错误（ApiError）返回 HTTP 状态码 200，其它错误返回 HTTP 状态码 500',
+                                    properties: {
+                                        isSucc: {
+                                            type: 'boolean',
+                                            enum: [false],
+                                            default: false
+                                        },
+                                        err: {
+                                            type: 'object',
+                                            description: 'TsrpcError',
+                                            properties: {
+                                                message: {
+                                                    type: 'string'
+                                                },
+                                                type: {
+                                                    type: 'string',
+                                                    enum: ['ApiError', 'NetworkError', 'ServerError', 'ClientError']
+                                                },
+                                                code: {
+                                                    oneOf: [
+                                                        { type: 'string' },
+                                                        { type: 'integer' }
+                                                    ],
+                                                    nullable: true
+                                                }
+                                            },
+                                            required: ['message', 'type']
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         };
         return output;
@@ -623,7 +625,7 @@ ${rootApis.map(api => `
 ${genApiContent(api)}
 `.trim()).join('\n---\n')}
 `.trim();
-        
+
         return md;
     }
 

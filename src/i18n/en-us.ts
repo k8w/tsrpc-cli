@@ -1,3 +1,5 @@
+import chalk from "chalk";
+
 export const i18nEnUs = {
     welcome: 'https://npmjs.com/tsrpc\nWelcome to tsrpc utilities V${version}',
     help: `
@@ -145,7 +147,7 @@ Example：
     buildCopyFiles: `Copy Files`,
     buildSucc: 'Build Successfully!',
 
-    docOpenApiSucc: (path: string) => `OpenAPI generated successfully: ${path}`,
-    docTsapiSucc: (path: string) => `TSAPI generated successfully: ${path}`,
-    docMdSucc: (path: string) => `Markdown generated successfully: ${path}`,
+    docOpenApiSucc: (path: string) => `OpenAPI generated successfully: ${chalk.cyan(path)}`,
+    docTsapiSucc: (path: string) => `TSAPI generated successfully: ${chalk.cyan(path)}`,
+    docMdSucc: (path: string) => `Markdown generated successfully: ${chalk.cyan(path)}`,
 }
