@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [2.2.1-dev.0] - 2021-12-01
+### Changed
+- `tsrpc.config.ts`
+    - `proto.newPtlTemplate` renamed to `proto.ptlTemplate`
+    - `proto.newMsgTemplate` renamed to `proto.msgTemplate`
+    - `proto.newApiTemplate` renamed to `proto.apiTemplate`
+
 ## [2.2.0] - 2021-11-14
 ### Added
 - `tsrpc doc`: Generate API document

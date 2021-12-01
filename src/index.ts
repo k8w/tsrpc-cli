@@ -17,6 +17,7 @@ import { cmdSync } from './commands/sync';
 import { cmdValidate } from './commands/validate';
 import { i18n } from './i18n/i18n';
 import { CliUtil } from './models/CliUtil';
+import { CodeTemplate } from "./models/CodeTemplate";
 import { importTsrpcConfig } from "./models/importTS";
 import { TsrpcConfig } from './models/TsrpcConfig';
 import { error, formatStr, showLogo } from './models/util';
@@ -51,6 +52,15 @@ async function main() {
 
     if (conf?.cwd) {
         process.chdir(conf.cwd);
+    }
+
+    // depreated config 兼容
+    if (conf) {
+        conf.proto?.forEach(v => {
+            v.ptlTemplate = v.ptlTemplate ?? v.newPtlTemplate;
+            v.msgTemplate = v.msgTemplate ?? v.newMsgTemplate;
+            v.apiTemplate = v.apiTemplate ?? v.newApiTemplate;
+        });
     }
 
     // Version
@@ -194,5 +204,5 @@ async function main() {
 //     console.error('unhandledRejection', e)
 // })
 
-export { TsrpcConfig };
-
+export * from './models/TsrpcConfig';
+export { CodeTemplate };

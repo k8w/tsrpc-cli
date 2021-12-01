@@ -33,12 +33,20 @@ export interface TsrpcConfig {
          */
         compatible?: string | false,
 
-        /**  conf.dev.autoFillNewPtl 为 true 时自动填充的新 Ptl 的模板 */
-        newPtlTemplate?: (ptlBaseName: string, ptlPath: string, ptlDir: string) => string;
-        /**  conf.dev.autoFillNewPtl 为 true 时自动填充的新 Msg 的模板 */
-        newMsgTemplate?: (msgBaseName: string, msgPath: string, ptlDir: string) => string;
+        /** conf.dev.autoFillNewPtl 为 true 时自动填充的新 Ptl 的模板 */
+        ptlTemplate?: PtlTemplate;
+        /** conf.dev.autoFillNewPtl 为 true 时自动填充的新 Msg 的模板 */
+        msgTemplate?: MsgTemplate;
         /** conf.dev.autoApi 为 true 时自动填充的新 Api 的模板 */
-        newApiTemplate?: (apiBaseName: string, apiFileDir: string, ptlFileDir: string) => string;
+        apiTemplate?: ApiTemplate;
+
+        /** @deprecated use `ptlTemplate` instead */
+        newPtlTemplate?: PtlTemplate;
+        /** @deprecated use `msgTemplate` instead */
+        newMsgTemplate?: MsgTemplate;
+        /** @deprecated use `apiTemplate` instead */
+        newApiTemplate?: ApiTemplate;
+
     }[],
 
     /**
@@ -153,3 +161,7 @@ export interface TsrpcConfig {
      */
     verbose?: boolean,
 }
+
+export type PtlTemplate = (ptlBaseName: string, ptlPath: string, ptlDir: string) => string;
+export type MsgTemplate = (msgBaseName: string, msgPath: string, ptlDir: string) => string;
+export type ApiTemplate = (apiBaseName: string, apiFileDir: string, ptlFileDir: string) => string;

@@ -3,9 +3,10 @@ import { error } from "console";
 import fs from "fs-extra";
 import path from "path";
 import { ApiServiceDef, Logger, ServiceProto } from "tsrpc-proto";
+import { CodeTemplate } from "..";
 import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
-import { TsrpcConfig } from "../models/TsrpcConfig";
+import { ApiTemplate, TsrpcConfig } from "../models/TsrpcConfig";
 import { formatStr } from "../models/util";
 
 export type CmdApiOptions = {
@@ -35,7 +36,7 @@ export async function cmdApi(options: CmdApiOptions) {
                 proto: proto,
                 ptlDir: conf.ptlDir,
                 apiDir: conf.apiDir,
-                template: conf.newApiTemplate ?? defaultApiTemplate
+                template: conf.newApiTemplate ?? CodeTemplate.defaultApi
             }, console);
 
             newCount += res.length;
@@ -91,13 +92,13 @@ export async function genApiFilesByProto(options: {
     proto: ServiceProto<any>,
     ptlDir: string,
     apiDir: string,
-    template: typeof defaultApiTemplate | undefined
+    template: ApiTemplate | undefined
 }, logger?: Logger) {
     let apis = options.proto.services.filter(v => v.type === 'api') as ApiServiceDef[];
     let generatedFiles: { apiFilePath: string, apiBaseName: string }[] = [];
     for (let api of apis) {
         let { apiBaseName, apiFilePath, apiFileDir, ptlFileDir } = getApiFileInfo(api.name, options.apiDir, options.ptlDir);
-        await genNewApiFile(apiBaseName, apiFilePath, apiFileDir, ptlFileDir, options.template ?? defaultApiTemplate)
+        await genNewApiFile(apiBaseName, apiFilePath, apiFileDir, ptlFileDir, options.template ?? CodeTemplate.defaultApi)
         generatedFiles.push({ apiFilePath: apiFilePath, apiBaseName: apiBaseName })
         logger?.log(chalk.green(formatStr(i18n.apiSucc, { apiPath: apiFilePath, apiName: apiBaseName })));
     }
@@ -105,7 +106,7 @@ export async function genApiFilesByProto(options: {
     return generatedFiles;
 }
 
-export async function genNewApiFile(apiBaseName: string, apiFilePath: string, apiFileDir: string, ptlFileDir: string, template: typeof defaultApiTemplate) {
+export async function genNewApiFile(apiBaseName: string, apiFilePath: string, apiFileDir: string, ptlFileDir: string, template: ApiTemplate) {
     /** Files exists already, skip */
     if (!await fs.access(apiFilePath).catch(() => true)) {
         return;
@@ -114,12 +115,3 @@ export async function genNewApiFile(apiBaseName: string, apiFilePath: string, ap
     await fs.writeFile(apiFilePath, template(apiBaseName, apiFileDir, ptlFileDir), { encoding: 'utf-8' })
 }
 
-export function defaultApiTemplate(apiBaseName: string, apiFileDir: string, ptlFileDir: string): string {
-    return `import { ApiCall } from "tsrpc";
-import { Req${apiBaseName}, Res${apiBaseName} } from "${path.relative(apiFileDir, ptlFileDir).replace(/\\/g, '/')}/Ptl${apiBaseName}";
-
-export async function Api${apiBaseName}(call: ApiCall<Req${apiBaseName}, Res${apiBaseName}>) {
-    // TODO
-    call.error('API Not Implemented');
-}`;
-}

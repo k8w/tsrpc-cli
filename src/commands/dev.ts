@@ -4,10 +4,11 @@ import chokidar from "chokidar";
 import { Stats } from "fs";
 import fse from "fs-extra";
 import path from "path";
+import { CodeTemplate } from "..";
 import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
-import { defaultApiTemplate, genNewApiFile } from "./api";
+import { genNewApiFile } from "./api";
 import { ensureSymlinks } from "./link";
 import { copyDirReadonly } from "./sync";
 
@@ -93,10 +94,10 @@ export async function cmdDev(options: CmdDevOptions) {
                         let content = await fse.readFile(filepath);
                         if (content.length === 0) {
                             if (type === 'Ptl') {
-                                await fse.writeFile(filepath, (confItem.newPtlTemplate ?? defaultPtlTemplate)(basename, filepath, confItem.ptlDir), 'utf-8');
+                                await fse.writeFile(filepath, (confItem.ptlTemplate ?? CodeTemplate.defaultPtl)(basename, filepath, confItem.ptlDir), 'utf-8');
                             }
                             else if (type === 'Msg') {
-                                await fse.writeFile(filepath, (confItem.newMsgTemplate ?? defaultMsgTemplate)(basename, filepath, confItem.ptlDir), 'utf-8');
+                                await fse.writeFile(filepath, (confItem.msgTemplate ?? CodeTemplate.defaultMsg)(basename, filepath, confItem.ptlDir), 'utf-8');
                             }
                         }
                     }
@@ -104,11 +105,11 @@ export async function cmdDev(options: CmdDevOptions) {
                     // Auto Api
                     if (autoApi && confItem.apiDir && type === 'Ptl') {
                         let apiFilePath = path.join(confItem.apiDir, path.relative(confItem.ptlDir, path.join(path.dirname(filepath), `Api${basename}.ts`)));
-                        let emptyApiContent = (confItem.newApiTemplate ?? defaultApiTemplate)(basename, path.dirname(apiFilePath), path.dirname(filepath));
+                        let emptyApiContent = (confItem.apiTemplate ?? CodeTemplate.defaultApi)(basename, path.dirname(apiFilePath), path.dirname(filepath));
 
                         // Auto generate new API
                         if (eventName === 'add') {
-                            await genNewApiFile(basename, apiFilePath, path.dirname(apiFilePath), path.dirname(filepath), confItem.newApiTemplate ?? defaultApiTemplate).catch();
+                            await genNewApiFile(basename, apiFilePath, path.dirname(apiFilePath), path.dirname(filepath), confItem.apiTemplate ?? CodeTemplate.defaultApi).catch();
                         }
 
                         // Auto remove unchanged API
@@ -278,22 +279,3 @@ function delayWatch(options: {
     }).on('all', onWillTrigger);
 }
 
-export function defaultPtlTemplate(ptlBaseName: string, ptlPath: string, ptlDir: string): string {
-    return `export interface Req${ptlBaseName} {
-    
-}
-
-export interface Res${ptlBaseName} {
-    
-}
-
-// export const conf = {}`;
-}
-
-export function defaultMsgTemplate(msgBaseName: string, msgPath: string, ptlDir: string): string {
-    return `export interface Msg${msgBaseName} {
-    
-}
-
-// export const conf = {}`;
-}
