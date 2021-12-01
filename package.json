@@ -1,6 +1,6 @@
 {
   "name": "tsrpc-cli",
-  "version": "2.2.1-dev.0",
+  "version": "2.2.1",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "test": "npx mocha"
   },
   "bin": {
-    "tsrpc": "./index.js"
+    "tsrpc": "./bin.js"
   },
   "repository": {
     "type": "git",

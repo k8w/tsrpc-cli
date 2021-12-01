@@ -15,7 +15,7 @@ describe('api', function () {
         fs.rmSync(path.resolve(__dirname, '../output/api'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../../'));
 
-        let res = execSync(`node -r ts-node/register src/index.ts api --config test/configs/absolutePath.ts`);
+        let res = execSync(`node -r ts-node/register src/bin.ts api --config test/configs/absolutePath.ts`);
         assert.ok(fs.existsSync(path.resolve(__dirname, '../output/api/ApiTest.ts')));
         assert.ok(fs.existsSync(path.resolve(__dirname, '../output/api/a/b/c/ApiTest.ts')));
     });
@@ -24,7 +24,7 @@ describe('api', function () {
         fs.rmSync(path.resolve(__dirname, '../output/api'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../'));
 
-        let res = execSync(`node -r ts-node/register ../src/index.ts api --config configs/relativePath.config.ts`);
+        let res = execSync(`node -r ts-node/register ../src/bin.ts api --config configs/relativePath.config.ts`);
         assert.ok(fs.existsSync(path.resolve(__dirname, '../output/api/ApiTest.ts')));
         assert.ok(fs.existsSync(path.resolve(__dirname, '../output/api/a/b/c/ApiTest.ts')));
     })
@@ -33,7 +33,7 @@ describe('api', function () {
         fs.rmSync(path.resolve(__dirname, '../output/api'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../'));
 
-        let res = execSync('node -r ts-node/register ../src/index.ts api --input output/proto/serviceProto.ts --output output/api');
+        let res = execSync('node -r ts-node/register ../src/bin.ts api --input output/proto/serviceProto.ts --output output/api');
         assert.ok(fs.existsSync(path.resolve(__dirname, '../output/api/ApiTest.ts')));
         assert.ok(fs.existsSync(path.resolve(__dirname, '../output/api/a/b/c/ApiTest.ts')));
     })

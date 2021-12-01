@@ -17,7 +17,7 @@ describe('link', function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../../'));
 
-        let res = execSync(`node -r ts-node/register src/index.ts link --config test/configs/absolutePath.ts`);
+        let res = execSync(`node -r ts-node/register src/bin.ts link --config test/configs/absolutePath.ts`);
         assert.strictEqual(res.toString().split('\n').filter(v => v).last(), i18n.allLinkedSucc)
         TestUtil.assertSymlink(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/symlink'));
     })
@@ -26,7 +26,7 @@ describe('link', function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../'));
 
-        let res = execSync(`node -r ts-node/register ../src/index.ts link --config configs/relativePath.config.ts`);
+        let res = execSync(`node -r ts-node/register ../src/bin.ts link --config configs/relativePath.config.ts`);
         assert.strictEqual(res.toString().split('\n').filter(v => v).last(), i18n.allLinkedSucc);
         TestUtil.assertSymlink(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/symlink'));
     })
@@ -35,7 +35,7 @@ describe('link', function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../'));
 
-        let res = spawnSync('node', ['-r', 'ts-node/register', '../src/index.ts', 'link', '--from', 'output/proto', '--to', 'output/sync/symlink']);
+        let res = spawnSync('node', ['-r', 'ts-node/register', '../src/bin.ts', 'link', '--from', 'output/proto', '--to', 'output/sync/symlink']);
         assert.strictEqual(res.stdout.toString().split('\n').filter(v => v).last(), i18n.linkedSucc);
         TestUtil.assertSymlink(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/symlink'));
     })

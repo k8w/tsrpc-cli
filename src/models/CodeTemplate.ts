@@ -47,7 +47,7 @@ export async function Api${apiBaseName}(call: ApiCall<Req${apiBaseName}, Res${ap
      */
     static getExtendedPtl(baseFile = 'src/shared/protocols/base.ts', baseReq = 'BaseRequest', baseRes = 'BaseResponse', baseConf = 'BaseConf'): PtlTemplate {
         return (ptlBaseName, ptlPath, ptlDir) =>
-            `import { ${baseReq}, ${baseRes}, ${baseConf} } from "./${path.relative(ptlDir, path.resolve(baseFile.replace(/\.ts$/, ''))).replace(/\\/g, '/')}";
+            `import { ${baseReq}, ${baseRes}, ${baseConf} } from "./${path.relative(path.dirname(ptlPath), path.resolve(baseFile.replace(/\.ts$/, ''))).replace(/\\/g, '/')}";
 
 export interface Req${ptlBaseName} extends ${baseReq} {
     
@@ -68,7 +68,7 @@ export const conf: ${baseConf} = {
      */
     static getExtendedMsg(baseFile = 'src/shared/protocols/base.ts', baseMsg = 'BaseMessage', baseConf = 'BaseConf'): MsgTemplate {
         return (msgBaseName, msgPath, msgDir) =>
-            `import { ${baseMsg}, ${baseConf} } from "./${path.relative(msgDir, path.resolve(baseFile.replace(/\.ts$/, ''))).replace(/\\/g, '/')}";
+            `import { ${baseMsg}, ${baseConf} } from "./${path.relative(path.dirname(msgPath), path.resolve(baseFile.replace(/\.ts$/, ''))).replace(/\\/g, '/')}";
 
 export interface Msg${msgBaseName} extends ${baseMsg} {
     

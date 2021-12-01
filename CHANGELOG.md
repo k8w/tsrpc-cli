@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## [2.2.1-dev.0] - 2021-12-01
+## [2.2.1] - 2021-12-01
+### Added
+- Add `CodeTemplate`
 ### Changed
 - `tsrpc.config.ts`
     - `proto.newPtlTemplate` renamed to `proto.ptlTemplate`

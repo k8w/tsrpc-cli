@@ -4,7 +4,7 @@ import fs from "fs-extra";
 import inquirer from "inquirer";
 import path from "path";
 import { Logger } from "tsrpc-proto";
-import { resPath } from "..";
+import { resPath } from "../bin";
 import { i18n } from "../i18n/i18n";
 import { CliUtil } from "../models/CliUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
