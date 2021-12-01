@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.2.2] - 2021-12-01
+### Changed
+- `tsrpc doc` remove `tsapi.json`
+
 ## [2.2.1] - 2021-12-01
 ### Added
 - Add `CodeTemplate`

@@ -78,11 +78,11 @@ async function generateTSAPI(proto: ServiceProto, outputDir: string) {
     let tsrpcAPI = await ApiDocUtil.toTSAPI(proto);
 
     // Output OpenAPI
-    await fs.ensureDir(outputDir);
-    let outputPath = path.resolve(outputDir, 'tsapi.json');
-    await fs.writeFile(outputPath, JSON.stringify(tsrpcAPI, null, 2), 'utf-8');
+    // await fs.ensureDir(outputDir);
+    // let outputPath = path.resolve(outputDir, 'tsapi.json');
+    // await fs.writeFile(outputPath, JSON.stringify(tsrpcAPI, null, 2), 'utf-8');
 
-    console.log(chalk.green(i18n.docTsapiSucc(outputPath)))
+    // console.log(chalk.green(i18n.docTsapiSucc(outputPath)))
     return tsrpcAPI;
 }
 
