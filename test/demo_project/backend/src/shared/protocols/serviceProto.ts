@@ -74,7 +74,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 21,
+    "version": 22,
     "services": [
         {
             "id": 100,
@@ -279,7 +279,17 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ]
         },
         "user/level1/level2/level31/PtlLevel3/ResLevel3": {
-            "type": "Interface"
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "data",
+                    "type": {
+                        "type": "Reference",
+                        "target": "user/level1/level2/level31/PtlLevel3/Level3"
+                    }
+                }
+            ]
         },
         "user/level1/level2/level31/PtlLevel3Plus/ReqLevel3Plus": {
             "type": "Interface"

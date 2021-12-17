@@ -504,7 +504,23 @@ export class ApiDocUtil {
                 let flat = this.protoHelper.getFlatInterfaceSchema(schema);
                 let props: string[] = [];
                 for (let prop of flat.properties) {
-                    props.push(`${prop.type.comment ? `${this._toCodeComment(prop.type.comment)}\n` : ''}${/^[a-z_]/i.test(prop.name) ? prop.name : `'${prop.name}'`}${prop.optional ? '?' : ''}: ${this._toCode(prop.type)}`);
+                    let propStr = '';
+
+                    // Comment
+                    if (prop.type.comment) {
+                        propStr += `${this._toCodeComment(prop.type.comment)}\n`
+                    }
+                    // 字段无 Comment，但是是引用
+                    else if (this.protoHelper.isTypeReference(prop.type)) {
+                        // 引用有 Comment
+                        let parsedSchema = this.protoHelper.parseReference(prop.type);
+                        if (parsedSchema.comment) {
+                            propStr += `${this._toCodeComment(parsedSchema.comment)}\n`
+                        }
+                    }
+
+                    propStr += (`${/^[a-z_]/i.test(prop.name) ? prop.name : `'${prop.name}'`}${prop.optional ? '?' : ''}: ${this._toCode(prop.type)}`);
+                    props.push(propStr);
                 }
                 if (flat.indexSignature) {
                     props.push(`[key: ${flat.indexSignature.keyType.toLowerCase()}]: ${this._toCode(flat.indexSignature.type)}`)

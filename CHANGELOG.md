@@ -4,6 +4,8 @@
 ### Added
 - `tsrpc doc` support multiple level
 - Add TOC in generated markdown by `tsrpc doc`
+### Fixed
+- Comment of type alias was not generated
 
 ## [2.2.2] - 2021-12-01
 ### Changed

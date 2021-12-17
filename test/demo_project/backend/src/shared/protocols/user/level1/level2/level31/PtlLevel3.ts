@@ -13,7 +13,7 @@ export type Level3 = Pick<AAA, 'a' | 'b'>;
 export type ReqLevel3 = Level3;
 
 export interface ResLevel3 {
-
+    data: Level3
 }
 
 // export const conf = {}
