@@ -4,6 +4,7 @@ export interface TSAPI {
     apis: {
         path: string,
         title?: string,
+        remark?: string,
         req: {
             ts: string
         },

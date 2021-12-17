@@ -571,9 +571,15 @@ export class ApiDocUtil {
         let apiSvcs = Object.values(ServiceMapUtil.getServiceMap(proto).apiName2Service) as ApiService[];
         for (let api of apiSvcs) {
             let basename = api.name.split('/').last()!;
+
+            let commentArr = proto.types[api.reqSchemaId].comment?.trim()?.split('\n');
+            let title = commentArr?.[0].trim();
+            let remark = commentArr?.slice(1).join('\n');
+
             output.apis.push({
                 path: '/' + api.name,
-                title: proto.types[api.reqSchemaId].comment,
+                title: title,
+                remark: remark,
                 req: {
                     ts: await this.toCode(proto.types, api.reqSchemaId, `Req${basename}`),
                 },
@@ -588,63 +594,110 @@ export class ApiDocUtil {
     }
 
     static toMarkdown(api: TSAPI): string {
-        let rootApis = api.apis.filter(v => v.path.split('/').length === 2);
-        let groupApis = api.apis.map(v => ({
-            api: v,
-            pathArr: v.path.split('/')
-        })).filter(v => v.pathArr.length > 2).groupBy(v => v.pathArr[1]);
-
-        const genApiContent = (api: TSAPI['apis'][number]) => `
-**路径**
-- POST \`${api.path}\`
-
-**请求**
-\`\`\`ts
-${api.req.ts}
-\`\`\`
-
-**响应**
-\`\`\`ts
-${api.res.ts}
-\`\`\`
-${api.conf && (typeof api.conf !== 'object' || Object.keys(api.conf).length > 0) ? `
-**配置**
-\`\`\`ts
-${JSON.stringify(api.conf, null, 2)}
-\`\`\`
-` : ''}
-`.trim();
-
         let md = `
-TSRPC API 接口文档
-===
+# TSRPC API 接口文档
 
-# 通用说明
+## 通用说明
 
 - 所有请求方法均为 \`POST\`
 - 所有请求均需加入以下 Header :
     - \`Content-Type: application/json\`
 
-# API 接口列表
-
-${groupApis.length ? groupApis.map(ga => `
-## ${ga.key}
-
-${ga.map(({ api }) => `
-### ${api.title ? api.title : api.path.split('/').last()!}
-
-${genApiContent(api)}
-`.trim()).join('\n---\n')}
-`.trim()).join('\n---\n') : ''}
-
-${rootApis.map(api => `
-## ${api.title ? api.title : api.path.split('/').last()!}
-
-${genApiContent(api)}
-`.trim()).join('\n---\n')}
-`.trim();
-
+`;
+        md += '## 目录\n\n';
+        md += this._treeToToc(this._toApiTree(api.apis, '/', 10), 1) + '\n---\n\n';
+        md += this._treeToMarkdown(this._toApiTree(api.apis, '/', 3), 1);
         return md;
+    }
+
+    private static _treeToToc(tree: ApiTreeNode[], currentDepth: number) {
+        let output: string = '';
+
+        // 逐个生成
+        for (let node of tree) {
+            // 写个标题
+            if (node.type === 'api') {
+                output += `${' '.repeat((currentDepth - 1) * 4)}- [${node.name}](#${node.api.path})\n`;
+            }
+            else if (node.type === 'folder') {
+                output += `${' '.repeat((currentDepth - 1) * 4)}- ${node.name}\n`;
+                output += this._treeToToc(node.children, currentDepth + 1)
+            }
+        }
+
+        return output;
+    }
+    private static _treeToMarkdown(tree: ApiTreeNode[], currentDepth: number) {
+        let output: string[] = [];
+
+        // 逐个生成
+        for (let node of tree) {
+            // 写个标题
+            let part = `${'#'.repeat(currentDepth + 1)} ${node.name}${node.type === 'api' ? ` <a id="${node.api.path}"></a>` : ''}\n\n`;
+
+            // folder
+            if (node.type === 'folder') {
+                // 递归
+                part += this._treeToMarkdown(node.children, currentDepth + 1);
+            }
+            // api
+            else if (node.type === 'api') {
+                // 请求响应……正文内容
+                if (node.api.remark) {
+                    part += node.api.remark + '\n\n';
+                }
+                part += `**路径**\n- POST \`${node.api.path}\`\n\n`;
+                part += '**请求**\n```ts\n' + node.api.req.ts + '\n```\n\n';
+                part += '**响应**\n```ts\n' + node.api.res.ts + '\n```\n\n';
+                if (node.api.conf && (typeof node.api.conf !== 'object' || Object.keys(node.api.conf).length > 0)) {
+                    part += '**配置**\n```ts\n' + JSON.stringify(node.api.conf, null, 2) + '\n```\n\n';
+                }
+            }
+
+            output.push(part)
+        }
+
+        return output.join('---\n\n');
+    }
+    private static _toApiTree(apis: TSAPI['apis'], prefix: string, maxDepth: number): ApiTreeNode[] {
+        // 按前缀过滤（保护）
+        apis = apis.filter(v => v.path.startsWith(prefix));
+
+        let typedApis = apis.map(v => {
+            let arrPrefix = prefix.split('/');
+            let isLastFolderDepth = arrPrefix.length === maxDepth;
+            let groupArr = v.path.slice(prefix.length).split('/');
+            let groupName = isLastFolderDepth ? groupArr.slice(0, -1).join('/') : groupArr[0];
+
+            return {
+                type: groupArr.length > 1 ? 'folder' : 'api',
+                groupName: groupName,
+                api: v
+            }
+        })
+
+        // 计算这一级的 API 节点
+        let apiNodes: ApiTreeApiNode[] = typedApis.filter(v => v.type === 'api').map(v => {
+            return {
+                type: 'api',
+                name: v.api.title || v.api.path.split('/').last(),
+                api: v.api
+            }
+        });
+
+        // 整理这一级的 folder 节点
+        let folderNodes: ApiTreeFolderNode[] = typedApis.filter(v => v.type === 'folder').groupBy(v => v.groupName)
+            .map(v => ({
+                type: 'folder',
+                name: v.key,
+                children: this._toApiTree(v.map(v1 => v1.api), prefix + v.key + '/', maxDepth)
+            }));
+
+        // 排序
+        return [
+            ...folderNodes.orderBy(v => v.name),
+            ...apiNodes.orderBy(v => v.api.path)
+        ]
     }
 
     /** 将 TSBufferProto 的 comment 还原为代码注释 */
@@ -661,3 +714,15 @@ ${arr.map(v => `* ${v}`).join('\n')}
     }
 
 }
+
+export interface ApiTreeFolderNode {
+    type: 'folder',
+    name: string,
+    children: ApiTreeNode[]
+}
+export interface ApiTreeApiNode {
+    type: 'api',
+    name: string,
+    api: TSAPI['apis'][number]
+}
+export type ApiTreeNode = ApiTreeFolderNode | ApiTreeApiNode;

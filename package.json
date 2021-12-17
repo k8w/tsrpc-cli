@@ -1,6 +1,6 @@
 {
   "name": "tsrpc-cli",
-  "version": "2.2.2",
+  "version": "2.3.0-dev.0",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "build:dts": "rm -rf lib && npx tsc && npx api-extractor run --local --verbose && rm -rf lib",
     "try": "node -r ts-node/register src/index.ts proto -i try/proto -o try/proto/proto.ts -n",
     "try:npx": "npx tsrpc proto -i try/proto -o try/proto/proto.ts -n",
-    "test": "npx mocha"
+    "test": "npx mocha",
+    "test:doc": "cd test/demo_project/backend && npm run doc"
   },
   "bin": {
     "tsrpc": "./bin.js"
@@ -33,7 +34,7 @@
   },
   "homepage": "https://github.com/k8w/tsrpc-cli#readme",
   "devDependencies": {
-    "@microsoft/api-documenter": "^7.13.76",
+    "@microsoft/api-documenter": "^7.13.77",
     "@microsoft/api-extractor": "^7.19.2",
     "@rollup/plugin-replace": "^2.4.2",
     "@types/fs-extra": "^9.0.13",

@@ -1,11 +1,13 @@
 import { TsrpcConfig } from '../../../src/models/TsrpcConfig';
+import path from 'path';
 
 const tsrpcConf: TsrpcConfig = {
     proto: [
         {
-            ptlDir: 'src/shared/protocols',
-            output: 'src/shared/protocols/serviceProto.ts',
-            apiDir: 'src/api',
+            ptlDir: path.resolve(__dirname, 'src/shared/protocols'),
+            output: path.resolve(__dirname, 'src/shared/protocols/serviceProto.ts'),
+            apiDir: path.resolve(__dirname, 'src/api'),
+            docDir: path.resolve(__dirname, 'temp')
         }
     ],
     sync: [

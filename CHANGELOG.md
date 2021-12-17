@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [2.3.0-dev.0] - 2021-12-17
+### Added
+- `tsrpc doc` support multiple level
+- Add TOC in generated markdown by `tsrpc doc`
+
 ## [2.2.2] - 2021-12-01
 ### Changed
 - `tsrpc doc` remove `tsapi.json`
