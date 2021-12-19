@@ -15,7 +15,8 @@ import { copyDirReadonly } from "./sync";
 const DEFAULT_DELAY = 1000;
 
 export interface CmdDevOptions {
-    config: TsrpcConfig
+    config: TsrpcConfig,
+    entry: string | undefined
 }
 
 export async function cmdDev(options: CmdDevOptions) {
@@ -24,7 +25,7 @@ export async function cmdDev(options: CmdDevOptions) {
     const autoProto = conf.dev?.autoProto ?? true;
     const autoSync = conf.dev?.autoSync ?? true;
     const autoApi = conf.dev?.autoApi ?? true;
-    const entry = conf.dev?.entry ?? 'src/index.ts';
+    const entry = options.entry ?? conf.dev?.entry ?? 'src/index.ts';
     const devServerArgs = ['-r', 'ts-node/register', ...(conf.dev?.nodeArgs ?? []), entry];
     const cmdStart = 'node ' + devServerArgs.map(v => /\s/.test(v) ? `'${v}'` : v).join(' ');
     const watchFiles = conf.dev?.watch ?? 'src';

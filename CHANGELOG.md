@@ -1,9 +1,11 @@
 # CHANGELOG
 
-## [2.3.0-dev.0] - 2021-12-17
+## [2.3.0] - 2021-12-17
 ### Added
-- `tsrpc doc` support multiple level
-- Add TOC in generated markdown by `tsrpc doc`
+- Rename command from `tsrpc` to `tsrpc-cli`
+- `dev` command now support `--entry` to specific entry file like `tsrpc-cli dev --entry src/xxx.ts`
+- `tsrpc-cli doc` support multiple level
+- Add TOC in generated markdown by `tsrpc-cli doc`
 ### Fixed
 - Comment of type alias was not generated
 

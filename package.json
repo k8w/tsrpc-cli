@@ -1,6 +1,6 @@
 {
   "name": "tsrpc-cli",
-  "version": "2.3.0-dev.0",
+  "version": "2.3.0",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,8 @@
     "test:doc": "cd test/demo_project/backend && npm run doc"
   },
   "bin": {
-    "tsrpc": "./bin.js"
+    "tsrpc": "./bin.js",
+    "tsrpc-cli": "./bin.js"
   },
   "repository": {
     "type": "git",

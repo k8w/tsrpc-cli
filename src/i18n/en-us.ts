@@ -1,98 +1,92 @@
 import chalk from "chalk";
 
 export const i18nEnUs = {
-    welcome: 'https://npmjs.com/tsrpc\nWelcome to tsrpc utilities V${version}',
+    welcome: 'https://npmjs.com/tsrpc\nWelcome to TSRPC utilities V${version}',
     help: `
 Usage：
 
-    --- Recommended: Use Via Config File ---
+    --- [Recommended] Use Via Config File ---
 
-    tsrpc proto --config tsrpc.config.ts
-    tsrpc api   --config tsrpc.config.ts
-    tsrpc sync  --config tsrpc.config.ts
-    tsrpc link  --config tsrpc.config.ts
-    tsrpc dev   --config tsrpc.config.ts
-    tsrpc build --config tsrpc.config.ts
-    tsrpc doc --config tsrpc.config.ts
+    tsrpc-cli proto --config tsrpc.config.ts
+    tsrpc-cli api   --config tsrpc.config.ts
+    tsrpc-cli sync  --config tsrpc.config.ts
+    tsrpc-cli link  --config tsrpc.config.ts
+    tsrpc-cli dev   --config tsrpc.config.ts
+    tsrpc-cli build --config tsrpc.config.ts
+    tsrpc-cli doc --config tsrpc.config.ts
 
-    --- CLI Params Introduction ---
+    ---------- Use Via CLI Params  ----------
 
-    tsrpc proto <options>                Generate proto file
-        --config <file>                     Read params from config file (would ignore all other CLI params)
-        -i, --input <file>                  Input TS file (support glob expression)
-                                            It would generate all exported types
-        -o, --output <file>                 Output file (or print to CLI)
-        -c, --compatible <file>             Compatible mode, compatible to old proto (=output by default)
-        --new                               Generate fresh new proto (no compatible)
-        --ugly                              Output as ugly JSON (no indent and smaller)
-        --verbose                           Show debug info
-        --ignore <glob>                     Files to be ignored from --input
+    tsrpc-cli proto <options>                Generate proto file
+        -i, --input <file>                      Input TS file (support glob expression)
+                                                It would generate all exported types
+        -o, --output <file>                     Output file (or print to CLI)
+        -c, --compatible <file>                 Compatible mode, compatible to old proto (=output by default)
+        --new                                   Generate fresh new proto (no compatible)
+        --ugly                                  Output as ugly JSON (no indent and smaller)
+        --verbose                               Show debug info
+        --ignore <glob>                         Files to be ignored from --input
 
-    tsrpc api <options>                  Generate TSRPC API implementations
-        --config <file>                     Read params from config file (would ignore all other CLI params)
-        -i, --input <file>                  Proto file path (proto.ts or proto.json)
-        -o, --output <folder>               Output api folder path
+    tsrpc-cli api <options>                  Generate TSRPC API implementations
+        -i, --input <file>                      Proto file path (proto.ts or proto.json)
+        -o, --output <folder>                   Output api folder path
     
-    tsrpc sync                           Sync directory content as readonly
-        --config <file>                     Read params from config file (would ignore all other CLI params)
-        --from <dir>                        Source path
-        --to <dir>                          Target path (copy and set as read-only)
+    tsrpc-cli sync                           Sync directory
+        --from <dir>                            Source path
+        --to <dir>                              Target path (copy and set as read-only)
 
-    tsrpc link <options>                 Create symlink (cross all operating system)
-        --config <file>                     Read params from config file (would ignore all other CLI params)
-        --from <dir>                        Source path
-        --to <dir>                          Target path for created symlink
+    tsrpc-cli link <options>                 Create symlink (cross all operating system)
+        --from <dir>                            Source path
+        --to <dir>                              Target path for created symlink
 
-    tsrpc dev <options>                  Run local dev server
-        --config <file>                     Read params from config file (would ignore all other CLI params)
+    tsrpc-cli dev <options>                  Run local dev server
+        --config <file>                         Path of config file
+        --entry <file>                          Entry file，default is "src/index.ts"
 
-    tsrpc build <options>                Build the server project
-        --config <file>                     Read params from config file (would ignore all other CLI params)
+    tsrpc-cli build <options>                Build the server project
+        --config <file>                         Path of config file
 
-    tsrpc doc <options>                  Generate API documents (Swagger/OpenAPI, Markdown, TSAPI)
-        -i, --input <folder>                The path of protocols folder
-        -o, --output <folder>               The path of output documents folder
-        --verbose                           Show debug info
-        --ignore <glob>                     Files to be ignored from --input
+    tsrpc-cli doc <options>                  Generate API documents (Swagger/OpenAPI, Markdown, TSAPI)
+        -i, --input <folder>                    The path of protocols folder
+        -o, --output <folder>                   The path of output documents folder
+        --verbose                               Show debug info
+        --ignore <glob>                         Files to be ignored from --input
 
 Buffer Utilities:
 
-    tsrpc encode <options> [exp]         Encode a JS expression or a file (content is JS expression)
-        [exp]                               Expression to encode (e.g. "123" "new Uint8Array([1,2,3])")
-        -p, --proto <file>                  Proto file to use
-        -s, --schema <id>                   SchemaID (filePath/TypeName)
-        -i, --input <file>                  Input file path, alternative to [exp]
-        -o, --output <file>                 Output file path (or print to CLI)
-        --verbose                           Show debug info
+    tsrpc-cli encode <options> [exp]         Encode a JS expression or a file (content is JS expression)
+        [exp]                                   Expression to encode (e.g. "123" "new Uint8Array([1,2,3])")
+        -p, --proto <file>                      Proto file to use
+        -s, --schema <id>                       SchemaID (filePath/TypeName)
+        -i, --input <file>                      Input file path, alternative to [exp]
+        -o, --output <file>                     Output file path (or print to CLI)
+        --verbose                               Show debug info
                                             
-    tsrpc decode <options> [binstr]      Decode buffer
-        [binstr]                            Buffer to decode, hex string, like "0F A2 E3"
-        -p, --proto <file>                  Proto file
-        -s, --schema <id>                   SchemaID (filePath/TypeName)
-        -i, --input <file>                  Input file path, alternative to [binstr]
-        -o, --output <file>                 Output file path (or print to CLI)
-        --verbose                           Show debug info
+    tsrpc-cli decode <options> [binstr]      Decode buffer
+        [binstr]                                Buffer to decode, hex string, like "0F A2 E3"
+        -p, --proto <file>                      Proto file
+        -s, --schema <id>                       SchemaID (filePath/TypeName)
+        -i, --input <file>                      Input file path, alternative to [binstr]
+        -o, --output <file>                     Output file path (or print to CLI)
+        --verbose                               Show debug info
 
-    tsrpc validate <options> [exp]       Validate if a JS expression is valid to a schema
-        [exp]                               Expression to validate (e.g. "123" "new Uint8Array([1,2,3])")
-        -p, --proto <file>                  Proto file to use
-        -s, --schema <id>                   SchemaID (filePath/TypeName)
-        -i, --input <file>                  Input file path, alternative to [exp]
+    tsrpc-cli validate <options> [exp]       Validate if a JS expression is valid to a schema
+        [exp]                                   Expression to validate (e.g. "123" "new Uint8Array([1,2,3])")
+        -p, --proto <file>                      Proto file to use
+        -s, --schema <id>                       SchemaID (filePath/TypeName)
+        -i, --input <file>                      Input file path, alternative to [exp]
 
-    tsrpc show <file>                    Show a binary file as hex string
+    tsrpc-cli show <file>                    Show a binary file as hex string
 `.trim(),
     example: `
 Example：
 
-    tsrpc proto --config tsrpc.config.ts
-    tsrpc api   --config tsrpc.config.ts
-    tsrpc sync  --config tsrpc.config.ts
-    tsrpc link  --config tsrpc.config.ts
-    tsrpc dev   --config tsrpc.config.ts
-    tsrpc build --config tsrpc.config.ts
+    tsrpc-cli dev --entry src/xxx.ts         Run local dev server
+    tsrpc-cli build                          Build the server project
+    tsrpc-cli doc                            Generate API document
 `.trim(),
-    errCmd: 'Error command, use "tsrpc -h" to see more help info.',
-    missingParam: 'Missing parameter ${param}, use "tsrpc -h" to see more help info.',
+    errCmd: 'Error command, use "tsrpc-cli -h" to see more help info.',
+    missingParam: 'Missing parameter ${param}, use "tsrpc-cli -h" to see more help info.',
     shouldBeDir: '${path} should be a directory',
     protoSucc: '✔ ServiceProto generated to: ${output}',
     protoFailed: (output: string) => `⨯ Generate ServiceProto failed: ${output}`,
@@ -112,7 +106,7 @@ Example：
     validateFail: '⨯ Validate fail: ${msg}',
     error: ' ERROR ',
     success: ' SUCCESS ',
-    helpGuide: 'Use "tsrpc -h" to see more help info.',
+    helpGuide: 'Use "tsrpc-cli -h" to see more help info.',
     compatibleError: 'Failed to keep compatible with old proto: \n\t|- ${innerError}',
     canOptimizeByNew: (oldProtoPath: string) => `Redundancy in ServiceProto is detected, delete '${oldProtoPath}' manually to optimize this, but it would cause incompatibility between the latest and older protocol. `,
     dirNotExists: 'Directory not exists: ${dir}',

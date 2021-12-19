@@ -5,99 +5,91 @@ export const i18nZhCn = {
     help: `
 使用说明：
 
-    --- 推荐：通过配置文件使用 ---
+    ---- [推荐] 通过配置文件使用 ----
 
-    tsrpc proto --config tsrpc.config.ts
-    tsrpc api   --config tsrpc.config.ts
-    tsrpc sync  --config tsrpc.config.ts
-    tsrpc link  --config tsrpc.config.ts
-    tsrpc dev   --config tsrpc.config.ts
-    tsrpc build --config tsrpc.config.ts
-    tsrpc doc --config tsrpc.config.ts
+    tsrpc-cli proto --config tsrpc.config.ts
+    tsrpc-cli api   --config tsrpc.config.ts
+    tsrpc-cli sync  --config tsrpc.config.ts
+    tsrpc-cli link  --config tsrpc.config.ts
+    tsrpc-cli dev   --config tsrpc.config.ts
+    tsrpc-cli build --config tsrpc.config.ts
+    tsrpc-cli doc --config tsrpc.config.ts
 
-    --- 命令行参数说明 ---
+    ------- 通过命令行参数使用 -------
 
-    tsrpc proto <options>                生成TSRPC Proto文件
-        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
-        -i, --input <folder>                用来生成Proto的协议文件夹路径
-        -o, --output <file>                 输出的文件路径，不指定将直接输出到命令行
-                                            -o XXX.ts 和 -o XXX.json 将对应输出两种不同的格式
-        -c, --compatible <file>             兼容模式：要兼容的旧Proto文件的路径（默认同output）
-        --new                               不兼容旧版，生成全新的Proto文件
-        --ugly                              输出为可读性较差但体积更小压缩格式
-        --verbose                           显示调试信息
-        --ignore <glob>                     从--input范围中要忽略的文件，Glob 表达式
-                                            支持传入多个，例如 --ignore "AAA" --ignore "BBB"
+    tsrpc-cli proto <options>                生成TSRPC Proto文件
+        -i, --input <folder>                    用来生成Proto的协议文件夹路径
+        -o, --output <file>                     输出的文件路径，不指定将直接输出到命令行
+                                                -o XXX.ts 和 -o XXX.json 将对应输出两种不同的格式
+        -c, --compatible <file>                 兼容模式：要兼容的旧Proto文件的路径（默认同output）
+        --new                                   不兼容旧版，生成全新的Proto文件
+        --ugly                                  输出为可读性较差但体积更小压缩格式
+        --verbose                               显示调试信息
+        --ignore <glob>                         从--input范围中要忽略的文件，Glob 表达式
+                                                支持传入多个，例如 --ignore "AAA" --ignore "BBB"
 
-    tsrpc api <options>                  自动生成TSRPC API实现
-        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
-        -i, --input <file>                  Proto文件的路径
-        -o, --output <folder>               输出的API文件夹路径
+    tsrpc-cli api <options>                  自动生成TSRPC API实现
+        -i, --input <file>                      Proto文件的路径
+        -o, --output <folder>                   输出的API文件夹路径
 
-    tsrpc sync <options>                 同步文件夹内容，以只读方式同步到目标位置
-        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
-                                            根据配置文件，初始化 Symlink 或只读复制文件
-        --from <dir>                        要同步的源文件夹
-        --to <dir>                          要同步到的目标位置（只读复制）
+    tsrpc-cli sync <options>                 同步文件夹内容，初始化 Symlink 或只读复制文件
+        --from <dir>                            要同步的源文件夹
+        --to <dir>                              要同步到的目标位置（只读复制）
 
-    tsrpc link <options>                 在目标位置创建到源的 Symlink，以实现自动同步
-        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
-                                            根据配置文件，初始化 Symlink
-        --from <dir>                        要同步的源文件夹
-        --to <dir>                          创建 Symlink 的目标位置
+    tsrpc-cli link <options>                 在目标位置创建到源的 Symlink，以实现自动同步
+        --from <dir>                            要同步的源文件夹
+        --to <dir>                              创建 Symlink 的目标位置
 
-    tsrpc dev <options>                  启动本地开发服务器，当源代码变更时自动重启
-        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
+    tsrpc-cli dev <options>                  启动本地开发服务器，当源代码变更时自动重启
+        --config <file>                         配置文件路径
+        --entry <file>                          程序入口点，默认 "src/index.ts"
 
-    tsrpc build <options>                构建 TSRPC 后端项目
-        --config <file>                     从指定的配置文件读取参数（忽略其它命令行参数）
+    tsrpc-cli build <options>                构建 TSRPC 后端项目
+        --config <file>                         配置文件路径
 
-    tsrpc doc <options>                  生成多种格式的 API 接口文档 （如 Swagger/OpenAPI、Markdown、TSAPI）
-        -i, --input <folder>                协议文件夹路径
-        -o, --output <folder>               输出文档的文件夹路径
-        --verbose                           显示调试信息
-        --ignore <glob>                     从--input范围中要忽略的文件，Glob 表达式
-                                            支持传入多个，例如 --ignore "AAA" --ignore "BBB"
+    tsrpc-cli doc <options>                  生成多种格式的 API 接口文档 （如 Swagger/OpenAPI、Markdown、TSAPI）
+        -i, --input <folder>                    协议文件夹路径
+        -o, --output <folder>                   输出文档的文件夹路径
+        --verbose                               显示调试信息
+        --ignore <glob>                         从--input范围中要忽略的文件，Glob 表达式
+                                                支持传入多个，例如 --ignore "AAA" --ignore "BBB"
 
     
 二进制调试工具：
 
-    tsrpc encode <options> [exp]         编码JS表达式
-        [exp]                               要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
-        -p, --proto <file>                  编码要使用的Proto文件
-        -s, --schema <id>                   编码要使用的SchemaID
-        -i, --input <file>                  输入为文件，不可与[exp]同用（文件内容为JS表达式）
-        -o, --output <file>                 输出的文件路径，不指定将直接输出到命令行
-        --verbose                           显示调试信息
+    tsrpc-cli encode <options> [exp]         编码JS表达式
+        [exp]                                   要编码的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
+        -p, --proto <file>                      编码要使用的Proto文件
+        -s, --schema <id>                       编码要使用的SchemaID
+        -i, --input <file>                      输入为文件，不可与[exp]同用（文件内容为JS表达式）
+        -o, --output <file>                     输出的文件路径，不指定将直接输出到命令行
+        --verbose                               显示调试信息
                                             
-    tsrpc decode <options> [binstr]      解码二进制数据
-        [binstr]                            要解码的二进制数据的字符串表示，如"0F A2 E3 F2 D9"
-        -p, --proto <file>                  解码要使用的Proto文件
-        -s, --schema <id>                   解码要使用的SchemaID
-        -i, --input <file>                  输入为文件，不可与[binstr]同用
-        -o, --output <file>                 输出的文件路径，不指定将直接输出到命令行
-        --verbose                           显示调试信息
+    tsrpc-cli decode <options> [binstr]      解码二进制数据
+        [binstr]                                要解码的二进制数据的字符串表示，如"0F A2 E3 F2 D9"
+        -p, --proto <file>                      解码要使用的Proto文件
+        -s, --schema <id>                       解码要使用的SchemaID
+        -i, --input <file>                      输入为文件，不可与[binstr]同用
+        -o, --output <file>                     输出的文件路径，不指定将直接输出到命令行
+        --verbose                               显示调试信息
 
-    tsrpc validate <options> [exp]       验证JSON数据
-        [exp]                               要验证的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
-        -p, --proto <file>                  验证要使用的Proto文件
-        -s, --schema <id>                   验证要使用的SchemaID
-        -i, --input <file>                  输入为文件，不可与[exp]同用（文件内容为JS表达式）
+    tsrpc-cli validate <options> [exp]       验证JSON数据
+        [exp]                                   要验证的值（JS表达式，例如"123" "new Uint8Array([1,2,3])"）
+        -p, --proto <file>                      验证要使用的Proto文件
+        -s, --schema <id>                       验证要使用的SchemaID
+        -i, --input <file>                      输入为文件，不可与[exp]同用（文件内容为JS表达式）
 
-    tsrpc show <file>                    打印二进制文件内容
+    tsrpc-cli show <file>                    打印二进制文件内容
 `.trim(),
     example: `
 使用示例：
 
-    tsrpc proto --config tsrpc.config.ts
-    tsrpc api   --config tsrpc.config.ts
-    tsrpc sync  --config tsrpc.config.ts
-    tsrpc link  --config tsrpc.config.ts
-    tsrpc dev   --config tsrpc.config.ts
-    tsrpc build --config tsrpc.config.ts
+    tsrpc-cli dev --entry src/xxx.ts         启动本地开发服务器
+    tsrpc-cli build                          构建后端项目
+    tsrpc-cli doc                            生成 API 接口文档
 `.trim(),
-    errCmd: '命令格式有误，键入 tsrpc -h 以查看帮助。',
-    missingParam: '缺少 ${param} 参数，键入 tsrpc -h 以查看更多信息。',
+    errCmd: '命令格式有误，键入 tsrpc-cli -h 以查看帮助。',
+    missingParam: '缺少 ${param} 参数，键入 tsrpc-cli -h 以查看更多信息。',
     shouldBeDir: '${path} 应当为一个文件夹',
     protoSucc: '✔ ServiceProto 已生成到：${output}',
     protoFailed: (output: string) => `⨯ ServiceProto 生成失败: ${output}`,
@@ -117,7 +109,7 @@ export const i18nZhCn = {
     validateFail: '⨯ 验证不通过: ${msg}',
     error: ' 错误 ',
     success: ' 成功 ',
-    helpGuide: '键入 tsrpc -h 查看更多帮助信息',
+    helpGuide: '键入 tsrpc-cli -h 查看更多帮助信息',
     compatibleError: '兼容旧Proto失败: ${innerError}',
     canOptimizeByNew: (oldProtoPath: string) => `检测到协议中可优化的冗余信息，删除 '${oldProtoPath}' 即可优化，但将导致新旧协议的不兼容。`,
     dirNotExists: '文件夹不存在: ${dir}',

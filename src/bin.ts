@@ -40,7 +40,7 @@ main().catch((e: Error) => {
 async function main() {
     let conf: TsrpcConfig | undefined;
 
-    if (Object.keys(args).filter(v => v !== '_').length === 0) {
+    if (Object.keys(args).filter(v => v !== '_').length === 0 || args._[0] === 'dev' && !args.config) {
         args.config = 'tsrpc.config.ts';
     }
 
@@ -149,7 +149,7 @@ async function main() {
         if (!conf.dev) {
             throw new Error(i18n.missingConfigItem('dev'))
         }
-        cmdDev({ config: conf });
+        cmdDev({ config: conf, entry: args.entry });
         return;
     }
     // Build
