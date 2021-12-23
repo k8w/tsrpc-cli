@@ -92,7 +92,7 @@ async function main() {
     }
     // Encode
     else if (args._[0] === 'encode') {
-        cmdEncode({
+        await cmdEncode({
             exp: args._[1],
             input: args.input ?? args.i,
             output: args.output ?? args.o,
@@ -103,7 +103,7 @@ async function main() {
     }
     // Decode
     else if (args._[0] === 'decode') {
-        cmdDecode({
+        await cmdDecode({
             protoPath: args.proto ?? args.p,
             schemaId: args.schema ?? args.s,
             binStr: args._[1],
@@ -114,7 +114,7 @@ async function main() {
     }
     // Validate
     else if (args._[0] === 'validate') {
-        cmdValidate({
+        await cmdValidate({
             proto: args.proto ?? args.p,
             schemaId: args.schema ?? args.s,
             input: args.input ?? args.i,
