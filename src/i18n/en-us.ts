@@ -17,6 +17,8 @@ Usage：
 
     ---------- Use Via CLI Params  ----------
 
+    tsrpc-cli init                           Init "tsrpc.config.ts" and scripts in package.json
+
     tsrpc-cli proto <options>                Generate proto file
         -i, --input <file>                      Input TS file (support glob expression)
                                                 It would generate all exported types
@@ -144,4 +146,8 @@ Example：
     docOpenApiSucc: (path: string) => `OpenAPI generated successfully: ${chalk.cyan(path)}`,
     docTsapiSucc: (path: string) => `TSAPI generated successfully: ${chalk.cyan(path)}`,
     docMdSucc: (path: string) => `Markdown generated successfully: ${chalk.cyan(path)}`,
+
+    fileAlreadyExists: (path: string) => `${path} already exists`,
+    npmNotInited: `package.json not exists，please run ${chalk.cyan('npm init')} first`,
+    initSucc: (path: string) => `✔ Init successfully: ${path}`,
 }

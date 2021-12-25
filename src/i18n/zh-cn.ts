@@ -17,6 +17,8 @@ export const i18nZhCn = {
 
     ------- 通过命令行参数使用 -------
 
+    tsrpc-cli init                           初始化 tsrpc.config.ts 文件和 package.json scripts
+
     tsrpc-cli proto <options>                生成TSRPC Proto文件
         -i, --input <folder>                    用来生成Proto的协议文件夹路径
         -o, --output <file>                     输出的文件路径，不指定将直接输出到命令行
@@ -147,4 +149,8 @@ export const i18nZhCn = {
     docOpenApiSucc: (path: string) => `OpenAPI 已成成到：${chalk.cyan(path)}`,
     docTsapiSucc: (path: string) => `TSAPI 已成成到：${chalk.cyan(path)}`,
     docMdSucc: (path: string) => `Markdown 已成成到：${chalk.cyan(path)}`,
+
+    fileAlreadyExists: (path: string) => `${path} 已经存在`,
+    npmNotInited: `package.json 不存在，请先执行 ${chalk.cyan('npm init')} 初始化`,
+    initSucc: (path: string) => `✔ 初始化成功：${path}`,
 }

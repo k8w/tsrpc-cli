@@ -9,6 +9,7 @@ import { cmdDecode } from './commands/decode';
 import { cmdDev } from "./commands/dev";
 import { cmdDoc } from "./commands/doc";
 import { cmdEncode } from './commands/encode';
+import { cmdInit } from "./commands/init";
 import { cmdLink } from './commands/link';
 import { cmdProto } from './commands/proto';
 import { cmdShowBin } from './commands/showBin';
@@ -40,7 +41,7 @@ main().catch((e: Error) => {
 async function main() {
     let conf: TsrpcConfig | undefined;
 
-    if (Object.keys(args).filter(v => v !== '_').length === 0 || args._[0] === 'dev' && !args.config) {
+    if (Object.keys(args).filter(v => v !== '_').length === 0 && args._[0] !== 'init' || args._[0] === 'dev' && !args.config) {
         args.config = 'tsrpc.config.ts';
     }
 
@@ -149,7 +150,10 @@ async function main() {
         if (!conf.dev) {
             throw new Error(i18n.missingConfigItem('dev'))
         }
-        cmdDev({ config: conf, entry: args.entry });
+        cmdDev({
+            config: conf,
+            entry: args.entry
+        });
         return;
     }
     // Build
@@ -177,6 +181,10 @@ async function main() {
             verbose: args.verbose,
             config: conf
         });
+    }
+    // Init
+    else if (args._[0] === 'init') {
+        await cmdInit({});
     }
     // Error
     // No Command

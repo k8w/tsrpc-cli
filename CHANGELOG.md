@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.3.1] - 2021-12-25
+### Added
+- New command `tsrpc-cli init`, to generate `tsrpc.config.ts`
+
 ## [2.3.0] - 2021-12-17
 ### Added
 - Rename command from `tsrpc` to `tsrpc-cli`
