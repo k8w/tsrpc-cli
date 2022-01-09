@@ -1,7 +1,6 @@
 import chalk from "chalk";
 import 'k8w-extend-native';
 import minimist from 'minimist';
-import 'node-json-color-stringify';
 import path from "path";
 import { cmdApi } from './commands/api';
 import { cmdBuild } from './commands/build';

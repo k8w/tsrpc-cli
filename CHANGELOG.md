@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.3.2] - 2022-01-09
+### Fixed
+- Remove `node-json-color-stringify` to fixed `LIBRETY LIBRETY LIBRETY` Bug
+
 ## [2.3.1] - 2021-12-25
 ### Added
 - New command `tsrpc-cli init`, to generate `tsrpc.config.ts`
