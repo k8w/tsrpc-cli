@@ -1,6 +1,6 @@
 import { OpenAPIV3 } from 'openapi-types';
-import { SchemaType, TSBufferProto, TSBufferSchema } from 'tsbuffer-schema';
-import { TSBufferValidator } from 'tsbuffer-validator';
+import { IntersectionTypeSchema, OmitTypeSchema, OverwriteTypeSchema, PartialTypeSchema, PickTypeSchema, SchemaType, TSBufferProto, TSBufferSchema, UnionTypeSchema } from 'tsbuffer-schema';
+import { FlatInterfaceTypeSchema, TSBufferValidator } from 'tsbuffer-validator';
 import { ServiceProto } from 'tsrpc-proto';
 import { processString } from 'typescript-formatter';
 import { ApiService, ServiceMapUtil } from './ServiceMapUtil';
@@ -350,7 +350,7 @@ export class ApiDocUtil {
             case SchemaType.Partial:
             case SchemaType.Omit:
             case SchemaType.Overwrite: {
-                let parsed = this.protoHelper.parseMappedType(schema);
+                let parsed = this._parseMappedType(schema);
                 output = this.toSchemaObject(parsed);
                 break;
             }
@@ -497,7 +497,7 @@ export class ApiDocUtil {
             case SchemaType.Partial:
             case SchemaType.Omit:
             case SchemaType.Overwrite: {
-                let parsed = this.protoHelper.parseMappedType(schema);
+                let parsed = this._parseMappedType(schema);
                 return this._toCode(parsed);
             }
             case SchemaType.Interface: {
@@ -566,6 +566,15 @@ export class ApiDocUtil {
         return '';
     }
     // #endregion _toCode
+
+    private static _parseMappedType(schema: PickTypeSchema | OmitTypeSchema | OverwriteTypeSchema | PartialTypeSchema): FlatInterfaceTypeSchema | UnionTypeSchema | IntersectionTypeSchema {
+        if (this.protoHelper.isInterface(schema)) {
+            return this.protoHelper.getFlatInterfaceSchema(schema);
+        }
+        else {
+            return this.protoHelper.parseMappedType(schema) as UnionTypeSchema | IntersectionTypeSchema;
+        }
+    }
 
     static async toTSAPI(proto: ServiceProto): Promise<TSAPI> {
         let output: TSAPI = {

@@ -3,6 +3,8 @@
 ## [2.4.0] - 2022-02-09
 ### Added
 - Update dependencies, support new schemas
+### Fixed
+- Doc error for `Pick` and `Omit` types
 
 ## [2.3.2] - 2022-01-09
 ### Fixed
