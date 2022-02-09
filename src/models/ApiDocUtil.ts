@@ -17,7 +17,7 @@ export class ApiDocUtil {
         // Custom types
         proto.types['?mongodb/ObjectId'] = proto.types['?mongodb/ObjectID'] =
             proto.types['?bson/ObjectId'] = proto.types['?bson/ObjectID'] = {
-                type: 'Custom',
+                type: SchemaType.Custom,
                 validate: v => ({ isSucc: true })
             };
 
@@ -483,7 +483,7 @@ export class ApiDocUtil {
                     + (schema.optionalStartIndex !== undefined && i >= schema.optionalStartIndex ? '?' : ''))
                     .join(', ')}]`;
             case SchemaType.Enum:
-                return schema.members.map(v => this._toCode({ type: 'Literal', literal: v.value })).join(' | ');
+                return schema.members.map(v => this._toCode({ type: SchemaType.Literal, literal: v.value })).join(' | ');
             case SchemaType.Any:
                 return 'any';
             case SchemaType.Literal:

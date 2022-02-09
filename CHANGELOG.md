@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.4.0] - 2022-02-09
+### Added
+- Update dependencies, support new schemas
+
 ## [2.3.2] - 2022-01-09
 ### Fixed
 - Remove `node-json-color-stringify` to fixed `LIBRETY LIBRETY LIBRETY` Bug
