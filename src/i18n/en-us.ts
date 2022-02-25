@@ -91,7 +91,7 @@ Example：
     missingParam: 'Missing parameter ${param}, use "tsrpc-cli -h" to see more help info.',
     shouldBeDir: '${path} should be a directory',
     protoSucc: '✔ ServiceProto generated to: ${output}',
-    protoFailed: (output: string) => `⨯ Generate ServiceProto failed: ${output}`,
+    protoFailed: (output: string) => `⨯ Generate ServiceProto failed, please check if there is any TypeScript compile error : ${output}`,
     fileNotExists: 'File not exists: ${file}',
     fileOpenError: 'Failed to open file: ${file}',
     jsParsedError: 'Failed to parse JS expression from: ${file}',

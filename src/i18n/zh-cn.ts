@@ -94,7 +94,7 @@ export const i18nZhCn = {
     missingParam: '缺少 ${param} 参数，键入 tsrpc-cli -h 以查看更多信息。',
     shouldBeDir: '${path} 应当为一个文件夹',
     protoSucc: '✔ ServiceProto 已生成到：${output}',
-    protoFailed: (output: string) => `⨯ ServiceProto 生成失败: ${output}`,
+    protoFailed: (output: string) => `⨯ ServiceProto 生成失败，请检查 TypeScript 代码是否编译报错: ${output}`,
     fileNotExists: '文件不存在：${file}',
     fileOpenError: '文件打开失败: ${file}',
     jsParsedError: 'JS表达式解析失败: ${file}',
