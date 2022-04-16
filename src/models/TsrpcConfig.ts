@@ -33,6 +33,12 @@ export interface TsrpcConfig {
          */
         compatible?: string | false,
 
+        /**
+         * `npm run dev` 期间，当这些目录下内容变化时，自动更新 ServiceProto
+         * @defaultValue 同 `dev.watch`
+         */
+        watch?: string | string[],
+
         /** conf.dev.autoFillNewPtl 为 true 时自动填充的新 Ptl 的模板 */
         ptlTemplate?: PtlTemplate;
         /** conf.dev.autoFillNewPtl 为 true 时自动填充的新 Msg 的模板 */

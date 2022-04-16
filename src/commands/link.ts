@@ -63,12 +63,36 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
 
     for (let conf of confs) {
         let { src, dst } = conf;
+        src = path.resolve(src);
+        dst = path.resolve(dst);
+
         if (elevateResult) {
-            logger?.log(`✔ ${createJunction ? i18n.junction : i18n.link} ${path.resolve(src)} -> ${path.resolve(dst)}`);
+            logger?.log(`✔ ${createJunction ? i18n.junction : i18n.link} ${src} -> ${dst}`);
             continue;
         }
 
+        // 检查 dst 上级目录存在
+        const dstParent = path.dirname(dst);
+        if (!(await fs.access(dstParent).then(() => true).catch(() => false))) {
+            logger?.log(chalk.yellow(`✘ ${i18n.link} ${src} -> ${dst}`));
+            throw error(i18n.dirNotExists, { dir: dstParent })
+        }
+
         await fs.ensureDir(src);
+
+        // dst 已存在 Symlink
+        if ((await fs.access(dst).then(() => true).catch(() => false)) && (await fs.lstat(dst)).isSymbolicLink()) {
+            // 检查 symlink 的 destination 是否正确
+            const oriCwd = process.cwd();
+            process.chdir(path.dirname(dst));
+            const symlinkDst = path.resolve(await fs.readlink(dst));
+            process.chdir(oriCwd);
+
+            // dst symlink 目标路径有误（可能因为移动目录导致），删除之（后面重新创建）
+            if (symlinkDst !== src) {
+                await fs.remove(dst);
+            }
+        }
 
         // Try first time
         let err = await fs.ensureSymlink(src, dst, createJunction ? 'junction' : 'dir').catch(e => e);
@@ -148,6 +172,6 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
         }
 
         // Success
-        logger?.log(chalk.green(`✔ ${createJunction ? i18n.junction : i18n.link} ${path.resolve(src)} -> ${path.resolve(dst)}`));
+        logger?.log(chalk.green(`✔ ${createJunction ? i18n.junction : i18n.link} ${src} -> ${dst}`));
     }
 }

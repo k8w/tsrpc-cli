@@ -149,7 +149,7 @@ async function main() {
         if (!conf.dev) {
             throw new Error(i18n.missingConfigItem('dev'))
         }
-        cmdDev({
+        await cmdDev({
             config: conf,
             entry: args.entry
         });

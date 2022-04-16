@@ -9,8 +9,7 @@ import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { genNewApiFile } from "./api";
-import { ensureSymlinks } from "./link";
-import { copyDirReadonly } from "./sync";
+import { copyDirReadonly, syncByConfig } from "./sync";
 
 const DEFAULT_DELAY = 1000;
 
@@ -31,13 +30,9 @@ export async function cmdDev(options: CmdDevOptions) {
     const watchFiles = conf.dev?.watch ?? 'src';
     let protoErr: { [protoPath: string]: string } = {};
 
-    // Auto Link
-    if (conf.sync) {
-        let linkConfs = conf.sync.filter(v => v.type === 'symlink');
-        await ensureSymlinks(linkConfs.map(v => ({
-            src: v.from,
-            dst: v.to
-        })), console);
+    // 启动前 sync 一次
+    if (conf.sync && autoSync) {
+        await syncByConfig(conf.sync, conf.verbose ? console : undefined)
     }
 
     // Auto Copy if target is a file (maybe a link)
@@ -79,7 +74,7 @@ export async function cmdDev(options: CmdDevOptions) {
             }
 
             delayWatch({
-                matches: confItem.ptlDir,
+                matches: confItem.watch ?? watchFiles,
                 ignore: [confItem.output, ...(confItem.compatible ? [confItem.compatible] : []), ...(confItem.ignore ?? [])],
                 onChange: async (eventName, filepath, stats) => {
                     let match = path.basename(filepath).match(/^(Ptl|Msg)(\w+)\.ts$/);

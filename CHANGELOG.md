@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [2.4.1] - 2022-04-16
+### Added
+- Added `watch` options for `TsrpcConfig.proto`
+### Changed
+- `npm run dev` now would watch `src` instead of `shared/protocols` by default to update `serviceProto.ts`
+- `npm run dev` now would trigger `npm run sync` automatically at the startup (if `autoSync` is `true`)
+### Fixed
+- Recreate symlink if project folder is moved
+
 ## [2.4.0] - 2022-02-09
 ### Added
 - Update dependencies, support new schemas
