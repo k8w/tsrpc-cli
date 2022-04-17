@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.4.2] - 2022-04-17
+### Changed
+- Link error would not interrupt dev and build process
+
 ## [2.4.1] - 2022-04-16
 ### Added
 - Added `watch` options for `TsrpcConfig.proto`

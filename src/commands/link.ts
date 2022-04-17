@@ -8,7 +8,7 @@ import { resPath } from "../bin";
 import { i18n } from "../i18n/i18n";
 import { CliUtil } from "../models/CliUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
-import { error } from "../models/util";
+import { error, formatStr } from "../models/util";
 
 export type CmdLinkOptions = {
     elevate: string | undefined,
@@ -56,10 +56,12 @@ export async function cmdLink(options: CmdLinkOptions) {
     }
 }
 
-export async function ensureSymlinks(confs: { src: string, dst: string }[], logger?: Logger, isElevate?: boolean) {
+export async function ensureSymlinks(confs: { src: string, dst: string }[], logger?: Logger, isElevate?: boolean): Promise<{ isAllSucc: boolean }> {
     // 通过 elevate 运行的结果，undefined 代表尚未通过 elevate 运行
     let elevateResult: boolean | undefined;
     let createJunction: boolean | undefined;
+
+    let isAllSucc = true;
 
     for (let conf of confs) {
         let { src, dst } = conf;
@@ -74,8 +76,9 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
         // 检查 dst 上级目录存在
         const dstParent = path.dirname(dst);
         if (!(await fs.access(dstParent).then(() => true).catch(() => false))) {
-            logger?.log(chalk.yellow(`✘ ${i18n.link} ${src} -> ${dst}`));
-            throw error(i18n.dirNotExists, { dir: dstParent })
+            logger?.log(chalk.yellow(`✘ ${i18n.link} ${src} -> ${dst}\n  |- ${formatStr(i18n.dirNotExists, { dir: dstParent })}`));
+            isAllSucc = false;
+            continue;
         }
 
         await fs.ensureDir(src);
@@ -174,4 +177,6 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
         // Success
         logger?.log(chalk.green(`✔ ${createJunction ? i18n.junction : i18n.link} ${src} -> ${dst}`));
     }
+
+    return { isAllSucc: isAllSucc };
 }
