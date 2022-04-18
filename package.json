@@ -1,6 +1,6 @@
 {
   "name": "tsrpc-cli",
-  "version": "2.4.2",
+  "version": "2.4.3-dev.0",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "try:npx": "npx tsrpc proto -i try/proto -o try/proto/proto.ts -n",
     "test": "npx mocha",
     "test:doc": "cd test/demo_project/backend && npm run doc",
-    "pub:dev": "ncu -u -t minor && npm i && npm run bp",
+    "up:dev": "ncu -u -t minor && npm i && npm run bp",
     "bp:dev": "npm run build && cd dist && npm publish --tag dev"
   },
   "bin": {

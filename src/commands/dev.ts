@@ -3,6 +3,7 @@ import { ChildProcess, spawn } from "child_process";
 import chokidar from "chokidar";
 import { Stats } from "fs";
 import fse from "fs-extra";
+import { glob } from "glob";
 import path from "path";
 import { CodeTemplate } from "..";
 import { i18n } from "../i18n/i18n";
@@ -56,6 +57,9 @@ export async function cmdDev(options: CmdDevOptions) {
         for (let confItem of conf.proto) {
             const protoPath = path.resolve(confItem.output);
 
+            // 启动前执行一次填充
+            await fillAllPtls(confItem)
+
             // old
             let old = await ProtoUtil.loadOldProtoByConfigItem(confItem, options.config.verbose);
 
@@ -86,16 +90,7 @@ export async function cmdDev(options: CmdDevOptions) {
 
                     // Auto fill new Ptl
                     if ((conf.dev?.autoFillNewPtl ?? true) && eventName === 'add') {
-                        // 只写入空白文件
-                        let content = await fse.readFile(filepath);
-                        if (content.length === 0) {
-                            if (type === 'Ptl') {
-                                await fse.writeFile(filepath, (confItem.ptlTemplate ?? CodeTemplate.defaultPtl)(basename, filepath, confItem.ptlDir), 'utf-8');
-                            }
-                            else if (type === 'Msg') {
-                                await fse.writeFile(filepath, (confItem.msgTemplate ?? CodeTemplate.defaultMsg)(basename, filepath, confItem.ptlDir), 'utf-8');
-                            }
-                        }
+                        await fillNewPtl(filepath, confItem, { type, basename });
                     }
 
                     // Auto Api
@@ -275,3 +270,38 @@ function delayWatch(options: {
     }).on('all', onWillTrigger);
 }
 
+export async function fillNewPtl(filepath: string, confItem: NonNullable<TsrpcConfig['proto']>[number], parsed?: {
+    type: 'Ptl' | 'Msg',
+    basename: string
+}) {
+    // 只写入空白文件
+    let content = await fse.readFile(filepath);
+    if (content.length > 0) {
+        return;
+    }
+
+    if (!parsed) {
+        let match = path.basename(filepath).match(/^(Ptl|Msg)(\w+)\.ts$/);
+        if (!match) {
+            return;
+        }
+        parsed = {
+            type: match[1] as 'Ptl' | 'Msg',
+            basename: match[2],
+        }
+    }
+
+    if (parsed.type === 'Ptl') {
+        await fse.writeFile(filepath, (confItem.ptlTemplate ?? CodeTemplate.defaultPtl)(parsed.basename, filepath, confItem.ptlDir), 'utf-8');
+    }
+    else if (parsed.type === 'Msg') {
+        await fse.writeFile(filepath, (confItem.msgTemplate ?? CodeTemplate.defaultMsg)(parsed.basename, filepath, confItem.ptlDir), 'utf-8');
+    }
+}
+
+export async function fillAllPtls(confItem: NonNullable<TsrpcConfig['proto']>[number]) {
+    let files = await glob.__promisify__(path.resolve(path.resolve(confItem.ptlDir, '**/{Ptl,Msg}*.ts')));
+    for (let file of files) {
+        await fillNewPtl(file, confItem);
+    }
+}

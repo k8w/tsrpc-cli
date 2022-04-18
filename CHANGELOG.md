@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [2.4.3-dev.0] - 2022-04-17
+### Added
+- `npm run proto` would fill blank `PtlXXX.ts` by template
+- `npm run dev` would fill blank `PtlXXX.ts` by template at startup
+
 ## [2.4.2] - 2022-04-17
 ### Changed
 - Link error would not interrupt dev and build process
