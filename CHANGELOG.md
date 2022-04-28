@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [2.4.3-dev.2] - 2022-04-17
+## [2.4.3] - 2022-04-17
 ### Added
 - `npm run proto` would fill blank `PtlXXX.ts` by template
 - `npm run dev` would fill blank `PtlXXX.ts` by template at startup

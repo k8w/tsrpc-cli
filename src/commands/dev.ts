@@ -58,7 +58,7 @@ export async function cmdDev(options: CmdDevOptions) {
             const protoPath = path.resolve(confItem.output);
 
             // 启动前执行一次填充
-            await fillAllPtls(confItem)
+            await fillAllPtlAndMsgs(confItem, autoApi)
 
             // old
             let old = await ProtoUtil.loadOldProtoByConfigItem(confItem, options.config.verbose);
@@ -81,16 +81,23 @@ export async function cmdDev(options: CmdDevOptions) {
                 matches: confItem.watch ?? watchFiles,
                 ignore: [confItem.output, ...(confItem.compatible ? [confItem.compatible] : []), ...(confItem.ignore ?? [])],
                 onChange: async (eventName, filepath, stats) => {
+                    // 该文件不是 Msg 或 Ptl，跳过
                     let match = path.basename(filepath).match(/^(Ptl|Msg)(\w+)\.ts$/);
                     if (!match) {
                         return;
                     }
+
+                    // 该文件不在 ptlDir 下，跳过
+                    if (path.relative(confItem.ptlDir, filepath).startsWith('..')) {
+                        return;
+                    }
+
                     let type = match[1] as 'Ptl' | 'Msg';
                     let basename = match[2];
 
-                    // Auto fill new Ptl
+                    // Auto fill new Ptl or Msg
                     if ((conf.dev?.autoFillNewPtl ?? true) && eventName === 'add') {
-                        await fillNewPtl(filepath, confItem, { type, basename });
+                        await fillNewPtlOrMsg(filepath, confItem, { type, basename });
                     }
 
                     // Auto Api
@@ -270,20 +277,20 @@ function delayWatch(options: {
     }).on('all', onWillTrigger);
 }
 
-export async function fillNewPtl(filepath: string, confItem: NonNullable<TsrpcConfig['proto']>[number], parsed?: {
+export async function fillNewPtlOrMsg(filepath: string, confItem: NonNullable<TsrpcConfig['proto']>[number], parsed?: {
     type: 'Ptl' | 'Msg',
     basename: string
-}) {
+}): Promise<boolean> {
     // 只写入空白文件
     let content = await fse.readFile(filepath);
     if (content.length > 0) {
-        return;
+        return false;
     }
 
     if (!parsed) {
         let match = path.basename(filepath).match(/^(Ptl|Msg)(\w+)\.ts$/);
         if (!match) {
-            return;
+            return false;
         }
         parsed = {
             type: match[1] as 'Ptl' | 'Msg',
@@ -297,11 +304,13 @@ export async function fillNewPtl(filepath: string, confItem: NonNullable<TsrpcCo
     else if (parsed.type === 'Msg') {
         await fse.writeFile(filepath, (confItem.msgTemplate ?? CodeTemplate.defaultMsg)(parsed.basename, filepath, confItem.ptlDir), 'utf-8');
     }
+
+    return true;
 }
 
-export async function fillAllPtls(confItem: NonNullable<TsrpcConfig['proto']>[number]) {
+export async function fillAllPtlAndMsgs(confItem: NonNullable<TsrpcConfig['proto']>[number], autoApi: boolean = false) {
     let files = await new Promise<string[]>((rs, rj) => {
-        glob(path.resolve(path.resolve(confItem.ptlDir, '**/{Ptl,Msg}*.ts')), (err, matches) => {
+        glob(path.resolve(path.resolve(confItem.ptlDir, '**/{Ptl,Msg}?*.ts')), (err, matches) => {
             if (err) {
                 rj(err)
             }
@@ -311,6 +320,14 @@ export async function fillAllPtls(confItem: NonNullable<TsrpcConfig['proto']>[nu
         })
     });
     for (let file of files) {
-        await fillNewPtl(file, confItem);
+        await fillNewPtlOrMsg(file, confItem);
+        let match = path.basename(file).match(/^(Ptl|Msg)(\w+)\.ts$/)!;
+        let type = match[1];
+        let basename = match[2];
+
+        if (autoApi && type === 'Ptl' && confItem.apiDir) {
+            let apiFilePath = path.join(confItem.apiDir, path.relative(confItem.ptlDir, path.join(path.dirname(file), `Api${basename}.ts`)));
+            await genNewApiFile(basename, apiFilePath, path.dirname(apiFilePath), path.dirname(file), confItem.apiTemplate ?? CodeTemplate.defaultApi).catch();
+        }
     }
 }

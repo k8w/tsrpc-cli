@@ -15,6 +15,7 @@ describe('link', function () {
 
     it('with config (absolute path)', function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
+        fs.mkdirSync(path.resolve(__dirname, '../output/sync'));
         process.chdir(path.resolve(__dirname, '../../'));
 
         let res = execSync(`node -r ts-node/register src/bin.ts link --config test/configs/absolutePath.ts`);
@@ -24,6 +25,7 @@ describe('link', function () {
 
     it('with config (relative path)', function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
+        fs.mkdirSync(path.resolve(__dirname, '../output/sync'));
         process.chdir(path.resolve(__dirname, '../'));
 
         let res = execSync(`node -r ts-node/register ../src/bin.ts link --config configs/relativePath.config.ts`);
@@ -33,6 +35,7 @@ describe('link', function () {
 
     it('without config', async function () {
         fs.rmSync(path.resolve(__dirname, '../output/sync'), { recursive: true, force: true });
+        fs.mkdirSync(path.resolve(__dirname, '../output/sync'));
         process.chdir(path.resolve(__dirname, '../'));
 
         let res = spawnSync('node', ['-r', 'ts-node/register', '../src/bin.ts', 'link', '--from', 'output/proto', '--to', 'output/sync/symlink']);

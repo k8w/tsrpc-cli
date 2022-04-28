@@ -125,7 +125,7 @@ export class ProtoUtil {
         }
 
         // 查找所有目标 Ptl 和 Msg 文件，输出标准化的相对路径
-        let fileList = glob.sync(protocolDir + '/**/{Ptl,Msg}*.ts', {
+        let fileList = glob.sync(protocolDir + '/**/{Ptl,Msg}?*.ts', {
             ignore: options.ignore,
         }).map(v => path.relative(protocolDir, v).replace(/\\/g, '/'));
 

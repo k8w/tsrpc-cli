@@ -17,8 +17,7 @@ export class CodeTemplate {
 export interface Res${ptlBaseName} {
     
 }
-
-// export const conf = {}`;
+`;
 
     /**
      * 默认 Msg
@@ -27,8 +26,7 @@ export interface Res${ptlBaseName} {
         `export interface Msg${msgBaseName} {
     
 }
-
-// export const conf = {}`;
+`;
 
     /**
      * 默认 Api
@@ -46,8 +44,9 @@ export async function Api${apiBaseName}(call: ApiCall<Req${apiBaseName}, Res${ap
      * 自公共基类继承的 Ptl
      */
     static getExtendedPtl(baseFile = 'src/shared/protocols/base.ts', baseReq = 'BaseRequest', baseRes = 'BaseResponse', baseConf = 'BaseConf'): PtlTemplate {
-        return (ptlBaseName, ptlPath, ptlDir) =>
-            `import { ${baseReq}, ${baseRes}, ${baseConf} } from "./${path.relative(path.dirname(ptlPath), path.resolve(baseFile.replace(/\.ts$/, ''))).replace(/\\/g, '/')}";
+        return (ptlBaseName, ptlPath, ptlDir) => {
+            const importPath = path.relative(path.dirname(ptlPath), path.resolve(baseFile.replace(/\.ts$/, ''))).replace(/\\/g, '/');
+            return `import { ${baseReq}, ${baseRes}, ${baseConf} } from "${importPath.startsWith('.') ? importPath : `./${importPath}`}";
 
 export interface Req${ptlBaseName} extends ${baseReq} {
     
@@ -59,7 +58,8 @@ export interface Res${ptlBaseName} extends ${baseRes} {
 
 export const conf: ${baseConf} = {
     
-}`;
+}`
+        };
     }
 
 

@@ -2,7 +2,7 @@ import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
 import { TsrpcConfig } from "../models/TsrpcConfig";
 import { error } from "../models/util";
-import { fillAllPtls } from "./dev";
+import { fillAllPtlAndMsgs } from "./dev";
 
 export type CmdProtoOptions = {
     /** 默认当前文件夹 */
@@ -26,7 +26,7 @@ export async function cmdProto(options: CmdProtoOptions) {
             options.config.verbose && console.log(`Start to generate ${conf.output}...`);
 
             // 填充空白协议文件
-            await fillAllPtls(conf);
+            await fillAllPtlAndMsgs(conf);
 
             // old
             let old = await ProtoUtil.loadOldProtoByConfigItem(conf, options.config.verbose);
