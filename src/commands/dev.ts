@@ -300,7 +300,16 @@ export async function fillNewPtl(filepath: string, confItem: NonNullable<TsrpcCo
 }
 
 export async function fillAllPtls(confItem: NonNullable<TsrpcConfig['proto']>[number]) {
-    let files = await glob.__promisify__(path.resolve(path.resolve(confItem.ptlDir, '**/{Ptl,Msg}*.ts')));
+    let files = await new Promise<string[]>((rs, rj) => {
+        glob(path.resolve(path.resolve(confItem.ptlDir, '**/{Ptl,Msg}*.ts')), (err, matches) => {
+            if (err) {
+                rj(err)
+            }
+            else {
+                rs(matches);
+            }
+        })
+    });
     for (let file of files) {
         await fillNewPtl(file, confItem);
     }

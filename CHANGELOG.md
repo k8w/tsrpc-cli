@@ -1,9 +1,12 @@
 # CHANGELOG
 
-## [2.4.3-dev.0] - 2022-04-17
+## [2.4.3-dev.2] - 2022-04-17
 ### Added
 - `npm run proto` would fill blank `PtlXXX.ts` by template
 - `npm run dev` would fill blank `PtlXXX.ts` by template at startup
+- Support `unknown` type (Contributed by @seho)
+### Fixed
+- Fixed `npm run api` generated wrong files when multiple `proto` configs existed
 
 ## [2.4.2] - 2022-04-17
 ### Changed
