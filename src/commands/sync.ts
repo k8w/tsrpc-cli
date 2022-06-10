@@ -39,7 +39,7 @@ export async function cmdSync(options: CmdSyncOptions) {
         }
 
         CliUtil.doing(`${i18n.copy} '${path.resolve(options.from)}' -> '${path.resolve(options.to)}'`);
-        await copyDirReadonly(options.from, options.to, true, options.verbose ? console : undefined);
+        await copyDirReadonly(options.from, options.to, true, true, options.verbose ? console : undefined);
         CliUtil.done(true);
         console.log(chalk.green(i18n.syncedSucc))
     }
@@ -54,7 +54,7 @@ export async function syncByConfig(syncConfig: NonNullable<TsrpcConfig['sync']>,
     for (let item of syncConfig) {
         if (item.type === 'copy') {
             CliUtil.doing(`${i18n.copy} '${item.from}' -> '${item.to}'`);
-            await copyDirReadonly(item.from, item.to, !!item.clean, logger);
+            await copyDirReadonly(item.from, item.to, !!item.clean, item.readonly ?? true, logger);
             CliUtil.done(true);
         }
     }
@@ -66,7 +66,7 @@ export async function syncByConfig(syncConfig: NonNullable<TsrpcConfig['sync']>,
     })), console);
 }
 
-export async function copyDirReadonly(src: string, dst: string, clean: boolean, logger?: Logger) {
+export async function copyDirReadonly(src: string, dst: string, clean: boolean, readonly: boolean, logger?: Logger) {
     // Clean
     if (clean) {
         logger?.debug(`Start to clean '${dst}'`)
@@ -81,7 +81,7 @@ export async function copyDirReadonly(src: string, dst: string, clean: boolean, 
     logger?.debug('Copyed succ');
 
     // Readonly (chmod 0o444)
-    setReadonlyRecursive(dst, logger);
+    readonly && setReadonlyRecursive(dst, logger);
 }
 
 export async function setReadonlyRecursive(dst: string, logger?: Logger) {

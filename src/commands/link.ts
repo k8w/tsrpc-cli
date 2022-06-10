@@ -84,7 +84,7 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
         await fs.ensureDir(src);
 
         // dst 已存在 Symlink
-        if ((await fs.access(dst).then(() => true).catch(() => false)) && (await fs.lstat(dst)).isSymbolicLink()) {
+        if (await fs.lstat(dst).then(v => v.isSymbolicLink()).catch(e => false)) {
             // 检查 symlink 的 destination 是否正确
             const oriCwd = process.cwd();
             process.chdir(path.dirname(dst));

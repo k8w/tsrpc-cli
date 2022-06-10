@@ -70,10 +70,15 @@ export interface TsrpcConfig {
          */
         type: 'symlink' | 'copy',
         /**
-         * 复制文件前是否先清空目标目录
+         * 复制文件前是否先清空目标目录（仅对 `copy` 模式生效）
          * @defaultValue false
          */
-        clean?: boolean
+        clean?: boolean,
+        /**
+         * 是否以只读方式复制（仅对 `copy` 模式生效）
+         * @defaultValue true
+         */
+        readonly?: boolean,
     }[],
 
     /**

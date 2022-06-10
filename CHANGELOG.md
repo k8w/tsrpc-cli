@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [2.4.4-dev.0] - 2022-06-10
+### Added
+- `sync.readonly` options in `tsrpc.config.ts`
+### Fixed
+- Create symlink failed on MacOS
+
 ## [2.4.3] - 2022-04-17
 ### Added
 - `npm run proto` would fill blank `PtlXXX.ts` by template

@@ -45,7 +45,7 @@ export async function cmdDev(options: CmdDevOptions) {
             let lstat = await fse.lstat(conf.to);
             if (lstat.isSymbolicLink() || lstat.isFile()) {
                 await fse.remove(conf.to);
-                await copyDirReadonly(conf.from, conf.to, !!conf.clean, options.config.verbose ? console : undefined);
+                await copyDirReadonly(conf.from, conf.to, !!conf.clean, conf.readonly ?? true, options.config.verbose ? console : undefined);
                 console.log(chalk.green(`✔ ${i18n.copy} '${conf.from}' -> '${conf.to}'`));
                 firstSyncedIndices.push(i);
             }
@@ -147,7 +147,7 @@ export async function cmdDev(options: CmdDevOptions) {
                 onTrigger: async (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', filepath: string, stats?: Stats) => {
                     // 仅第一次全量
                     if (!isInited) {
-                        await copyDirReadonly(confItem.from, confItem.to, !!confItem.clean, options.config.verbose ? console : undefined);
+                        await copyDirReadonly(confItem.from, confItem.to, !!confItem.clean, confItem.readonly ?? true, options.config.verbose ? console : undefined);
                         console.log(chalk.green(`✔ ${i18n.copy} '${confItem.from}' -> '${confItem.to}'`));
                         isInited = true;
                     }
