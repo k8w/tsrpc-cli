@@ -1,6 +1,6 @@
 {
   "name": "tsrpc-cli",
-  "version": "2.4.4-dev.0",
+  "version": "2.4.4-dev.1",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
@@ -65,7 +65,7 @@
     "os-locale": "^5.0.0",
     "ts-node": "^10.7.0",
     "tsbuffer": "^2.2.2",
-    "tsbuffer-proto-generator": "^1.7.1",
+    "tsbuffer-proto-generator": "^1.7.2-dev.1",
     "tsbuffer-schema": "^2.2.0",
     "tsrpc-proto": "^1.4.2",
     "typescript": "^4.6.3",

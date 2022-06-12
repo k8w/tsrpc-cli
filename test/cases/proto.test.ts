@@ -24,6 +24,16 @@ describe('proto', function () {
         ].map(v => formatStr(i18n.protoSucc, { output: v })).join('\n') + '\n')
     })
 
+    it('resolveModule', async function () {
+        fs.rmSync(path.resolve(__dirname, '../output'), { recursive: true, force: true });
+        process.chdir(path.resolve(__dirname, '../protocols_resolveModule'));
+
+        let res = execSync(`node -r ts-node/register ../../src/bin.ts proto --config ../configs/resolveModule.ts`);
+        assert.strictEqual(res.toString(), [
+            path.resolve(__dirname, '../output/proto/serviceProto_resolveModule.ts'),
+        ].map(v => formatStr(i18n.protoSucc, { output: v })).join('\n') + '\n')
+    })
+
     it('with config (relative path)', function () {
         fs.rmSync(path.resolve(__dirname, '../output'), { recursive: true, force: true });
         process.chdir(path.resolve(__dirname, '../'));

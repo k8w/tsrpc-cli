@@ -2,7 +2,7 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import glob from "glob";
 import path from "path";
-import { EncodeIdUtil, TSBufferProtoGenerator } from "tsbuffer-proto-generator";
+import { EncodeIdUtil, ProtoGeneratorOptions, TSBufferProtoGenerator } from "tsbuffer-proto-generator";
 import { TSBufferProto } from "tsbuffer-schema";
 import { Logger, ServiceDef, ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
@@ -109,7 +109,8 @@ export class ProtoUtil {
         ignore?: string[] | string,
         checkOptimize?: boolean,
         verbose?: boolean,
-        keepComment?: boolean
+        keepComment?: boolean,
+        resolveModule?: ProtoGeneratorOptions['resolveModule']
     }): Promise<{
         newProto: ServiceProto<any>,
         isChanged: boolean
@@ -140,7 +141,8 @@ export class ProtoUtil {
                 verbose: options.verbose,
                 baseDir: protocolDir,
                 customSchemaIds: ['mongodb/ObjectId', 'mongodb/ObjectID', 'bson/ObjectId', 'bson/ObjectID'],
-                keepComment: options.keepComment
+                keepComment: options.keepComment,
+                resolveModule: options.resolveModule
             }).generate(fileList, {
                 compatibleResult: oldProto?.types,
                 filter: info => {
@@ -393,7 +395,7 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
         } : undefined;
     }
 
-    static async genProtoByConfigItem(confItem: Pick<NonNullable<TsrpcConfig['proto']>[0], 'ptlDir' | 'ignore' | 'output'>, old: {
+    static async genProtoByConfigItem(confItem: Pick<NonNullable<TsrpcConfig['proto']>[0], 'ptlDir' | 'ignore' | 'output' | 'resolveModule'>, old: {
         proto: ServiceProto<any>,
         path: string
     } | undefined, verbose: boolean | undefined, checkOptimize: boolean | undefined, noEmitWhenNoChange?: boolean, keepComment?: boolean) {
@@ -404,7 +406,8 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
                 oldProto: old,
                 ignore: confItem.ignore,
                 verbose: verbose,
-                checkOptimize: checkOptimize
+                checkOptimize: checkOptimize,
+                resolveModule: confItem.resolveModule
             })
             verbose && console.log(`Proto generated succ, start to write output file...`);
         }

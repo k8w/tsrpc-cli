@@ -53,6 +53,21 @@ export interface TsrpcConfig {
         /** @deprecated use `apiTemplate` instead */
         newApiTemplate?: ApiTemplate;
 
+        /**
+         * 自定义全局 Module 路径的解析方式
+         * @experiment 注意：这是实验性特性，可能会在未来版本中被移除
+         * @param importPath 例如 import xx from 'abcd/efg' 则 importPath 为 'abcd/efg'
+         * @example
+         * ```ts
+         * resolveModule: (v, dir) => {
+         *     v = v.replace(/^@runtime\//, './common/runtime/);
+         *     return v;
+         * }
+         * ```
+         * @returns 返回 module 文件的绝对路径（不含扩展名）
+         */
+        resolveModule?: (importPath: string) => string
+
     }[],
 
     /**

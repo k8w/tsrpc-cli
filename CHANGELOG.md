@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## [2.4.4-dev.0] - 2022-06-10
+## [2.4.4-dev.1] - 2022-06-10
 ### Added
-- `sync.readonly` options in `tsrpc.config.ts`
+- Add new option `sync.readonly` for `tsrpc.config.ts`
+- Add new option `proto.resolveModule` for `tsrpc.config.ts`
 ### Fixed
 - Create symlink failed on MacOS
 

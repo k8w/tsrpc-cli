@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
+import { ProtoGeneratorOptions } from "tsbuffer-proto-generator";
 import { ServiceProto } from "tsrpc-proto";
 import { i18n } from "../i18n/i18n";
 import { ApiDocUtil } from "../models/ApiDocUtil";
@@ -27,7 +28,7 @@ export async function cmdDoc(options: CmdDocOptions) {
             if (!conf.docDir) {
                 continue;
             }
-            await generate(conf.ptlDir, conf.docDir, conf.ignore, options.config.verbose);
+            await generate(conf.ptlDir, conf.docDir, conf.ignore, options.config.verbose, conf.resolveModule);
             console.log(chalk.bgGreen.white(i18n.success));
         }
     }
@@ -40,19 +41,20 @@ export async function cmdDoc(options: CmdDocOptions) {
             throw error(i18n.missingParam, { param: 'output' });
         }
 
-        await generate(options.input, options.output, options.ignore, options.verbose);
+        await generate(options.input, options.output, options.ignore, options.verbose, undefined);
         console.log(chalk.bgGreen.white(i18n.success));
     }
 }
 
-async function generate(ptlDir: string, outDir: string, ignore: string | string[] | undefined, verbose: boolean | undefined) {
+async function generate(ptlDir: string, outDir: string, ignore: string | string[] | undefined, verbose: boolean | undefined, resolveModule: ProtoGeneratorOptions['resolveModule']) {
     // Generate proto
     let { newProto } = await ProtoUtil.generateServiceProto({
         protocolDir: ptlDir,
         ignore: ignore,
         verbose: verbose,
         checkOptimize: false,
-        keepComment: true
+        keepComment: true,
+        resolveModule: resolveModule
     });
 
     ApiDocUtil.init(newProto);
