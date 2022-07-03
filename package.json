@@ -1,11 +1,11 @@
 {
   "name": "tsrpc-cli",
-  "version": "2.4.5-dev.2",
+  "version": "2.4.5",
   "description": "TSRPC CLI Tools",
   "main": "index.js",
   "scripts": {
     "build": "npm run build:js && npm run build:dts",
-    "build:js": "rm -rf dist && npx rollup -c && cp -rf res LICENSE README.md README_CN.md package.json dist/",
+    "build:js": "rm -rf dist && npx rollup -c && cp -rf res LICENSE README.md package.json dist/",
     "build:dts": "rm -rf lib && npx tsc && npx api-extractor run --local --verbose && rm -rf lib",
     "try": "node -r ts-node/register src/index.ts proto -i try/proto -o try/proto/proto.ts -n",
     "try:npx": "npx tsrpc proto -i try/proto -o try/proto/proto.ts -n",

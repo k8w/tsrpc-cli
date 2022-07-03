@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [2.4.5-dev.2] - 2022-07-03
+## [2.4.5] - 2022-07-03
 ### Added
 - Add global type declaration `TsrpcCliConfig`
 - Add new CLI params `--ignore-error`
@@ -9,7 +9,7 @@
 - Use `export default` in default ApiTemplate, so that you don't need rename function after rename API file
 - Update type of `PtlTemplate` and `MsgTemplate`, support pure json configuration, so that you can `npx tsrpc-cli sync` without `npm i`
 
-## [2.4.4-dev.1] - 2022-06-10
+## [2.4.4] - 2022-06-10
 ### Added
 - Add new option `sync.readonly` for `tsrpc.config.ts`
 - Add new option `proto.resolveModule` for `tsrpc.config.ts`
