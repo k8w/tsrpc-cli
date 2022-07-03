@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.4.5-dev.0] - 2022-07-03
+### Changed
+- Make symlink as relative path
+
 ## [2.4.4-dev.1] - 2022-06-10
 ### Added
 - Add new option `sync.readonly` for `tsrpc.config.ts`

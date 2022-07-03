@@ -69,7 +69,7 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
         dst = path.resolve(dst);
 
         if (elevateResult) {
-            logger?.log(`✔ ${createJunction ? i18n.junction : i18n.link} ${src} -> ${dst}`);
+            logger?.log(chalk.green(`✔ ${createJunction ? i18n.junction : i18n.link} ${src} -> ${dst}`));
             continue;
         }
 
@@ -83,32 +83,21 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
 
         await fs.ensureDir(src);
 
-        // dst 已存在 Symlink
-        if (await fs.lstat(dst).then(v => v.isSymbolicLink()).catch(e => false)) {
-            // 检查 symlink 的 destination 是否正确
-            const oriCwd = process.cwd();
-            process.chdir(path.dirname(dst));
-            const symlinkDst = path.resolve(await fs.readlink(dst));
-            process.chdir(oriCwd);
-
-            // dst symlink 目标路径有误（可能因为移动目录导致），删除之（后面重新创建）
-            if (symlinkDst !== src) {
-                await fs.remove(dst);
-            }
+        // 已经创建过同款，不需要重复创建
+        if (await isSymbolicLink(dst, src)) {
+            logger?.log(chalk.green(`✔ ${createJunction ? i18n.junction : i18n.link} ${src} -> ${dst}`));
+            continue;
         }
+
+        // 没有现成的，重建（重建前先清理）
+        await fs.rm(dst, { recursive: true, force: true });
+        // 按相对目录创建
+        const relativeSrc = path.relative(dstParent, src);
 
         // Try first time
-        let err = await fs.ensureSymlink(src, dst, createJunction ? 'junction' : 'dir').catch(e => e);
+        let err = await fs.symlink(relativeSrc, dst, createJunction ? 'junction' : 'dir').catch(e => e);
 
-        // 创建失败（文件已存在）
-        if (err?.code === 'EEXIST') {
-            // 删除
-            await fs.remove(dst);
-            // 然后重试
-            err = await fs.ensureSymlink(src, dst, createJunction ? 'junction' : 'dir').catch(e => e);
-        }
-
-        // Windows 下无权限
+        // Windows 下无权限，尝试提权
         if (!isElevate && process.platform === 'win32' && err?.code === 'EPERM') {
             // 尚未尝试过提权，提权重试
             while (elevateResult === undefined) {
@@ -124,15 +113,13 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
                 let startTime = Date.now();
                 while (Date.now() - startTime <= 5000) {
                     // 普通重试，验证提权结果
-                    err = await fs.ensureSymlink(src, dst, 'dir').catch(e => e);
-                    elevateResult = err?.code !== 'EPERM';
-
+                    elevateResult = await isSymbolicLink(dst, src);
                     if (elevateResult) {
+                        err = undefined;
                         break;
                     }
-                    else {
-                        await new Promise(rs => setTimeout(rs, 500));
-                    }
+
+                    await new Promise(rs => setTimeout(rs, 500));
                 }
                 CliUtil.done(!!elevateResult);
 
@@ -160,18 +147,13 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
             }
             // 提权失败，创建 junction
             if (elevateResult === false && createJunction) {
-                err = await fs.ensureSymlink(src, dst, 'junction').catch(e => e);
+                err = await fs.symlink(relativeSrc, dst, 'junction').catch(e => e);
             }
         }
 
         // Fail
         if (err) {
-            if (isElevate) {
-                continue;
-            }
-            else {
-                throw err;
-            }
+            throw err;
         }
 
         // Success
@@ -179,4 +161,19 @@ export async function ensureSymlinks(confs: { src: string, dst: string }[], logg
     }
 
     return { isAllSucc: isAllSucc };
+}
+
+export async function isSymbolicLink(dst: string, src: string) {
+    // dst 已存在 Symlink
+    if (await fs.lstat(dst).then(v => v.isSymbolicLink()).catch(e => false)) {
+        // 检查 symlink 的 destination 是否正确
+        const oldSymlinkPath = path.resolve(path.dirname(dst), await fs.readlink(dst));
+
+        // 是同款
+        if (oldSymlinkPath === src) {
+            return true;
+        }
+    }
+
+    return false;
 }
