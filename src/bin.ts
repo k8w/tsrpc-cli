@@ -27,6 +27,10 @@ export const resPath = process.env.NODE_ENV === 'production' ? path.resolve(__di
 
 // 延迟 1 Tick 进入主流程（防止 tsrpc.config.ts 循环引用）
 main().catch((e: Error) => {
+    if (args['ignore-error']) {
+        process.exit(0);
+    }
+
     CliUtil.done(false);
     if (args.verbose) {
         console.error('\n' + chalk.bgRed.white(i18n.error), e);

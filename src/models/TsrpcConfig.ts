@@ -40,9 +40,39 @@ export interface TsrpcConfig {
         watch?: string | string[],
 
         /** conf.dev.autoFillNewPtl 为 true 时自动填充的新 Ptl 的模板 */
-        ptlTemplate?: PtlTemplate;
+        ptlTemplate?: PtlTemplate | {
+            /**
+             * Path for `base.ts`
+             */
+            baseFile: string,
+            /**
+             * @defaultValue BaseRequest
+             */
+            baseReq?: string,
+            /**
+             * @defaultValue BaseResponse
+             */
+            baseRes?: string,
+            /**
+             * @defaultValue BaseConf
+             */
+            baseConf?: string
+        };
         /** conf.dev.autoFillNewPtl 为 true 时自动填充的新 Msg 的模板 */
-        msgTemplate?: MsgTemplate;
+        msgTemplate?: MsgTemplate | {
+            /**
+             * Path for `base.ts`
+             */
+            baseFile: string,
+            /**
+             * @defaultValue BaseMessage
+             */
+            baseMsg?: string,
+            /**
+             * @defaultValue BaseConf
+             */
+            baseConf?: string
+        };
         /** conf.dev.autoApi 为 true 时自动填充的新 Api 的模板 */
         apiTemplate?: ApiTemplate;
 
@@ -173,7 +203,10 @@ export interface TsrpcConfig {
         outDir?: string,
     },
 
-    /** 工作目录 */
+    /**
+     * 工作目录
+     * @defaultValue Current file path
+     */
     cwd?: string,
 
     /**

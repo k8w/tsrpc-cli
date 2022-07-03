@@ -35,7 +35,7 @@ export interface Res${ptlBaseName} {
         `import { ApiCall } from "tsrpc";
 import { Req${apiBaseName}, Res${apiBaseName} } from "${path.relative(apiFileDir, ptlFileDir).replace(/\\/g, '/')}/Ptl${apiBaseName}";
 
-export async function Api${apiBaseName}(call: ApiCall<Req${apiBaseName}, Res${apiBaseName}>) {
+export default async function (call: ApiCall<Req${apiBaseName}, Res${apiBaseName}>) {
     // TODO
     call.error('API Not Implemented');
 }`;

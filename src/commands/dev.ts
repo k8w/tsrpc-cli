@@ -8,7 +8,7 @@ import path from "path";
 import { CodeTemplate } from "..";
 import { i18n } from "../i18n/i18n";
 import { ProtoUtil } from "../models/ProtoUtil";
-import { TsrpcConfig } from "../models/TsrpcConfig";
+import { MsgTemplate, PtlTemplate, TsrpcConfig } from "../models/TsrpcConfig";
 import { genNewApiFile } from "./api";
 import { copyDirReadonly, syncByConfig } from "./sync";
 
@@ -299,10 +299,10 @@ export async function fillNewPtlOrMsg(filepath: string, confItem: NonNullable<Ts
     }
 
     if (parsed.type === 'Ptl') {
-        await fse.writeFile(filepath, (confItem.ptlTemplate ?? CodeTemplate.defaultPtl)(parsed.basename, filepath, confItem.ptlDir), 'utf-8');
+        await fse.writeFile(filepath, getPtlTemplate(confItem.ptlTemplate)(parsed.basename, filepath, confItem.ptlDir), 'utf-8');
     }
     else if (parsed.type === 'Msg') {
-        await fse.writeFile(filepath, (confItem.msgTemplate ?? CodeTemplate.defaultMsg)(parsed.basename, filepath, confItem.ptlDir), 'utf-8');
+        await fse.writeFile(filepath, getMsgTemplate(confItem.msgTemplate)(parsed.basename, filepath, confItem.ptlDir), 'utf-8');
     }
 
     return true;
@@ -330,4 +330,32 @@ export async function fillAllPtlAndMsgs(confItem: NonNullable<TsrpcConfig['proto
             await genNewApiFile(basename, apiFilePath, path.dirname(apiFilePath), path.dirname(file), confItem.apiTemplate ?? CodeTemplate.defaultApi).catch();
         }
     }
+}
+
+function getPtlTemplate(ptlTemplate: NonNullable<TsrpcConfig['proto']>[0]['ptlTemplate']): PtlTemplate {
+    if (!ptlTemplate) {
+        return CodeTemplate.defaultPtl;
+    }
+    if (typeof ptlTemplate === 'function') {
+        return ptlTemplate;
+    }
+    if (ptlTemplate.baseFile) {
+        return CodeTemplate.getExtendedPtl(ptlTemplate.baseFile, ptlTemplate.baseReq, ptlTemplate.baseRes, ptlTemplate.baseConf)
+    }
+
+    throw new Error(`Invalid ptlTemplate: ` + ptlTemplate);
+}
+
+function getMsgTemplate(msgTemplate: NonNullable<TsrpcConfig['proto']>[0]['msgTemplate']): MsgTemplate {
+    if (!msgTemplate) {
+        return CodeTemplate.defaultMsg;
+    }
+    if (typeof msgTemplate === 'function') {
+        return msgTemplate;
+    }
+    if (msgTemplate.baseFile) {
+        return CodeTemplate.getExtendedMsg(msgTemplate.baseFile, msgTemplate.baseMsg, msgTemplate.baseConf)
+    }
+
+    throw new Error(`Invalid msgTemplate: ` + msgTemplate);
 }

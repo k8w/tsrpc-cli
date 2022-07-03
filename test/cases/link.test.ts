@@ -21,6 +21,7 @@ describe('link', function () {
         let res = execSync(`node -r ts-node/register src/bin.ts link --config test/configs/absolutePath.ts`);
         assert.strictEqual(res.toString().split('\n').filter(v => v).last(), i18n.allLinkedSucc)
         TestUtil.assertSymlink(path.resolve(__dirname, '../output/proto'), path.resolve(__dirname, '../output/sync/symlink'));
+        assert.ok(fs.readlinkSync(path.resolve(__dirname, '../output/sync/symlink')).startsWith('.'))
     })
 
     it('with config (relative path)', function () {
