@@ -23,6 +23,7 @@ export async function cmdDev(options: CmdDevOptions) {
     let conf = options.config;
 
     const autoProto = conf.dev?.autoProto ?? true;
+    const autoProtoTarget = conf.dev?.autuProtoTarget ?? 'last';
     const autoSync = conf.dev?.autoSync ?? true;
     const autoApi = conf.dev?.autoApi ?? true;
     const entry = options.entry ?? conf.dev?.entry ?? 'src/index.ts';
@@ -60,10 +61,12 @@ export async function cmdDev(options: CmdDevOptions) {
             // 启动前执行一次填充
             await fillAllPtlAndMsgs(confItem, autoApi)
 
-            // old
-            let old = await ProtoUtil.loadOldProtoByConfigItem(confItem, options.config.verbose);
+            // protoBeforeRunDev
+            const protoBeforeRunDev = await ProtoUtil.loadOldProtoByConfigItem(confItem, options.config.verbose);
+            let protoLast = protoBeforeRunDev;
 
             const onAutoProtoTrigger = async () => {
+                let old = autoProtoTarget === 'last' ? protoLast : protoBeforeRunDev;
                 let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto, true).catch(e => {
                     // 插入错误记录
                     protoErr[protoPath] = e.message;
@@ -73,6 +76,10 @@ export async function cmdDev(options: CmdDevOptions) {
 
                 // 生成成功，清除错误记录
                 if (newProto) {
+                    protoLast = {
+                        proto: newProto,
+                        path: protoPath
+                    };
                     delete protoErr[protoPath];
                 }
             }

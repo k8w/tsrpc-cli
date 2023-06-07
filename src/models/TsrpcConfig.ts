@@ -137,6 +137,14 @@ export interface TsrpcConfig {
         autoProto?: boolean,
 
         /**
+         * `tsrpc-cli dev` 期间，当协议变更时，兼容的旧协议以哪个时间点的为准。
+         *   - last: 上一次生成的结果
+         *   - beforeRunDev: 运行 `tsrpc-cli dev` 之前
+         *  @defaultValue last
+         */
+        autuProtoTarget?: 'last' | 'beforeRunDev';
+
+        /**
          * 当共享目录内文件变动时，是否自动同步到目标位置（仅对 `type: 'copy'` 的项生效）
          * @defaultValue true
          */

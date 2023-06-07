@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [2.4.6-dev.0] - 2022-06-08
+### Added
+- Add `autuProtoTarget` for `proto` config, and changed the default value to `last`
+
 ## [2.4.5] - 2022-07-03
 ### Added
 - Add global type declaration `TsrpcCliConfig`
