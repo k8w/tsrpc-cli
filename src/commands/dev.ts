@@ -23,7 +23,7 @@ export async function cmdDev(options: CmdDevOptions) {
     let conf = options.config;
 
     const autoProto = conf.dev?.autoProto ?? true;
-    const autoProtoTarget = conf.dev?.autuProtoTarget ?? 'last';
+    const autoProtoTarget = conf.dev?.autoProtoTarget ?? 'last';
     const autoSync = conf.dev?.autoSync ?? true;
     const autoApi = conf.dev?.autoApi ?? true;
     const entry = options.entry ?? conf.dev?.entry ?? 'src/index.ts';

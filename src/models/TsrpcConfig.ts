@@ -142,7 +142,7 @@ export interface TsrpcConfig {
          *   - beforeRunDev: 运行 `tsrpc-cli dev` 之前
          *  @defaultValue last
          */
-        autuProtoTarget?: 'last' | 'beforeRunDev';
+        autoProtoTarget?: 'last' | 'beforeRunDev';
 
         /**
          * 当共享目录内文件变动时，是否自动同步到目标位置（仅对 `type: 'copy'` 的项生效）
