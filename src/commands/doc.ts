@@ -15,6 +15,7 @@ export type CmdDocOptions = {
     output: string | undefined,
     ignore: string | undefined,
     verbose: boolean | undefined,
+    customSchemaIds: string[] | undefined
     config?: undefined
 } | { config: TsrpcConfig }
 
@@ -28,7 +29,7 @@ export async function cmdDoc(options: CmdDocOptions) {
             if (!conf.docDir) {
                 continue;
             }
-            await generate(conf.ptlDir, conf.docDir, conf.ignore, options.config.verbose, conf.resolveModule);
+            await generate(conf.ptlDir, conf.docDir, conf.ignore, options.config.verbose, options.config.customSchemaIds, conf.resolveModule);
             console.log(chalk.bgGreen.white(i18n.success));
         }
     }
@@ -41,12 +42,12 @@ export async function cmdDoc(options: CmdDocOptions) {
             throw error(i18n.missingParam, { param: 'output' });
         }
 
-        await generate(options.input, options.output, options.ignore, options.verbose, undefined);
+        await generate(options.input, options.output, options.ignore, options.verbose, options.customSchemaIds, undefined);
         console.log(chalk.bgGreen.white(i18n.success));
     }
 }
 
-async function generate(ptlDir: string, outDir: string, ignore: string | string[] | undefined, verbose: boolean | undefined, resolveModule: ProtoGeneratorOptions['resolveModule']) {
+async function generate(ptlDir: string, outDir: string, ignore: string | string[] | undefined, verbose: boolean | undefined, customSchemaIds: string[] | undefined, resolveModule: ProtoGeneratorOptions['resolveModule']) {
     // Generate proto
     let { newProto } = await ProtoUtil.generateServiceProto({
         protocolDir: ptlDir,
@@ -54,10 +55,11 @@ async function generate(ptlDir: string, outDir: string, ignore: string | string[
         verbose: verbose,
         checkOptimize: false,
         keepComment: true,
+        customSchemaIds: customSchemaIds,
         resolveModule: resolveModule
     });
 
-    ApiDocUtil.init(newProto);
+    ApiDocUtil.init(newProto, customSchemaIds);
 
     await generateOpenApi(newProto, outDir);
     let tsrpcAPI = await generateTSAPI(newProto, outDir);

@@ -30,7 +30,7 @@ export async function cmdBuild(options: CmdBuildOptions) {
                 let old = await ProtoUtil.loadOldProtoByConfigItem(confItem, options.config.verbose);
 
                 // new
-                let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto, true);
+                let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.customSchemaIds, options.config.checkOptimizableProto, true);
 
                 // Auto API
                 if (autoApi && newProto && confItem.apiDir) {

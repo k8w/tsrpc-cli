@@ -109,6 +109,8 @@ export class ProtoUtil {
         ignore?: string[] | string,
         checkOptimize?: boolean,
         verbose?: boolean,
+        // 自定义 Schema ID
+        customSchemaIds?: string[],
         keepComment?: boolean,
         resolveModule?: ProtoGeneratorOptions['resolveModule']
     }): Promise<{
@@ -140,7 +142,12 @@ export class ProtoUtil {
             var typeProto = await new TSBufferProtoGenerator({
                 verbose: options.verbose,
                 baseDir: protocolDir,
-                customSchemaIds: ['mongodb/ObjectId', 'mongodb/ObjectID', 'bson/ObjectId', 'bson/ObjectID'],
+                customSchemaIds: options.customSchemaIds ?? [
+                    'mongodb/ObjectId',
+                    'mongodb/ObjectID',
+                    'bson/ObjectId',
+                    'bson/ObjectID',
+                ],
                 keepComment: options.keepComment,
                 resolveModule: options.resolveModule
             }).generate(fileList, {
@@ -398,7 +405,7 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
     static async genProtoByConfigItem(confItem: Pick<NonNullable<TsrpcConfig['proto']>[0], 'ptlDir' | 'ignore' | 'output' | 'resolveModule'>, old: {
         proto: ServiceProto<any>,
         path: string
-    } | undefined, verbose: boolean | undefined, checkOptimize: boolean | undefined, noEmitWhenNoChange?: boolean, keepComment?: boolean) {
+    } | undefined, verbose: boolean | undefined, customSchemaIds: string[] | undefined, checkOptimize: boolean | undefined, noEmitWhenNoChange?: boolean, keepComment?: boolean) {
         // new
         try {
             var resGenProto = await ProtoUtil.generateServiceProto({
@@ -407,6 +414,7 @@ export const serviceProto: ServiceProto<ServiceType> = ${JSON.stringify(options.
                 ignore: confItem.ignore,
                 verbose: verbose,
                 checkOptimize: checkOptimize,
+                customSchemaIds: customSchemaIds,
                 resolveModule: confItem.resolveModule
             })
             verbose && console.log(`Proto generated succ, start to write output file...`);

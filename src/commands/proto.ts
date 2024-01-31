@@ -14,6 +14,7 @@ export type CmdProtoOptions = {
     new: boolean | undefined,
     ignore: string[] | string | undefined,
     verbose: boolean | undefined,
+    customSchemaIds: string[] | undefined,
     config: undefined
 } | { config: TsrpcConfig }
 
@@ -32,7 +33,7 @@ export async function cmdProto(options: CmdProtoOptions) {
             let old = await ProtoUtil.loadOldProtoByConfigItem(conf, options.config.verbose);
 
             // new
-            await ProtoUtil.genProtoByConfigItem(conf, old, options.config.verbose, options.config.checkOptimizableProto)
+            await ProtoUtil.genProtoByConfigItem(conf, old, options.config.verbose, options.config.customSchemaIds, options.config.checkOptimizableProto)
         }
     }
     else {
@@ -55,6 +56,6 @@ export async function cmdProto(options: CmdProtoOptions) {
             ptlDir: options.input,
             ignore: options.ignore,
             output: options.output
-        }, old, options.verbose, true)
+        }, old, options.verbose, options.customSchemaIds, true)
     }
 }
