@@ -146,9 +146,9 @@ export const i18nZhCn = {
     buildCopyFiles: `复制文件`,
     buildSucc: '构建成功！',
 
-    docOpenApiSucc: (path: string) => `OpenAPI 已成成到：${chalk.cyan(path)}`,
-    docTsapiSucc: (path: string) => `TSAPI 已成成到：${chalk.cyan(path)}`,
-    docMdSucc: (path: string) => `Markdown 已成成到：${chalk.cyan(path)}`,
+    docOpenApiSucc: (path: string) => `OpenAPI 已生成到：${chalk.cyan(path)}`,
+    docTsapiSucc: (path: string) => `TSAPI 已生成到：${chalk.cyan(path)}`,
+    docMdSucc: (path: string) => `Markdown 已生成到：${chalk.cyan(path)}`,
 
     fileAlreadyExists: (path: string) => `${path} 已经存在`,
     npmNotInited: `package.json 不存在，请先执行 ${chalk.cyan('npm init')} 初始化`,
