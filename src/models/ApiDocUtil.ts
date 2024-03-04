@@ -13,13 +13,16 @@ export class ApiDocUtil {
 
     static protoHelper: TSBufferValidator['protoHelper'];
 
-    static init(proto: ServiceProto<any>) {
+    static init(proto: ServiceProto<any>, customSchemaIds: string[] | undefined) {
         // Custom types
-        proto.types['?mongodb/ObjectId'] = proto.types['?mongodb/ObjectID'] =
-            proto.types['?bson/ObjectId'] = proto.types['?bson/ObjectID'] = {
-                type: SchemaType.Custom,
-                validate: v => ({ isSucc: true })
-            };
+        if (customSchemaIds) {
+            customSchemaIds.forEach((schemaId) => {
+                proto.types[`?${schemaId}`] = {
+                    type: SchemaType.Custom,
+                    validate: v => ({ isSucc: true })
+                };
+            })
+        }
 
         let generator = new TSBufferValidator(proto.types);
         this.protoHelper = generator.protoHelper;
@@ -556,9 +559,9 @@ export class ApiDocUtil {
                 return '/*datetime*/ string';
             case SchemaType.Custom: {
                 let schemaId = options?.schemaId?.toLowerCase();
-                if (schemaId === '?mongodb/objectid' || schemaId === '?json/objectid') {
-                    return '/*ObjectId*/ string';
-                }
+                if (schemaId) {
+                    return `/*${schemaId}*/ string`;
+                } 
                 return 'string';
             }
         }

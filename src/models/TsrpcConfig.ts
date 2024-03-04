@@ -227,6 +227,12 @@ export interface TsrpcConfig {
      * @defaultValue false
      */
     verbose?: boolean,
+
+    /**
+     * 自定义SchemaId
+     * For example, 'mongodb/ObjectId'
+     */
+    customSchemaIds:string[],
 }
 
 export type PtlTemplate = (ptlBaseName: string, ptlPath: string, ptlDir: string) => string;

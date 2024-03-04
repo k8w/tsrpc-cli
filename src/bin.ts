@@ -83,6 +83,7 @@ async function main() {
             new: args.new,
             ignore: args.ignore,
             verbose: args.verbose,
+            customSchemaIds: args.customSchemaIds,
             config: conf
         });
     }
@@ -182,6 +183,7 @@ async function main() {
             output: args.output ?? args.o,
             ignore: args.ignore,
             verbose: args.verbose,
+            customSchemaIds: args.customSchemaIds,
             config: conf
         });
     }

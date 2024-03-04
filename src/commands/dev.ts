@@ -67,7 +67,7 @@ export async function cmdDev(options: CmdDevOptions) {
 
             const onAutoProtoTrigger = async () => {
                 let old = autoProtoTarget === 'last' ? protoLast : protoBeforeRunDev;
-                let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.checkOptimizableProto, true).catch(e => {
+                let newProto = await ProtoUtil.genProtoByConfigItem(confItem, old, options.config.verbose, options.config.customSchemaIds, options.config.checkOptimizableProto, true).catch(e => {
                     // 插入错误记录
                     protoErr[protoPath] = e.message;
                     console.error(chalk.red(e.message));
